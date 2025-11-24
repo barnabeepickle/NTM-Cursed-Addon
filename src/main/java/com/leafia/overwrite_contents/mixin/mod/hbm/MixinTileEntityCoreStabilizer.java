@@ -1,10 +1,7 @@
 package com.leafia.overwrite_contents.mixin.mod.hbm;
 
 import com.hbm.api.energymk2.IEnergyReceiverMK2;
-import com.hbm.inventory.control_panel.ControlEvent;
-import com.hbm.inventory.control_panel.ControlEventSystem;
-import com.hbm.inventory.control_panel.DataValue;
-import com.hbm.inventory.control_panel.DataValueFloat;
+import com.hbm.inventory.control_panel.*;
 import com.hbm.items.machine.ItemLens;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.machine.TileEntityCore;
@@ -41,7 +38,7 @@ import java.util.*;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers")})
 @Mixin(TileEntityCoreStabilizer.class)
-public abstract class MixinTileEntityCoreStabilizer extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2, SimpleComponent, IMixinTileEntityCoreStabilizer {
+public abstract class MixinTileEntityCoreStabilizer extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2, SimpleComponent, IMixinTileEntityCoreStabilizer, IControllable {
 	public MixinTileEntityCoreStabilizer(int scount) {
 		super(scount);
 	}
@@ -156,6 +153,74 @@ public abstract class MixinTileEntityCoreStabilizer extends TileEntityMachineBas
 	}
 
 	@Override
+	public void validate(){
+		super.validate();
+		ControlEventSystem.get(world).addControllable(this);
+	}
+
+	@Override
+	public void invalidate(){
+		super.invalidate();
+		ControlEventSystem.get(world).removeControllable(this);
+	}
+
+	/**
+	 * @author ntmleafia
+	 * @reason need more juice
+	 */
+	@Override
+	@Overwrite(remap = false)
+	public long getMaxPower() {
+		return maxPower;
+	}
+
+	@Inject(method = "readFromNBT",at = @At("HEAD"))
+	public void onReadFromNBT(NBTTagCompound compound,CallbackInfo ci) {
+		readTargetPos(compound);
+	}
+
+	@Inject(method = "writeToNBT",at = @At("HEAD"))
+	public void onWriteToNBT(NBTTagCompound compound,CallbackInfoReturnable<NBTTagCompound> cir) {
+		writeTargetPos(compound);
+	}
+
+	@Override
+	public TileEntityCore lastGetCore() {
+		return lastGetCore;
+	}
+
+	@Override
+	public void lastGetCore(TileEntityCore core) {
+		this.lastGetCore = core;
+	}
+
+	@Override
+	public BlockPos getTargetPosition() {
+		return targetPosition;
+	}
+
+	@Override
+	public void targetPosition(BlockPos pos) {
+		this.targetPosition = pos;
+	}
+
+	@Override
+	public String getPacketIdentifier() {
+		return "dfc_stabilizer";
+	}
+
+	@Override
+	public boolean hasLens() {
+		return cl_hasLens;
+	}
+
+	@Override
+	public LensType getLens() {
+		return lens;
+	}
+
+	// CP //
+	@Override
 	public BlockPos getControlPos() {
 		return getPos();
 	}
@@ -204,74 +269,7 @@ public abstract class MixinTileEntityCoreStabilizer extends TileEntityMachineBas
 		return Collections.singletonList("set_stabilizer_level");
 	}
 
-	@Override
-	public void validate(){
-		super.validate();
-		ControlEventSystem.get(world).addControllable(this);
-	}
-
-	@Override
-	public void invalidate(){
-		super.invalidate();
-		ControlEventSystem.get(world).removeControllable(this);
-	}
-
-	/**
-	 * @author ntmleafia
-	 * @reason need more juice
-	 */
-	@Override
-	@Overwrite(remap = false)
-	public long getMaxPower() {
-		return maxPower;
-	}
-
-	@Inject(method = {"readFromNBT","func_145839_a"},at = @At("HEAD"))
-	public void onReadFromNBT(NBTTagCompound compound,CallbackInfo ci) {
-		readTargetPos(compound);
-	}
-
-	@Inject(method = {"writeToNBT","func_189515_b"},at = @At("HEAD"))
-	public void onWriteToNBT(NBTTagCompound compound,CallbackInfoReturnable<NBTTagCompound> cir) {
-		writeTargetPos(compound);
-	}
-
-	@Override
-	public TileEntityCore lastGetCore() {
-		return lastGetCore;
-	}
-
-	@Override
-	public void lastGetCore(TileEntityCore core) {
-		this.lastGetCore = core;
-	}
-
-	@Override
-	public BlockPos getTargetPosition() {
-		return targetPosition;
-	}
-
-	@Override
-	public void targetPosition(BlockPos pos) {
-		this.targetPosition = pos;
-	}
-
-	@Override
-	public String getPacketIdentifier() {
-		return "dfc_stabilizer";
-	}
-
-	@Override
-	public boolean hasLens() {
-		return cl_hasLens;
-	}
-
-	@Override
-	public LensType getLens() {
-		return lens;
-	}
-
-
+	// OC //
 	@Inject(method = "getComponentName",at = @At(value = "HEAD"),cancellable = true,remap = false)
 	public void onGetComponentName(CallbackInfoReturnable<String> cir) {
 		cir.setReturnValue("dfc_communicator");

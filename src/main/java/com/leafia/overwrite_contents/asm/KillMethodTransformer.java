@@ -44,8 +44,12 @@ public final class KillMethodTransformer implements IClassTransformer {
 		//killSig("com.hbm.tileentity.machine.TileEntityCoreEmitter",
 		//		MethodSig.of("setInput", "(Lli/cil/oc/api/machine/Context;Lli/cil/oc/api/machine/Arguments;)[Ljava/lang/Object;")
 		//);
-		//killNames("com.hbm.tileentity.machine.TileEntityCoreEmitter", "getEnergyInfo");
-
+		killNames("com.hbm.tileentity.machine.TileEntityCoreEmitter",
+				"getEnergyInfo","getCryogel","getInput","getInfo","isActive","setInput"
+		);
+		killNames("com.hbm.tileentity.machine.TileEntityCoreReceiver",
+				"getEnergyInfo","getCryogel","getInfo"
+		);
 		killNames("com.hbm.tileentity.machine.TileEntityCoreStabilizer",
 				"getEnergyInfo","getInput","getDurability","getInfo","setInput"
 		);

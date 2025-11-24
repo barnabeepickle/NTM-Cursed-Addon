@@ -13,6 +13,7 @@
     "hbm.MixinRenderTorex"
   ],
   "mixins": [
+    "hbm.MixinControlEvent",
     "hbm.MixinCoreComponent",
     "hbm.MixinCoreCore",
     "hbm.MixinDictFrame",

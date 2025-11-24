@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = TileEntityCoreInjector.class)
 public abstract class MixinTileEntityCoreInjector extends TileEntityMachineBase implements ITickable, IFluidStandardReceiver, IMixinTileEntityInjector, IGUIProvider {
-	@Shadow public FluidTankNTM[] tanks;
+	@Shadow(remap = false) public FluidTankNTM[] tanks;
 	@Unique public TileEntityCore lastGetCore;
 	@Unique public BlockPos targetPosition = new BlockPos(0,0,0);
 
@@ -96,12 +96,12 @@ public abstract class MixinTileEntityCoreInjector extends TileEntityMachineBase 
 		this.targetPosition = pos;
 	}
 
-	@Inject(method = {"readFromNBT","func_145839_a"},at = @At("HEAD"))
+	@Inject(method = "readFromNBT",at = @At("HEAD"))
 	public void onReadFromNBT(NBTTagCompound compound,CallbackInfo ci) {
 		readTargetPos(compound);
 	}
 
-	@Inject(method = {"writeToNBT","func_189515_b"},at = @At("HEAD"))
+	@Inject(method = "writeToNBT",at = @At("HEAD"))
 	public void onWriteToNBT(NBTTagCompound compound,CallbackInfoReturnable<NBTTagCompound> cir) {
 		writeTargetPos(compound);
 	}

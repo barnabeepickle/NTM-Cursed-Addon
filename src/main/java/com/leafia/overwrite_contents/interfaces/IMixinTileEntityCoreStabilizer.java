@@ -6,7 +6,7 @@ import com.leafia.contents.AddonItems;
 import com.leafia.contents.machines.powercores.dfc.IDFCBase;
 import net.minecraft.item.Item;
 
-public interface IMixinTileEntityCoreStabilizer extends IDFCBase, IControllable {
+public interface IMixinTileEntityCoreStabilizer extends IDFCBase {
     long maxPower = 10000000000000L;
     int range = 50;
 

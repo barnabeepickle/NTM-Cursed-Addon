@@ -881,6 +881,10 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 
 	/// ------------------------------- SHADOW ZONE ------------------------------- ///
 
+	/**
+	 * @author ntmleafia
+	 * @reason do the nbt thingy
+	 */
 	@Overwrite
 	public float getFuelEfficiency(FluidType type) {
 		return type.hasTrait(FT_DFCFuel.class) ? type.getTrait(FT_DFCFuel.class).getModifier() : 0;

@@ -3,6 +3,10 @@ package com.leafia.overwrite_contents.mixin.mod.hbm;
 import com.hbm.api.energymk2.IEnergyReceiverMK2;
 import com.hbm.api.fluid.IFluidStandardReceiver;
 import com.hbm.interfaces.ILaserable;
+import com.hbm.inventory.control_panel.ControlEvent;
+import com.hbm.inventory.control_panel.DataValue;
+import com.hbm.inventory.control_panel.DataValueFloat;
+import com.hbm.inventory.control_panel.IControllable;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.lib.ForgeDirection;
@@ -19,6 +23,9 @@ import com.leafia.overwrite_contents.interfaces.IMixinTileEntityCoreEmitter;
 import com.leafia.overwrite_contents.interfaces.IMixinTileEntityCoreReceiver;
 import com.leafia.settings.AddonConfig;
 import com.llib.LeafiaLib;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -32,16 +39,21 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mixin(value = TileEntityCoreEmitter.class, remap = false)
-public abstract class MixinTileEntityCoreEmitter extends TileEntityMachineBase implements ITickable, IMixinTileEntityCoreEmitter, IEnergyReceiverMK2, ILaserable, IFluidStandardReceiver {
+public abstract class MixinTileEntityCoreEmitter extends TileEntityMachineBase implements ITickable, IMixinTileEntityCoreEmitter, IEnergyReceiverMK2, ILaserable, IFluidStandardReceiver, IControllable {
     public MixinTileEntityCoreEmitter(int scount) {
         super(scount);
     }
@@ -250,12 +262,12 @@ public abstract class MixinTileEntityCoreEmitter extends TileEntityMachineBase i
         });
     }
 
-    @Inject(method = "readFromNBT",at = @At("HEAD"),require = 1)
+    @Inject(method = "readFromNBT",at = @At("HEAD"),remap = true)
     public void onReadFromNBT(NBTTagCompound compound,CallbackInfo ci) {
         readTargetPos(compound);
     }
 
-    @Inject(method = "writeToNBT",at = @At("HEAD"),require = 1)
+    @Inject(method = "writeToNBT",at = @At("HEAD"),remap = true)
     public void onWriteToNBT(NBTTagCompound compound,CallbackInfoReturnable<NBTTagCompound> cir) {
         writeTargetPos(compound);
     }
@@ -341,5 +353,97 @@ public abstract class MixinTileEntityCoreEmitter extends TileEntityMachineBase i
     @Override
     public RayTraceResult lastRaycast() {
         return lastRaycast;
+    }
+
+    // CP //
+    @Override
+    public BlockPos getControlPos() {
+        return getPos();
+    }
+
+    @Override
+    public World getControlWorld() {
+        return getWorld();
+    }
+
+    @Override
+    public void receiveEvent(BlockPos from,ControlEvent e) {
+        if (e.name.equals("set_booster_active")) {
+            isOn = e.vars.get("active").getNumber() >= 1f;
+        } else if (e.name.equals("set_booster_level")) {
+            watts = Math.round(e.vars.get("level").getNumber());
+        }
+    }
+    @Override
+    public Map<String,DataValue> getQueryData() {
+        Map<String,DataValue> map = new HashMap<>();
+        map.put("active",new DataValueFloat(isOn ? 1 : 0));
+        map.put("level",new DataValueFloat(watts));
+        map.put("emitted",new DataValueFloat(prev));
+        return map;
+    }
+
+    @Override
+    public List<String> getInEvents() {
+        return Arrays.asList("set_booster_level","set_booster_active");
+    }
+
+    // OC //
+    @Optional.Method(modid = "opencomputers")
+    @Callback(doc = "setLevel(newLevel: number)->(previousLevel: number)")
+    public Object[] setLevel(Context context,Arguments args) {
+        Object[] prev = new Object[]{watts};
+        watts = MathHelper.clamp(args.checkInteger(0), 1, 100);
+        return prev;
+    }
+
+    @Optional.Method(modid = "opencomputers")
+    @Callback(doc = "getLevel()->(level: number)")
+    public Object[] getLevel(Context context, Arguments args) {
+        return new Object[]{watts};
+    }
+
+    @Optional.Method(modid = "opencomputers")
+    @Callback
+    public Object[] getEmitted(Context context, Arguments args) {
+        return new Object[]{prev};
+    }
+
+    @Optional.Method(modid = "opencomputers")
+    @Callback(doc = "getActive()->(active: boolean)")
+    public Object[] getActive(Context context, Arguments args) {
+        return new Object[]{isOn};
+    }
+
+    @Optional.Method(modid = "opencomputers")
+    @Callback(doc = "setActive(active: boolean)->(previously: boolean)")
+    public Object[] setActive(Context context, Arguments args) {
+        boolean wasOn = isOn;
+        isOn = args.checkBoolean(0);
+        return new Object[]{wasOn};
+    }
+
+    @Optional.Method(modid = "opencomputers")
+    @Callback(doc = "getPower(); returns the current power level - long")
+    public Object[] getPower(Context context, Arguments args) {
+        return new Object[]{power};
+    }
+
+    @Optional.Method(modid = "opencomputers")
+    @Callback(doc = "getMaxPower(); returns the maximum power level - long")
+    public Object[] getMaxPower(Context context, Arguments args) {
+        return new Object[]{getMaxPower()};
+    }
+
+    @Optional.Method(modid = "opencomputers")
+    @Callback(doc = "getChargePercent(); returns the charge in percent - double")
+    public Object[] getChargePercent(Context context, Arguments args) {
+        return new Object[]{100D * getPower() / (double) getMaxPower()};
+    }
+
+    @Optional.Method(modid = "opencomputers")
+    @Callback
+    public Object[] storedCoolnt(Context context, Arguments args) {
+        return new Object[]{tank.getFill()};
     }
 }

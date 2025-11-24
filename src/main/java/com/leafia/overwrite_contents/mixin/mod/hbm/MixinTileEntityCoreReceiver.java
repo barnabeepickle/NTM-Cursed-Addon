@@ -5,6 +5,10 @@ import com.hbm.api.fluid.IFluidStandardReceiver;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.interfaces.ILaserable;
+import com.hbm.inventory.control_panel.ControlEvent;
+import com.hbm.inventory.control_panel.DataValue;
+import com.hbm.inventory.control_panel.DataValueFloat;
+import com.hbm.inventory.control_panel.IControllable;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.lib.ForgeDirection;
@@ -29,6 +33,9 @@ import com.leafia.overwrite_contents.interfaces.IMixinTileEntityCoreReceiver;
 import com.leafia.overwrite_contents.interfaces.IMixinTileEntityInjector;
 import com.leafia.settings.AddonConfig;
 import com.llib.LeafiaLib.NumScale;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -39,8 +46,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.spongepowered.asm.mixin.Mixin;
@@ -52,11 +61,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Mixin(value = TileEntityCoreReceiver.class)
-public abstract class MixinTileEntityCoreReceiver extends TileEntityMachineBase implements ITickable, IMixinTileEntityCoreReceiver, IEnergyProviderMK2, ILaserable, IFluidStandardReceiver, IGUIProvider {
+public abstract class MixinTileEntityCoreReceiver extends TileEntityMachineBase implements ITickable, IMixinTileEntityCoreReceiver, IEnergyProviderMK2, ILaserable, IFluidStandardReceiver, IGUIProvider, IControllable {
 	@Shadow(remap = false) public long joules;
 
 	@Shadow(remap = false) public long prevJoules;
@@ -230,13 +238,13 @@ public abstract class MixinTileEntityCoreReceiver extends TileEntityMachineBase 
 		}
 	}
 
-	@Inject(method = {"readFromNBT","func_145839_a"},at = @At("HEAD"))
+	@Inject(method = "readFromNBT",at = @At("HEAD"))
 	public void onReadFromNBT(NBTTagCompound compound,CallbackInfo ci) {
 		readTargetPos(compound);
 		level = compound.getDouble("level");
 	}
 
-	@Inject(method = {"writeToNBT","func_189515_b"},at = @At("HEAD"))
+	@Inject(method = "writeToNBT",at = @At("HEAD"))
 	public void onWriteToNBT(NBTTagCompound compound,CallbackInfoReturnable<NBTTagCompound> cir) {
 		writeTargetPos(compound);
 		compound.setDouble("level",level);
@@ -373,5 +381,85 @@ public abstract class MixinTileEntityCoreReceiver extends TileEntityMachineBase 
 	@SideOnly(Side.CLIENT)
 	public GuiScreen provideGUI(int i,EntityPlayer entityPlayer,World world,int i1,int i2,int i3) {
 		return new CoreReceiverGUI(entityPlayer,(TileEntityCoreReceiver)(IMixinTileEntityCoreReceiver)this);
+	}
+
+	// CP //
+	@Override
+	public BlockPos getControlPos() {
+		return getPos();
+	}
+
+	@Override
+	public World getControlWorld() {
+		return getWorld();
+	}
+
+	@Override
+	public void receiveEvent(BlockPos from,ControlEvent e) {
+		if (e.name.equals("set_absorber_level")) {
+			level = e.vars.get("level").getNumber()/100d;
+		}
+	}
+	@Override
+	public Map<String,DataValue> getQueryData() {
+		Map<String,DataValue> map = new HashMap<>();
+		map.put("level",new DataValueFloat((float)(level*100)));
+		map.put("stress",new DataValueFloat(destructionLevel*100/300f));
+		map.put("received",new DataValueFloat(syncJoules));
+		map.put("power",new DataValueFloat(power));
+		return map;
+	}
+
+	@Override
+	public List<String> getInEvents() {
+		return Collections.singletonList("set_absorber_level");
+	}
+
+	// OC //
+	@Inject(method = "getComponentName",at = @At(value = "HEAD"),cancellable = true,remap = false)
+	public void onGetComponentName(CallbackInfoReturnable<String> cir) {
+		cir.setReturnValue("dfc_absorber");
+		cir.cancel();
+	}
+
+	@Optional.Method(modid = "opencomputers")
+	@Callback
+	public Object[] incomingEnergy(Context context,Arguments args) {
+		return new Object[]{syncJoules};
+	}
+
+	@Optional.Method(modid = "opencomputers")
+	@Callback
+	public Object[] outgoingPower(Context context, Arguments args) {
+		return new Object[]{power};
+	}
+
+	@Optional.Method(modid = "opencomputers")
+	@Callback
+	public Object[] storedCoolant(Context context, Arguments args) {
+		return new Object[]{tank.getFill()};
+	}
+
+	@Optional.Method(modid = "opencomputers")
+	@Callback
+	public Object[] getStress(Context context, Arguments args) {
+		return new Object[]{destructionLevel*100/300f};
+	}
+
+
+	@Optional.Method(modid = "opencomputers")
+	@Callback(doc = "setLevel(newLevel: number [0~100])->(previousLevel: number)")
+	public Object[] setLevel(Context context, Arguments args) {
+		double level = args.checkDouble(0);
+		level = MathHelper.clamp(level,0,100);
+		double prevLevel = level*100;
+		this.level = level/100d;
+		return new Object[]{prevLevel*100};
+	}
+
+	@Optional.Method(modid = "opencomputers")
+	@Callback(doc = "getLevel()->(level: number [0-100])")
+	public Object[] getLevel(Context context, Arguments args) {
+		return new Object[]{level};
 	}
 }

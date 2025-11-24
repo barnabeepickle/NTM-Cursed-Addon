@@ -118,7 +118,7 @@ public abstract class MixinEntityCloudFleijaRainbow extends Entity implements IM
         }
     }
 
-    @Inject(method = {"entityInit", "func_70088_a"}, at = @At("TAIL"))
+    @Inject(method = "entityInit", at = @At("TAIL"))
     private void onEntityInit(CallbackInfo ci) {
         this.dataManager.register(SCALE_R, 0.0f);
         this.dataManager.register(TICKRATE_R, 1.0f);
