@@ -45,7 +45,7 @@ public abstract class MixinCoreComponent extends BlockContainer {
 		super(materialIn);
 	}
 	@SuppressWarnings(value = "compileJava")
-	@Inject(method = {"onBlockActivated", "func_180639_a"},at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/network/internal/FMLNetworkHandler;openGui(Lnet/minecraft/entity/player/EntityPlayer;Ljava/lang/Object;ILnet/minecraft/world/World;III)V",shift = Shift.BEFORE,remap = false),cancellable = true)
+	@Inject(method = "onBlockActivated",at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/network/internal/FMLNetworkHandler;openGui(Lnet/minecraft/entity/player/EntityPlayer;Ljava/lang/Object;ILnet/minecraft/world/World;III)V",shift = Shift.BEFORE,remap = false),cancellable = true)
 	public void onOnBlockActivated(World world,BlockPos pos,IBlockState state,EntityPlayer player,EnumHand hand,EnumFacing facing,float hitX,float hitY,float hitZ,CallbackInfoReturnable<Boolean> cir) {
 		if (!player.getHeldItem(hand).isEmpty()) {
 			TileEntity te = world.getTileEntity(pos);
@@ -95,7 +95,7 @@ public abstract class MixinCoreComponent extends BlockContainer {
 		super.addInformation(stack,worldIn,tooltip,flagIn);
 	}
 
-	@Inject(method = {"createNewTileEntity","func_149915_a"},at = @At(value = "HEAD"),cancellable = true)
+	@Inject(method = "createNewTileEntity",at = @At(value = "HEAD"),cancellable = true)
 	public void onCreateNewTileEntity(World worldIn,int meta,CallbackInfoReturnable<TileEntity> cir) {
 		if (this == AddonBlocks.dfc_reinforced) {
 			cir.setReturnValue(new TileEntityCoreReceiver());
