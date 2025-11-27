@@ -5,7 +5,10 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.gui.GuiInfoContainer;
 import com.leafia.contents.gear.utility.ItemFuzzyIdentifier;
 import com.leafia.contents.gear.utility.ItemFuzzyIdentifier.FuzzyIdentifierPacket;
+import com.leafia.dev.LeafiaClientUtil;
 import com.leafia.dev.custompacket.LeafiaCustomPacket;
+import com.leafia.overwrite_contents.interfaces.IMixin;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.Style;
@@ -17,11 +20,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.*;
+
 @Mixin(value = FluidTankNTM.class)
-public class MixinFluidTankNTM {
+public class MixinFluidTankNTM implements IMixin {
 	@Shadow(remap = false) private @NotNull FluidType type;
 	@Unique boolean lastClicked = false;
 	@Inject(method = "renderTankInfo",at = @At(value = "INVOKE", target = "Lcom/hbm/inventory/fluid/FluidType;addInfo(Ljava/util/List;)V",remap = false),remap = false)
@@ -38,5 +44,9 @@ public class MixinFluidTankNTM {
 			}
 		}
 		lastClicked = Mouse.isButtonDown(0);
+	}
+	@Inject(method = "renderTankInfo",at = @At(value = "INVOKE", target = "Lcom/hbm/inventory/fluid/FluidType;addInfo(Ljava/util/List;)V",shift = Shift.AFTER,remap = false),remap = false)
+	void onRenderTankInfo2(GuiInfoContainer gui,int mouseX,int mouseY,int x,int y,int width,int height,CallbackInfo ci,@Local(type = List.class) List<String> list) {
+		LeafiaClientUtil.debugFluidTankTags((FluidTankNTM)(IMixin)this,list);
 	}
 }

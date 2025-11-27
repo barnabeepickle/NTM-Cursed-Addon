@@ -4,6 +4,7 @@ import com.hbm.inventory.fluid.FluidStack;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.util.RenderUtil;
+import com.leafia.contents.AddonItems;
 import com.leafia.contents.gear.utility.ItemFuzzyIdentifier;
 import com.leafia.contents.gear.utility.ItemFuzzyIdentifier.FuzzyIdentifierPacket;
 import com.leafia.dev.custompacket.LeafiaCustomPacket;
@@ -14,7 +15,10 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -28,9 +32,9 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
 public class LeafiaClientUtil {
 	static boolean lastClicked = false;
+	@SideOnly(Side.CLIENT)
 	public static void renderTankInfo(@NotNull FluidTankNTM tank,@NotNull LCEGuiInfoContainer gui,int mouseX,int mouseY,int x,int y,int width,int height) {
 		if (x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY) {
 			List<String> list = new ArrayList();
@@ -56,6 +60,20 @@ public class LeafiaClientUtil {
 			gui.drawFluidInfo((String[])list.toArray(new String[0]), mouseX, mouseY);
 		}
 	}
+	@SideOnly(Side.CLIENT)
+	public static void debugFluidTankTags(FluidTankNTM tank,List<String> texts) {
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		if (player.getHeldItemMainhand().getItem() == AddonItems.wand_v || player.getHeldItemOffhand().getItem() == AddonItems.wand_v) {
+			NBTTagCompound compound = NTMFNBT.getNBT(tank);
+			if (compound != null) {
+				for (String s : compound.getKeySet()) {
+					NBTBase tag = compound.getTag(s);
+					texts.add("TAG >> "+s+": "+tag.toString());
+				}
+			}
+		}
+	}
+	@SideOnly(Side.CLIENT)
 	public static void jeiFluidRenderInfo(FluidStack stack,List<String> info,int mx,int my,int x,int y,int width,int height) {
 		mx--; my--;
 		if (mx >= x && mx <= x+width && my >= y && my <= y+height) {
@@ -67,6 +85,7 @@ public class LeafiaClientUtil {
 			stack.type.addInfo(info);
 		}
 	}
+	@SideOnly(Side.CLIENT)
 	public static void jeiFluidRenderTank(List<FluidStack> stacks,FluidStack stack,int x,int y,int width,int height,boolean horizontal) {
 		x++; y++;
 		FluidType type = stack.type;

@@ -187,7 +187,7 @@ public class CoreExchangerTE extends LCETileEntityMachineBase implements IDFCBas
                 }
             }
 
-            sendFluidToAll(output, this);
+            //sendFluidToAll(output, this);
             LeafiaPacket._start(this)
                         .__write(0, input.getTankType().getName())
                         .__write(1, output.getTankType().getName())

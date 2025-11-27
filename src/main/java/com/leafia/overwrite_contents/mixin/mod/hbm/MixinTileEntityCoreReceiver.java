@@ -25,6 +25,7 @@ import com.leafia.contents.machines.powercores.dfc.components.injector.CoreInjec
 import com.leafia.contents.machines.powercores.dfc.debris.AbsorberShrapnelEntity;
 import com.leafia.contents.machines.powercores.dfc.debris.AbsorberShrapnelEntity.DebrisType;
 import com.leafia.contents.network.spk_cable.uninos.ISPKReceiver;
+import com.leafia.dev.NTMFNBT;
 import com.leafia.dev.container_utility.LeafiaPacket;
 import com.leafia.dev.math.FiaMatrix;
 import com.leafia.init.LeafiaSoundEvents;
@@ -290,7 +291,11 @@ public abstract class MixinTileEntityCoreReceiver extends TileEntityMachineBase 
 			case 0: joules = (long)value; break;
 			case 1: power = (long)value; break;
 			case 2: level = (double)value; break;
-			case 5: tank.setFill((int)value); tank.setTankType(Fluids.CRYOGEL); break;
+			case 5: tank.setFill((int)value); tank.setTankType(Fluids.CRYOGEL);
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setString("test","uwu");
+				NTMFNBT.setNBT(tank,tag);
+			break;
 			case 4: syncSpk = (long)value; break;
 		}
 	}
