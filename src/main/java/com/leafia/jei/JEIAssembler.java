@@ -105,18 +105,18 @@ public class JEIAssembler implements IRecipeCategory<Recipe> {
 			stacks.addAll(inputFluid);
 			stacks.addAll(outputFluid);
 			if (!inputFluid.isEmpty())
-				LeafiaClientUtil.jeiFluidRenderTank(stacks,inputFluid.get(0),28,55,52,16,true);
+				LeafiaClientUtil.jeiFluidRenderTank(stacks,inputFluid.get(0),28,55,52,4,true);
 			if (!outputFluid.isEmpty())
-				LeafiaClientUtil.jeiFluidRenderTank(stacks,outputFluid.get(0),100,55,52,16,true);
+				LeafiaClientUtil.jeiFluidRenderTank(stacks,outputFluid.get(0),100,55,52,4,true);
 		}
 		@SideOnly(Side.CLIENT)
 		@Override
 		public List<String> getTooltipStrings(int mouseX,int mouseY) {
 			List<String> list = new ArrayList<>();
 			if (!inputFluid.isEmpty())
-				LeafiaClientUtil.jeiFluidRenderInfo(inputFluid.get(0),list,mouseX,mouseY,28,55,52,16);
+				LeafiaClientUtil.jeiFluidRenderInfo(inputFluid.get(0),list,mouseX,mouseY,28,55,52,4);
 			if (!outputFluid.isEmpty())
-				LeafiaClientUtil.jeiFluidRenderInfo(outputFluid.get(0),list,mouseX,mouseY,100,55,52,16);
+				LeafiaClientUtil.jeiFluidRenderInfo(outputFluid.get(0),list,mouseX,mouseY,100,55,52,4);
 			return list;
 		}
 	}
@@ -127,10 +127,10 @@ public class JEIAssembler implements IRecipeCategory<Recipe> {
 	protected final IDrawableStatic staticPower;
 	protected final IDrawableAnimated animatedPower;
 	public JEIAssembler(IGuiHelper help) {
-		this.background = help.createDrawable(gui_rl,6,15,163,55+18);
+		this.background = help.createDrawable(gui_rl,6,15,163,61);
 		staticArrow = help.createDrawable(gui_rl, 16, 86+18, 36, 18);
 		animatedArrow = help.createAnimatedDrawable(staticArrow, 48, StartDirection.LEFT, false);
-		staticPower = help.createDrawable(gui_rl, 0, 86+18, 16, 52);
+		staticPower = help.createDrawable(gui_rl, 0, 86+18, 16, 58);
 		animatedPower = help.createAnimatedDrawable(staticPower, 480, StartDirection.TOP, true);
 	}
 
@@ -158,8 +158,8 @@ public class JEIAssembler implements IRecipeCategory<Recipe> {
 		stacks.init(12,true,109,1);
 		stacks.init(13,false,136,19);
 		//stacks.init(15,false,118,55);
-		stacks.init(14,true,1,55);
+		//stacks.init(14,true,1,55);
 		stacks.set(ingredients);
-		stacks.set(14,JeiRecipes.getBatteries());
+		//stacks.set(14,JeiRecipes.getBatteries());
 	}
 }

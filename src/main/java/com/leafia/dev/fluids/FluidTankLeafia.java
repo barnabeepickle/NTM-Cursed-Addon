@@ -84,12 +84,12 @@ public class FluidTankLeafia {
 		return this;
 	}
 
-	public int fill(FluidStackLeafia stack,boolean doFill) {
+	public int fill(FluidStackLeafia stack,FluidTankLeafia srcTank,boolean doFill) {
 		if (isStackCompatible(stack)) {
 			int addAmt = Math.min(stack.amount,maxFill-fill);
 			if (doFill) {
 				fill += addAmt;
-				transferTags(new FluidStackLeafia(stack.type,addAmt,stack.nbt),this);
+				transferTags(srcTank,this);
 			}
 			return addAmt;
 		}
@@ -129,7 +129,7 @@ public class FluidTankLeafia {
 	 * @param sending the sending stack
 	 * @param receiving the receiving tank
 	 */
-	public void transferTags(FluidStackLeafia sending,FluidTankLeafia receiving) {
+	public void transferTags(FluidTankLeafia sending,FluidTankLeafia receiving) {
 		NBTTagCompound sendingTag = sending.nbt;
 		NBTTagCompound receivingTag = receiving.nbt;
 		if (receivingTag == null) {
