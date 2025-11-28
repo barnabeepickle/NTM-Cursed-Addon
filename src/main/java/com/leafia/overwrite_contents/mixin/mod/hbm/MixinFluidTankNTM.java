@@ -45,8 +45,4 @@ public class MixinFluidTankNTM implements IMixin {
 		}
 		lastClicked = Mouse.isButtonDown(0);
 	}
-	@Inject(method = "renderTankInfo",at = @At(value = "INVOKE", target = "Lcom/hbm/inventory/fluid/FluidType;addInfo(Ljava/util/List;)V",shift = Shift.AFTER,remap = false),remap = false)
-	void onRenderTankInfo2(GuiInfoContainer gui,int mouseX,int mouseY,int x,int y,int width,int height,CallbackInfo ci,@Local(type = List.class) List<String> list) {
-		LeafiaClientUtil.debugFluidTankTags((FluidTankNTM)(IMixin)this,list);
-	}
 }

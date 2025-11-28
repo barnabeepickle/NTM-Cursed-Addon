@@ -28,7 +28,7 @@ public class TranformerCoreLeafia implements IClassTransformer {
 			"net.minecraft.client.renderer.EntityRenderer",
 			"net.minecraftforge.fluids.FluidTank",
 			"net.minecraft.world.ServerWorldEventHandler",
-			"com.hbm.inventory.fluid.tank.FluidTankNTM"
+			"<REMOVED>"//"com.hbm.inventory.fluid.tank.FluidTankNTM"
 	};
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] classBeingTransformed) {

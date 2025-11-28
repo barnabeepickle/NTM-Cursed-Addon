@@ -61,19 +61,6 @@ public class LeafiaClientUtil {
 		}
 	}
 	@SideOnly(Side.CLIENT)
-	public static void debugFluidTankTags(FluidTankNTM tank,List<String> texts) {
-		EntityPlayer player = Minecraft.getMinecraft().player;
-		if (player.getHeldItemMainhand().getItem() == AddonItems.wand_v || player.getHeldItemOffhand().getItem() == AddonItems.wand_v) {
-			NBTTagCompound compound = NTMFNBT.getNBT(tank);
-			if (compound != null) {
-				for (String s : compound.getKeySet()) {
-					NBTBase tag = compound.getTag(s);
-					texts.add("TAG >> "+s+": "+tag.toString());
-				}
-			}
-		}
-	}
-	@SideOnly(Side.CLIENT)
 	public static void jeiFluidRenderInfo(FluidStack stack,List<String> info,int mx,int my,int x,int y,int width,int height) {
 		mx--; my--;
 		if (mx >= x && mx <= x+width && my >= y && my <= y+height) {

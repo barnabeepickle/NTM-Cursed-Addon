@@ -292,9 +292,6 @@ public abstract class MixinTileEntityCoreReceiver extends TileEntityMachineBase 
 			case 1: power = (long)value; break;
 			case 2: level = (double)value; break;
 			case 5: tank.setFill((int)value); tank.setTankType(Fluids.CRYOGEL);
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("test","uwu");
-				NTMFNBT.setNBT(tank,tag);
 			break;
 			case 4: syncSpk = (long)value; break;
 		}

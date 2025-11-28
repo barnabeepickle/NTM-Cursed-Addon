@@ -5,6 +5,10 @@ import com.leafia.contents.fluids.AddonFluids;
 import com.llib.exceptions.LeafiaDevFlaw;
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * Fuck off NTMF
+ */
+@Deprecated
 public class NTMFNBT {
 	public static NBTTagCompound getNBT(FluidTankNTM tank) {
 		NBTTagCompound tag;
