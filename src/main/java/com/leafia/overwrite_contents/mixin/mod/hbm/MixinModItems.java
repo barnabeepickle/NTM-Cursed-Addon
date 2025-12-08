@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = ModItems.class, remap = false)
 public class MixinModItems {
 
-    @Redirect(method = "<clinit>", at = @At(value = "NEW", target = "Lcom/hbm/items/machine/ItemLens;"))
+    @Redirect(method = "<clinit>", at = @At(value = "NEW", target = "Lcom/hbm/items/machine/ItemLens;"),require = 1)
     private static ItemLens redirectLens(long maxDamage, String s){
         return new LCEItemLens(maxDamage, s);
     }

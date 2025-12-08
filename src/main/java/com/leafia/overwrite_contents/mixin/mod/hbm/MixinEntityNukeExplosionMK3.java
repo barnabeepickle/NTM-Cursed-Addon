@@ -28,7 +28,7 @@ public abstract class MixinEntityNukeExplosionMK3 extends Entity implements IChu
 	@Shadow(remap = false) public boolean did;
 	@Shadow(remap = false) public boolean waste;
 
-	@Shadow(remap = false) public abstract void setDead();
+	@Shadow public abstract void setDead();
 
 	@Shadow public abstract void onUpdate();
 
@@ -36,7 +36,7 @@ public abstract class MixinEntityNukeExplosionMK3 extends Entity implements IChu
 		super(worldIn);
 	}
 
-	@Inject(method = "onUpdate", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "onUpdate", at = @At("HEAD"), cancellable = true, require = 1)
 	private void onOnUpdate(CallbackInfo ci) {
 		if (!this.world.isRemote) {
 			if (CompatibilityConfig.isWarDim(this.world)) {
@@ -55,8 +55,8 @@ public abstract class MixinEntityNukeExplosionMK3 extends Entity implements IChu
 		}
 	}
 
-	@Inject(method = "isJammed",at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setDead()V"),remap = false)
-	private static void onIsJammed(World world,Entity entity,CallbackInfoReturnable<Boolean> cir,@Local(name = "jammer") ATEntry jammer) {
+	@Inject(method = "isJammed",at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setDead()V"),remap = false,require = 1)
+	private static void onIsJammed(World world,Entity entity,CallbackInfoReturnable<Boolean> cir,@Local(type = ATEntry.class) ATEntry jammer) {
 		FolkvangrJammers.lastDetectedJammer = new BlockPos(jammer.x, jammer.y, jammer.z);
 	}
 }

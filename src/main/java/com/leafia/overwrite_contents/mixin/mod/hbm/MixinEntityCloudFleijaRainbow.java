@@ -57,7 +57,7 @@ public abstract class MixinEntityCloudFleijaRainbow extends Entity implements IM
         super(worldIn);
     }
 
-    @Inject(method = "<init>*", at = @At("TAIL"))
+    @Inject(method = "<init>*", at = @At("TAIL"),require = 1)
     private void onInit(CallbackInfo ci) {
         if (!world.isRemote) tryBindAuto();
     }
@@ -118,7 +118,7 @@ public abstract class MixinEntityCloudFleijaRainbow extends Entity implements IM
         }
     }
 
-    @Inject(method = "entityInit", at = @At("TAIL"))
+    @Inject(method = "entityInit", at = @At("TAIL"),require = 1)
     private void onEntityInit(CallbackInfo ci) {
         this.dataManager.register(SCALE_R, 0.0f);
         this.dataManager.register(TICKRATE_R, 1.0f);

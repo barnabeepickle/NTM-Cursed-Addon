@@ -30,7 +30,7 @@ public abstract class MixinTileEntityCrateTungsten extends TileEntityCrate imple
     @Shadow(remap = false)
     public abstract void addEnergy(World world, BlockPos pos, long energy, EnumFacing dir);
 
-    @Inject(method = "update()V", at = @At(value = "FIELD", target = "Lcom/hbm/tileentity/machine/TileEntityCrateTungsten;heatTimer:I", ordinal = 0, shift = At.Shift.BEFORE, remap = false))
+    @Inject(method = "update()V", at = @At(value = "FIELD", target = "Lcom/hbm/tileentity/machine/TileEntityCrateTungsten;heatTimer:I", ordinal = 0, shift = At.Shift.BEFORE, remap = false),require = 1)
     public void onUpdate(CallbackInfo ci) {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             trySubscribeSPK(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);

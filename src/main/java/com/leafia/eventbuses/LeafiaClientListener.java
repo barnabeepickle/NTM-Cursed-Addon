@@ -3,11 +3,18 @@ package com.leafia.eventbuses;
 import com.custom_hbm.GuiBackupsWarning;
 import com.google.gson.JsonSyntaxException;
 import com.hbm.blocks.ILookOverlay;
+import com.hbm.blocks.ModBlocks;
+import com.hbm.interfaces.IHasCustomModel;
+import com.hbm.items.IDynamicModels;
 import com.hbm.items.ModItems;
 import com.hbm.render.GuiCTMWarning;
 import com.custom_hbm.util.LCETuple.*;
 import com.hbm.render.item.ItemRenderBase;
+import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonItems;
+import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodBakedModel;
+import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
+import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodRender;
 import com.leafia.contents.effects.folkvangr.EntityNukeFolkvangr;
 import com.leafia.contents.gear.IADSWeapon;
 import com.leafia.contents.gear.utility.FuzzyIdentifierBakedModel;
@@ -24,6 +31,7 @@ import com.leafia.passive.rendering.TopRender;
 import com.leafia.shit.leafiashader.BigBruh;
 import com.leafia.transformer.LeafiaGls;
 import com.leafia.unsorted.IEntityCustomCollision;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -48,6 +56,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -78,6 +87,39 @@ public class LeafiaClientListener {
 					FuzzyIdentifierRender.INSTANCE.itemModelFuzzy = model;
 					evt.getModelRegistry().putObject(ItemFuzzyIdentifier.fuzzyModel,new FuzzyIdentifierBakedModel());
 				}
+			}
+			{
+				Object object = evt.getModelRegistry().getObject(LeafiaRodItem.rodModel);
+				if(object instanceof IBakedModel) {
+					IBakedModel model = (IBakedModel) object;
+					LeafiaRodRender.INSTANCE.itemModel = model;
+					evt.getModelRegistry().putObject(LeafiaRodItem.rodModel, new LeafiaRodBakedModel());
+				}
+			}
+		}
+
+		private void registerModel(Item item,int meta) {
+			if (item instanceof LeafiaRodItem.EmptyLeafiaRod) {
+				ModelLoader.setCustomModelResourceLocation(item, 15, new ModelResourceLocation(item.getRegistryName() + "_overlay", "inventory"));
+				ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName() + "_empty", "inventory"));
+			} else if(item instanceof IHasCustomModel) {
+				ModelLoader.setCustomModelResourceLocation(item, meta, ((IHasCustomModel) item).getResourceLocation());
+			} else {
+				ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+			}
+		}
+
+		private void registerBlockModel(Block block, int meta) {
+			registerModel(Item.getItemFromBlock(block), meta);
+		}
+		@SubscribeEvent
+		public void registerModels(ModelRegistryEvent evt) {
+			for(Item item : AddonItems.ALL_ITEMS) {
+				if (!(item instanceof IDynamicModels))
+					registerModel(item, 0);
+			}
+			for(Block block : AddonBlocks.ALL_BLOCKS) {
+				registerBlockModel(block, 0);
 			}
 		}
 		@SubscribeEvent(priority = EventPriority.LOWEST)

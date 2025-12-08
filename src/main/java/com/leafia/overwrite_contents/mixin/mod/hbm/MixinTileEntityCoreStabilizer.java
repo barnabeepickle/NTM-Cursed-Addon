@@ -174,7 +174,7 @@ public abstract class MixinTileEntityCoreStabilizer extends TileEntityMachineBas
 		return maxPower;
 	}
 
-	@Inject(method = "readFromNBT",at = @At("HEAD"))
+	@Inject(method = "readFromNBT",at = @At("HEAD"),require = 1)
 	public void onReadFromNBT(NBTTagCompound compound,CallbackInfo ci) {
 		readTargetPos(compound);
 		//bandaid shitfix
@@ -183,7 +183,7 @@ public abstract class MixinTileEntityCoreStabilizer extends TileEntityMachineBas
 		this.isOn = compound.getBoolean("isOn");
 	}
 
-	@Inject(method = "writeToNBT",at = @At("HEAD"))
+	@Inject(method = "writeToNBT",at = @At("HEAD"),require = 1)
 	public void onWriteToNBT(NBTTagCompound compound,CallbackInfoReturnable<NBTTagCompound> cir) {
 		writeTargetPos(compound);
 		//bandaid shitfix

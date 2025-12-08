@@ -1,6 +1,6 @@
 package com.leafia.contents.machines.powercores.dfc.components.cemitter;
 
-import com.hbm.lib.MethodHandleHelper;
+import com.hbm.lib.internal.MethodHandleHelper;
 import com.hbm.tileentity.machine.TileEntityCore;
 import com.hbm.tileentity.machine.TileEntityCoreEmitter;
 import com.leafia.AddonBase;

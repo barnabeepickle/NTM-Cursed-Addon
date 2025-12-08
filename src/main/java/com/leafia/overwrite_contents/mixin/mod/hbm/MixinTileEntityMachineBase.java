@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = TileEntityMachineBase.class)
 public class MixinTileEntityMachineBase extends TileEntityLoadedBase {
 	// LCE anti-crash patch, allows loading Extended/Reloaded worlds
-	@Redirect(method = "readFromNBT",at = @At(value = "INVOKE", target = "Lnet/minecraftforge/items/ItemStackHandler;deserializeNBT(Lnet/minecraft/nbt/NBTTagCompound;)V",remap = false))
+	@Redirect(method = "readFromNBT",at = @At(value = "INVOKE", target = "Lnet/minecraftforge/items/ItemStackHandler;deserializeNBT(Lnet/minecraft/nbt/NBTTagCompound;)V",remap = false),require = 1)
 	public void onReadFromNBT(ItemStackHandler instance,NBTTagCompound nbt) {
 		if (nbt.getInteger("Size") == instance.getSlots())
 			instance.deserializeNBT(nbt);

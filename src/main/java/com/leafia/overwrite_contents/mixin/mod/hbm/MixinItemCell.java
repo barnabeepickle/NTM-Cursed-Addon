@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemCell.class)
 public abstract class MixinItemCell {
 
-    @Inject(method = "onEntityItemUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z", ordinal = 1))
+    @Inject(method = "onEntityItemUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z", ordinal = 1),require = 1)
     private void beforeSpawnCloud(EntityItem entityItem, CallbackInfoReturnable<Boolean> cir, @Local EntityCloudFleija cloud) {
         ((IMixinEntityCloudFleija) cloud).setAntischrab();
     }

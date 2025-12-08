@@ -14,7 +14,7 @@ import java.util.*;
 public class MixinDictFrame {
 	@Shadow(remap = false) public String[] mats;
 	@Shadow(remap = false) private float hazMult;
-	@Inject(method = "makeObject",at = @At(value = "RETURN"),remap = false)
+	@Inject(method = "makeObject",at = @At(value = "RETURN"),remap = false,require = 1)
 	void onMakeObject(MaterialShapes shape,Object[] objects,CallbackInfoReturnable<DictFrame> cir) {
 		AddonOreDictHazards.dictMap.putIfAbsent(this,new HashMap<>());
 		Map<String,Float> map = AddonOreDictHazards.dictMap.get(this);

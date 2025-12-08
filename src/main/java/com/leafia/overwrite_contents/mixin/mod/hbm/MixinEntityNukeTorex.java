@@ -119,7 +119,7 @@ public abstract class MixinEntityNukeTorex extends Entity implements IConstantRe
 		calculationFinished = value;
 	}
 
-	@Inject(method = "statFac",at = @At("HEAD"),cancellable = true,remap = false)
+	@Inject(method = "statFac",at = @At("HEAD"),cancellable = true,remap = false,require = 1)
 	private static void onTorexStatFacTop(CallbackInfo ci, @Local(argsOnly = true) World world, @Local(argsOnly = true, ordinal = 0) double x, @Local(argsOnly = true, ordinal = 1) double y, @Local(argsOnly = true, ordinal = 2) double z, @Local(argsOnly = true, ordinal = 0) float scale) {
 		if (AddonConfig.useLeafiaTorex) {
 			LCETorex.statFac(world,x,y,z,scale);
@@ -127,18 +127,26 @@ public abstract class MixinEntityNukeTorex extends Entity implements IConstantRe
 		}
 	}
 
-	@Redirect(method = "statFac", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), remap = false)
+	@Inject(method = "statFacBale",at = @At("HEAD"),cancellable = true,remap = false,require = 1)
+	private static void onTorexStatFacBaleTop(CallbackInfo ci, @Local(argsOnly = true) World world, @Local(argsOnly = true, ordinal = 0) double x, @Local(argsOnly = true, ordinal = 1) double y, @Local(argsOnly = true, ordinal = 2) double z, @Local(argsOnly = true, ordinal = 0) float scale) {
+		if (AddonConfig.useLeafiaTorex) {
+			LCETorex.statFacBale(world,x,y,z,scale);
+			ci.cancel();
+		}
+	}
+/*
+	@Redirect(method = "statFac", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), remap = false, require = 1)
 	private static boolean onTorexStatFac(World instance,Entity entity){
 		spawnTorex(instance, (EntityNukeTorex) entity);
 		return true;
 	}
 
-	@Redirect(method = "statFacBale", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), remap = false)
+	@Redirect(method = "statFacBale", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), remap = false, require = 1)
 	private static boolean onTorexStatFacBale(World instance, Entity entity,@Local(name = "x") double x,@Local(name = "y") double y,@Local(name = "z") double z,@Local(name = "scale") float scale){
 		spawnTorex(instance, (EntityNukeTorex) entity);
 		return true;
 	}
-
+*/ // fuck off
 	//@Redirect(method = "onUpdate",at = @At(value = "INVOKE", target = "Lcom/hbm/main/ServerProxy;playSoundClient(DDDLnet/minecraft/util/SoundEvent;Lnet/minecraft/util/SoundCategory;FF)V"))
 	//private void onOnUpdate(ServerProxy instance,double x,double y,double z,SoundEvent sound,SoundCategory category,float volume,float pitch) {
 		// nope

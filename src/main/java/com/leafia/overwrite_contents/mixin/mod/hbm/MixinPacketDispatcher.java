@@ -29,7 +29,7 @@ public class MixinPacketDispatcher {
     @Final
     public static NetworkHandler wrapper;
 
-    @Inject(method = "registerPackets", at = @At("TAIL"))
+    @Inject(method = "registerPackets", at = @At("TAIL"),require = 1)
     private static void onRegisterPackets(CallbackInfo ci, @Local int i) {
         wrapper.registerMessage(LeafiaPacket.Handler.class, LeafiaPacket.class, i++, Side.SERVER);
         wrapper.registerMessage(LeafiaPacket.Handler.class, LeafiaPacket.class, i++, Side.CLIENT);

@@ -8,10 +8,15 @@ import com.custom_hbm.sound.LCEAudioWrapperClient;
 import com.custom_hbm.sound.LCEAudioWrapperClientStartStop;
 import com.hbm.entity.effect.EntityCloudFleija;
 import com.hbm.entity.effect.EntityCloudFleijaRainbow;
+import com.hbm.interfaces.IHasCustomModel;
 import com.hbm.tileentity.deco.TileEntitySpinnyLight;
 import com.hbm.tileentity.machine.*;
 import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonItems;
+import com.leafia.contents.building.sign.SignRender;
+import com.leafia.contents.building.sign.SignTE;
+import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
+import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodRender;
 import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudFleija;
 import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudRainbow;
 import com.leafia.contents.gear.utility.FuzzyIdentifierRender;
@@ -74,6 +79,8 @@ public class LeafiaClientProxy extends LeafiaServerProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCoreInjector.class,new DFCComponentRender());
         ClientRegistry.bindTileEntitySpecialRenderer(CoreCEmitterTE.class, new DFCComponentRender());
 		ClientRegistry.bindTileEntitySpecialRenderer(CoreExchangerTE.class, new DFCComponentRender());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(SignTE.class, new SignRender());
 	}
 	@Override
 	public File getDataDir() {
@@ -106,14 +113,22 @@ public class LeafiaClientProxy extends LeafiaServerProxy {
 		ItemRendererInit.preInit();
 		ItemRendererInit.apply();
 
+		for (LeafiaRodItem rod : LeafiaRodItem.fromResourceMap.values()) {
+			rod.setTileEntityItemStackRenderer(LeafiaRodRender.INSTANCE);
+			//ItemRendererInit.fixFuckingLocations.add(rod);
+		}
+
+		for (Item item : AddonItems.ALL_ITEMS) {
+
+		}
 		// thanks TheSlize
-		for (Item toFix : ItemRendererInit.fixFuckingLocations) {
+		/*for (Item toFix : ItemRendererInit.fixFuckingLocations) {
 			ModelLoader.setCustomModelResourceLocation(
 					toFix,
 					0,
 					new ModelResourceLocation(toFix.getRegistryName(), "inventory")
 			);
-		}
+		}*/
 		AddonItems.fuzzy_identifier.setTileEntityItemStackRenderer(FuzzyIdentifierRender.INSTANCE);
 	}
 }

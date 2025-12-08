@@ -54,7 +54,7 @@ public abstract class MixinItemDesignatorRange extends Item implements IDesignat
 		}
 	}
 
-	@Inject(method = "onItemRightClick",at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isRemote:Z",shift = Shift.BEFORE))
+	@Inject(method = "onItemRightClick",at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isRemote:Z",shift = Shift.BEFORE),require = 1)
 	public void onOnItemRightClick(World world,EntityPlayer player,EnumHand hand,CallbackInfoReturnable<ActionResult<ItemStack>> cir,@Local(name = "pos") BlockPos pos,@Local(name = "stack") ItemStack stack) {
 		stack.getTagCompound().setInteger("yCoord", pos.getY());
 	}

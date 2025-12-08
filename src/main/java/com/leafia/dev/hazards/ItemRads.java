@@ -10,7 +10,6 @@ import com.leafia.database.AddonOreDictHazards;
 import com.leafia.dev.hazards.modifiers.NBTModifier;
 import com.leafia.dev.hazards.modifiers.NBTModifier.NBTKey;
 import com.leafia.dev.hazards.types.radiation.*;
-import com.llib.exceptions.LeafiaDevFlaw;
 import net.minecraft.item.Item;
 
 import java.util.*;
@@ -23,45 +22,70 @@ public class ItemRads {
 	public static MultiRadContainer americium241 = new MultiRadContainer(8.5,0,0,0,0);
 	public static MultiRadContainer americium242 = new MultiRadContainer(0,9.5,0,0,0);
 	public static MultiRadContainer americiumRG = new MultiRadContainer(0,9,0,0,0);
+	public static MultiRadContainer americiumFuel = new MultiRadContainer(0,4.75,0,0,0);
+
+	public static MultiRadContainer balefire = new MultiRadContainer(0,0,0,300000,0);
 
 	public static MultiRadContainer cobalt60 = new MultiRadContainer(0,30,30,60,0).multiply(1/3f);
+
+	public static MultiRadContainer flashlead = new MultiRadContainer(0,500+10000+2000,500,500,0).multiply(1/2f);
 
 	public static MultiRadContainer gold198 = new MultiRadContainer(0,500,500,500,0).multiply(1/2f);
 
 	public static MultiRadContainer lead209 = new MultiRadContainer(0,10000,0,0,0);
 
+	public static MultiRadContainer moxie = new MultiRadContainer(2.5,0,0,0,0);
+
 	public static MultiRadContainer neptunium237 = new MultiRadContainer(2.5,0,0,0,0);
+	public static MultiRadContainer neptuniumFuel = new MultiRadContainer(1.5,0,0,0,0);
 
 	public static MultiRadContainer plutonium = new MultiRadContainer(7.5,0,0,0,0);
 	public static MultiRadContainer plutoniumRG = new MultiRadContainer(6.25,0,0,0,0);
+	public static MultiRadContainer plutoniumFuel = new MultiRadContainer(4.25,0,0,0,0);
 	public static MultiRadContainer plutonium238 = new MultiRadContainer(10,0,0,0,0);
 	public static MultiRadContainer plutonium239 = new MultiRadContainer(5,0,0,0,0);
 	public static MultiRadContainer plutonium240 = new MultiRadContainer(7,0,0,0,0);
 	public static MultiRadContainer plutonium241 = new MultiRadContainer(0,25f,25f,0,0).multiply(1/2f);
+	public static MultiRadContainer plutonium238be = plutonium238.multiply(0.5);
 
 	public static MultiRadContainer polonium210 = new MultiRadContainer(75,0,0,0,0);
+	public static MultiRadContainer polonium210be = polonium210.multiply(0.5);
 
 	public static MultiRadContainer radium226 = new MultiRadContainer(7.5,0,0,0,0,5,0);
+	public static MultiRadContainer radium226be = radium226.multiply(0.5);
 
 	public static MultiRadContainer schrabidium326 = new MultiRadContainer(15,0,0,0,0);
 	public static MultiRadContainer solinium327 = new MultiRadContainer(17.5,0,0,0,0);
 	public static MultiRadContainer schrabidate = new MultiRadContainer(1.5,0,0,0,0);
 	public static MultiRadContainer schraranium = new MultiRadContainer(1.5,0,0,0,0);
+	public static MultiRadContainer schrabidiumLow = new MultiRadContainer(2.52,0,0,0,0);
+	public static MultiRadContainer schrabidiumMedium = new MultiRadContainer(5.85,0,0,0,0);
+	public static MultiRadContainer schrabidiumHigh = new MultiRadContainer(8.8,0,0,0,0);
 
 	public static MultiRadContainer technetium99 = new MultiRadContainer(0,2.75,0,0,0);
 
 	public static MultiRadContainer tritium = new MultiRadContainer(0,0,0.5f,0,0);
 
 	public static MultiRadContainer thorium232 = new MultiRadContainer(0.1,0,0,0,0);
+	public static MultiRadContainer thoriumFuel = new MultiRadContainer(1.75,0,0,0,0);
 
 	public static MultiRadContainer uranium = new MultiRadContainer(0.35,0,0,0,0,2,0);
 	public static MultiRadContainer uranium233 = new MultiRadContainer(5,0,0,0,0,2,0);
 	public static MultiRadContainer uranium235 = new MultiRadContainer(1,0,0,0,0,2,0);
 	public static MultiRadContainer uranium238 = new MultiRadContainer(0.25,0,0,0,0,2,0);
+	public static MultiRadContainer uraniumFuel = new MultiRadContainer(0.5,0,0,0,0,2,0);
 
 	public static MultiRadContainer waste = new MultiRadContainer(0,125,125,50,25);
-
 	public static MultiRadContainer waste_v = waste.copy().multiply(1/2f);
+	public static MultiRadContainer wasteUranium = waste; // temporary
+	public static MultiRadContainer wastePlutonium = waste; // temporary
+	public static MultiRadContainer wasteThorium = waste; // temporary
+	public static MultiRadContainer wasteMOX = waste; // temporary
+	public static MultiRadContainer wasteSchrabidium = waste; // temporary
+
+	public static MultiRadContainer bismuth209zfb = uranium235.multiply(0.35f);
+	public static MultiRadContainer plutonium241zfb = plutonium241.multiply(0.5f);
+	public static MultiRadContainer americium242zfb = americiumRG.multiply(0.5f);
 
 	public static class MultiRadContainer {
 		public double alpha;

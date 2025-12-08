@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ModEventHandler.class)
 public class MixinModEventHandler {
-	@Inject(method = "craftingRegister",at = @At(value = "INVOKE", target = "Lcom/hbm/main/CraftingManager;init()V", shift = Shift.AFTER, remap = false),remap = false)
+	@Inject(method = "craftingRegister",at = @At(value = "INVOKE", target = "Lcom/hbm/main/CraftingManager;init()V", shift = Shift.AFTER, remap = false),remap = false,require = 1)
 	public void onCraftingRegister(Register<IRecipe> e,CallbackInfo ci) {
 		AddonCrafting.craftingRegister();
 	}

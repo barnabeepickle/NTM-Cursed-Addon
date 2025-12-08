@@ -30,7 +30,7 @@ import java.util.*;
 public class MixinFluidTankNTM implements IMixin {
 	@Shadow(remap = false) private @NotNull FluidType type;
 	@Unique boolean lastClicked = false;
-	@Inject(method = "renderTankInfo",at = @At(value = "INVOKE", target = "Lcom/hbm/inventory/fluid/FluidType;addInfo(Ljava/util/List;)V",remap = false),remap = false)
+	@Inject(method = "renderTankInfo",at = @At(value = "INVOKE", target = "Lcom/hbm/inventory/fluid/FluidType;addInfo(Ljava/util/List;)V",remap = false),remap = false,require = 1)
 	void onRenderTankInfo(GuiInfoContainer gui,int mouseX,int mouseY,int x,int y,int width,int height,CallbackInfo ci) {
 		if (Mouse.isButtonDown(0) && !lastClicked) {
 			ItemStack item = Minecraft.getMinecraft().player.inventory.getItemStack();

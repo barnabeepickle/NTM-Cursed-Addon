@@ -10,7 +10,7 @@ import static com.hbm.inventory.control_panel.ControlEvent.register;
 
 @Mixin(value = ControlEvent.class)
 public class MixinControlEvent {
-	@Inject(method = "init",at = @At("TAIL"),remap = false)
+	@Inject(method = "init",at = @At("TAIL"),remap = false,require = 1)
 	private static void onInit(CallbackInfo ci) {
 		register(new ControlEvent("set_booster_level").setVar("level",0));
 		register(new ControlEvent("set_booster_active").setVar("active",0));

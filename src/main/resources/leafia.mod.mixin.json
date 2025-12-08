@@ -26,6 +26,7 @@
     "hbm.MixinHazardSystem",
     "hbm.MixinItemCatalyst",
     "hbm.MixinItemCell",
+    "hbm.MixinItemDesignator",
     "hbm.MixinItemDesignatorRange",
     "hbm.MixinItemLaserDetonator",
     "hbm.MixinJEIConfig",

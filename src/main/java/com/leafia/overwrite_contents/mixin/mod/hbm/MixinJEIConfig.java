@@ -17,7 +17,7 @@ import java.util.List;
 @Mixin(value = JEIConfig.class,remap = false)
 public class MixinJEIConfig {
 	private static List<IRecipeCategory> addon_categories = new ArrayList<>();
-	@Redirect(method = "registerCategories",at = @At(value = "INVOKE", target = "Lmezz/jei/api/recipe/IRecipeCategoryRegistration;addRecipeCategories([Lmezz/jei/api/recipe/IRecipeCategory;)V"))
+	@Redirect(method = "registerCategories",at = @At(value = "INVOKE", target = "Lmezz/jei/api/recipe/IRecipeCategoryRegistration;addRecipeCategories([Lmezz/jei/api/recipe/IRecipeCategory;)V"),require = 1)
 	public void onRegisterCategories(IRecipeCategoryRegistration instance,IRecipeCategory[] iRecipeCategories,@Local(type = IGuiHelper.class) IGuiHelper help) {
 		addon_categories.add(new JEICentrifuge(help));
 		addon_categories.add(new JEIChemplant(help));
@@ -58,35 +58,35 @@ public class MixinJEIConfig {
 		}
 	}
 
-	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/CentrifugeRecipeHandler;getRecipes()Ljava/util/List;"))
+	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/CentrifugeRecipeHandler;getRecipes()Ljava/util/List;"),require = 1)
 	public List centrifuge(CentrifugeRecipeHandler instance) {
 		return JEICentrifuge.Recipe.buildRecipes();
 	}
-	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/ChemicalPlantRecipeHandler;getRecipes()Ljava/util/List;"))
+	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/ChemicalPlantRecipeHandler;getRecipes()Ljava/util/List;"),require = 1)
 	public List chemplant(ChemicalPlantRecipeHandler instance) {
 		return JEIChemplant.Recipe.buildRecipes();
 	}
-	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/AssemblyMachineRecipeHandler;getRecipes()Ljava/util/List;"))
+	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/AssemblyMachineRecipeHandler;getRecipes()Ljava/util/List;"),require = 1)
 	public List assembler(AssemblyMachineRecipeHandler instance) {
 		return JEIAssembler.Recipe.buildRecipes();
 	}
-	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/JeiRecipes;getRefineryRecipe()Ljava/util/List;"))
+	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/JeiRecipes;getRefineryRecipe()Ljava/util/List;"),require = 1)
 	public List refinery() {
 		return JEIRefinery.Recipe.buildRecipes();
 	}
-	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/VacuumRecipeHandler;getRecipes()Ljava/util/List;"))
+	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/VacuumRecipeHandler;getRecipes()Ljava/util/List;"),require = 1)
 	public List vacuum(VacuumRecipeHandler instance) {
 		return JEIVacuum.Recipe.buildRecipes();
 	}
-	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/CrackingHandler;getRecipes()Ljava/util/List;"))
+	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/CrackingHandler;getRecipes()Ljava/util/List;"),require = 1)
 	public List cracking(CrackingHandler instance) {
 		return JEICracking.Recipe.buildRecipes();
 	}
-	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/ReformingHandler;getRecipes()Ljava/util/List;"))
+	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/ReformingHandler;getRecipes()Ljava/util/List;"),require = 1)
 	public List reformer(ReformingHandler instance) {
 		return JEIReformer.Recipe.buildRecipes();
 	}
-	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/HydrotreatingHandler;getRecipes()Ljava/util/List;"))
+	@Redirect(method = "register",at = @At(value = "INVOKE", target = "Lcom/hbm/handler/jei/HydrotreatingHandler;getRecipes()Ljava/util/List;"),require = 1)
 	public List hydro(HydrotreatingHandler instance) {
 		return JEIHydrotreater.Recipe.buildRecipes();
 	}

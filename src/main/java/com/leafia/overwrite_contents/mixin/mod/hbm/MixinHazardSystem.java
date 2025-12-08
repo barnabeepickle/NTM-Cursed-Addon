@@ -27,12 +27,12 @@ import static com.hbm.hazard.type.HazardTypeRadiation.getSuffix;
 
 @Mixin(value = HazardSystem.class)
 public class MixinHazardSystem {
-	@Redirect(method = "addHazardInfo",at = @At(value = "INVOKE", target = "Lcom/hbm/hazard/type/IHazardType;addHazardInformation(Lnet/minecraft/entity/player/EntityPlayer;Ljava/util/List;DLnet/minecraft/item/ItemStack;Ljava/util/List;)V"),remap = false)
+	@Redirect(method = "addHazardInfo",at = @At(value = "INVOKE", target = "Lcom/hbm/hazard/type/IHazardType;addHazardInformation(Lnet/minecraft/entity/player/EntityPlayer;Ljava/util/List;DLnet/minecraft/item/ItemStack;Ljava/util/List;)V"),remap = false,require = 1)
 	private static void onAddHazardInformation(IHazardType instance,EntityPlayer player,List<String> list,double v,ItemStack stack,List<IHazardModifier> iHazardModifiers) {
 		if (!(instance instanceof HazardTypeRadiation) && !(instance instanceof LCERad))
 			instance.addHazardInformation(player,list,v,stack,iHazardModifiers);
 	}
-	@Inject(method = "addHazardInfo",at = @At(value = "HEAD"),remap = false)
+	@Inject(method = "addHazardInfo",at = @At(value = "HEAD"),remap = false,require = 1)
 	private static void onAddHazardInfo(CallbackInfo ci,@Local ItemStack stack,@Local EntityPlayer player,@Local List<String> list) {
 		List<HazardEntry> hazards = getHazardsFromStack(stack);
 		double total = 0;

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityGrenadeASchrab.class)
 public abstract class MixinEntityGrenadeASchrab {
 
-    @Inject(method = "explode", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z", ordinal = 1), remap = false)
+    @Inject(method = "explode", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z", ordinal = 1), remap = false, require = 1)
     private void beforeSpawnCloud(CallbackInfo ci, @Local EntityCloudFleija cloud) {
         ((IMixinEntityCloudFleija) cloud).setAntischrab();
     }

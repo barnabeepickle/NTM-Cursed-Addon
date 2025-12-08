@@ -59,7 +59,7 @@ public abstract class MixinEntityCloudFleija extends Entity implements IMixinEnt
         super(worldIn);
     }
 
-    @Inject(method = "<init>*", at = @At("TAIL"))
+    @Inject(method = "<init>*", at = @At("TAIL"),require = 1)
     private void onInit(CallbackInfo ci) {
         if (!world.isRemote) tryBindAuto();
     }
@@ -121,7 +121,7 @@ public abstract class MixinEntityCloudFleija extends Entity implements IMixinEnt
         }
     }
 
-    @Inject(method = "entityInit", at = @At("TAIL"))
+    @Inject(method = "entityInit", at = @At("TAIL"),require = 1)
     private void onEntityInit(CallbackInfo ci) {
         this.dataManager.register(SCALE, 0.0f);
         this.dataManager.register(TICKRATE, 1.0f);
