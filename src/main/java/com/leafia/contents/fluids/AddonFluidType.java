@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Map.Entry;
 
 public class AddonFluidType extends FluidType {
-	private static int id = 0;
+	public static int id = 0;
 	public AddonFluidType(String name,int color,int p,int f,int r,EnumSymbol symbol) {
 		this(name,color,p,f,r,symbol,name);
 	}
