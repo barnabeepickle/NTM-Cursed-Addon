@@ -66,17 +66,17 @@ public class MixinHazardSystem {
 		if (total > 0) {
 			list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("trait.radioactive") + "]");
 			if (alpha > 0)
-				list.add(TextFormatting.RED+" -::" + I18nUtil.resolveKey("trait._hazarditem.radioactive.alpha") + " " + (Library.roundFloat(getNewValue(alpha), 3)+ getSuffix(alpha) + " " + I18nUtil.resolveKey("desc.rads")));
+				list.add(TextFormatting.GREEN+" -::" +TextFormatting.RED+ I18nUtil.resolveKey("trait._hazarditem.radioactive.alpha") + " " + (Library.roundFloat(getNewValue(alpha), 3)+ getSuffix(alpha) + " " + I18nUtil.resolveKey("desc.rads")));
 			if (beta > 0)
-				list.add(TextFormatting.AQUA+" -::" + I18nUtil.resolveKey("trait._hazarditem.radioactive.beta") + " " + (Library.roundFloat(getNewValue(beta), 3)+ getSuffix(beta) + " " + I18nUtil.resolveKey("desc.rads")));
+				list.add(TextFormatting.GREEN+" -::" +TextFormatting.AQUA+ I18nUtil.resolveKey("trait._hazarditem.radioactive.beta") + " " + (Library.roundFloat(getNewValue(beta), 3)+ getSuffix(beta) + " " + I18nUtil.resolveKey("desc.rads")));
 			if (x > 0)
-				list.add(TextFormatting.DARK_AQUA+" -::" + I18nUtil.resolveKey("trait._hazarditem.radioactive.x") + " " + (Library.roundFloat(getNewValue(x), 3)+ getSuffix(x) + " " + I18nUtil.resolveKey("desc.rads")));
+				list.add(TextFormatting.GREEN+" -::" +TextFormatting.DARK_AQUA+ I18nUtil.resolveKey("trait._hazarditem.radioactive.x") + " " + (Library.roundFloat(getNewValue(x), 3)+ getSuffix(x) + " " + I18nUtil.resolveKey("desc.rads")));
 			if (gamma > 0)
-				list.add(TextFormatting.DARK_GREEN+" -::" + I18nUtil.resolveKey("trait._hazarditem.radioactive.gamma") + " " + (Library.roundFloat(getNewValue(gamma), 3)+ getSuffix(gamma) + " " + I18nUtil.resolveKey("desc.rads")));
+				list.add(TextFormatting.GREEN+" -::" +TextFormatting.DARK_GREEN+ I18nUtil.resolveKey("trait._hazarditem.radioactive.gamma") + " " + (Library.roundFloat(getNewValue(gamma), 3)+ getSuffix(gamma) + " " + I18nUtil.resolveKey("desc.rads")));
 			if (neutrons > 0)
-				list.add(TextFormatting.YELLOW+" -::" + I18nUtil.resolveKey("trait._hazarditem.radioactive.neutrons") + " " + (Library.roundFloat(getNewValue(neutrons), 3)+ getSuffix(neutrons) + " " + I18nUtil.resolveKey("desc.rads")));
+				list.add(TextFormatting.GREEN+" -::" +TextFormatting.YELLOW+ I18nUtil.resolveKey("trait._hazarditem.radioactive.neutrons") + " " + (Library.roundFloat(getNewValue(neutrons), 3)+ getSuffix(neutrons) + " " + I18nUtil.resolveKey("desc.rads")));
 			if (activation > 0)
-				list.add(TextFormatting.DARK_GRAY+" -::" + I18nUtil.resolveKey("trait._hazarditem.radioactive.activation") + " " + (Library.roundFloat(getNewValue(activation), 3)+ getSuffix(activation) + " " + I18nUtil.resolveKey("desc.rads")));
+				list.add(TextFormatting.GREEN+" -::" +TextFormatting.DARK_GRAY+ I18nUtil.resolveKey("trait._hazarditem.radioactive.activation") + " " + (Library.roundFloat(getNewValue(activation), 3)+ getSuffix(activation) + " " + I18nUtil.resolveKey("desc.rads")));
 			if(stack.getCount() > 1) {
 				list.add(TextFormatting.GREEN+" -::" + TextFormatting.GOLD + I18nUtil.resolveKey("desc.stack")+" " + Library.roundFloat(getNewValue(total), 3) + getSuffix(total) + " " + I18nUtil.resolveKey("desc.rads"));
 			}

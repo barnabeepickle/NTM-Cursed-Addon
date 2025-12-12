@@ -11,6 +11,8 @@ public class LeafiaDamageSource extends DamageSource {
 	public static DamageSource dfcMeltdown = (new DamageSource("dfcMeltdown")).setDamageIsAbsolute().setDamageBypassesArmor().setDamageAllowedInCreativeMode();
 	public static DamageSource pointed = (new DamageSource("pointed")).setDifficultyScaled();
 	public static DamageSource poison = new DamageSource("poison").setDamageAllowedInCreativeMode().setDamageIsAbsolute().setDamageBypassesArmor();
+	public static DamageSource drinkcryo = new DamageSource("drinkcryo").setDamageAllowedInCreativeMode().setDamageIsAbsolute().setDamageBypassesArmor();
+	public static DamageSource drinkhot = new DamageSource("drinkhot").setDamageAllowedInCreativeMode().setDamageIsAbsolute().setDamageBypassesArmor().setFireDamage();
 
 	public LeafiaDamageSource(String damageTypeIn) {
 		super(damageTypeIn);

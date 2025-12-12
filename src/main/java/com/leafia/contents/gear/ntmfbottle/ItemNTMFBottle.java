@@ -1,27 +1,56 @@
 package com.leafia.contents.gear.ntmfbottle;
 
 import com.google.common.collect.ImmutableMap;
+import com.hbm.capability.HbmLivingProps;
+import com.hbm.handler.pollution.PollutionHandler.PollutionType;
+import com.hbm.handler.threading.PacketThreading;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.fluid.trait.FT_Polluting;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Amat;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Delicious;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Gaseous;
+import com.hbm.lib.HBMSoundHandler;
+import com.hbm.packet.toclient.AuxParticlePacketNT;
+import com.hbm.util.I18nUtil;
 import com.leafia.contents.building.mixed.TextureAtlasSpriteHalf;
 import com.leafia.contents.building.mixed.TextureAtlasSpriteHalf.HalfDirection;
 import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
+import com.leafia.dev.LeafiaDebug;
 import com.leafia.dev.items.itembase.AddonItemBaked;
+import com.leafia.init.LeafiaDamageSource;
+import com.leafia.passive.LeafiaPassiveServer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.*;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class ItemNTMFBottle extends AddonItemBaked {
 	private final ResourceLocation baseTextureLocation = new ResourceLocation("minecraft","items/potion_bottle_drinkable");
@@ -30,14 +59,16 @@ public class ItemNTMFBottle extends AddonItemBaked {
 		super(s);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
+		this.setMaxStackSize(1);
 		FluidType[] order = Fluids.getInNiceOrder();
 		for (FluidType fluidType : order) {
-			ModelLoader.setCustomModelResourceLocation(this, fluidType.getID(), getModelLocation(fluidType.getID()));
+			if (isValidFluid(fluidType))
+				ModelLoader.setCustomModelResourceLocation(this, fluidType.getID(), getModelLocation(fluidType.getID()));
 		}
 	}
 	public ModelResourceLocation getModelLocation(int meta) {
 		if (!models.containsKey(meta))
-			models.put(meta,new ModelResourceLocation(new ResourceLocation("leafia","ntmfbottle-"+meta), "inventory"));
+			models.put(meta,new ModelResourceLocation(new ResourceLocation("leafia","ntmfbottle_"+meta), "inventory"));
 		return models.get(meta);
 	}
 	@Override
@@ -48,16 +79,158 @@ public class ItemNTMFBottle extends AddonItemBaked {
 
 			FluidType[] order = Fluids.getInNiceOrder();
 			for (FluidType fluidType : order) {
-				ImmutableMap.Builder<String,String> textures = ImmutableMap.builder();
-				textures.put("layer0","leafia:items/"+this.getRegistryName()+"_overlay_"+fluidType.getID());
-				textures.put("layer1",this.baseTextureLocation.toString());
+				if (isValidFluid(fluidType)) {
+					ImmutableMap.Builder<String,String> textures = ImmutableMap.builder();
+					textures.put("layer0",this.baseTextureLocation.toString());
+					textures.put("layer1","leafia:items/"+this.getRegistryName()+"_overlay_"+fluidType.getID());
 
-				IModel retexturedModel = baseModel.retexture(textures.build());
-				IBakedModel bakedModel = retexturedModel.bake(ModelRotation.X0_Y0,DefaultVertexFormats.ITEM,ModelLoader.defaultTextureGetter());
-				event.getModelRegistry().putObject(getModelLocation(fluidType.getID()),bakedModel);
+					IModel retexturedModel = baseModel.retexture(textures.build());
+					IBakedModel bakedModel = retexturedModel.bake(ModelRotation.X0_Y0,DefaultVertexFormats.ITEM,ModelLoader.defaultTextureGetter());
+					event.getModelRegistry().putObject(getModelLocation(fluidType.getID()),bakedModel);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static FluidType getFluidFromStack(ItemStack stack) {
+		return Fluids.fromID(stack.getItemDamage());
+	}
+
+	public boolean isValidFluid(FluidType fluid) {
+		if (fluid.equals(Fluids.NONE)) return false; // what's the point?
+		if (fluid.equals(Fluids.WATER)) return false; // already exists
+		if (fluid.equals(Fluids.MERCURY)) return false; // already exists
+		if (fluid.hasTrait(FT_Amat.class)) return false;
+		return !fluid.hasTrait(FT_Gaseous.class);
+	}
+
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.DRINK;
+	}
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return 32;
+	}
+	public ActionResult<ItemStack> onItemRightClick(World worldIn,EntityPlayer playerIn,EnumHand handIn) {
+		playerIn.setActiveHand(handIn);
+		return new ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+	}
+	public ItemStack onItemUseFinish(ItemStack stack,World worldIn,EntityLivingBase entity) {
+		EntityPlayer player = entity instanceof EntityPlayer ? (EntityPlayer)entity : null;
+		if (!worldIn.isRemote) {
+			FluidType fluid = getFluidFromStack(stack);
+			{
+				// POISONING
+				float damage = fluid.poison*5;
+				if (fluid.hasTrait(FT_Polluting.class)) {
+					float poisoning = 0;
+					float coal = 0;
+					float asbestos = 0;
+					FT_Polluting pollution = fluid.getTrait(FT_Polluting.class);
+					for (Entry<PollutionType,Float> entry : pollution.releaseMap.entrySet()) {
+						float value = entry.getValue()*1000;
+						switch(entry.getKey()) {
+							case POISON:
+								poisoning += value*50;
+								break;
+							case SOOT:
+								poisoning += value*10;
+								coal += value*20;
+								break;
+							case FALLOUT:
+								poisoning += value*20;
+								asbestos += value*20;
+								break;
+							case HEAVYMETAL:
+								poisoning += value*70;
+								break;
+						}
+						LeafiaDebug.debugLog(entity.world,entry.getKey().name+": "+value);
+					}
+					if (coal >= 1)
+						HbmLivingProps.incrementBlackLung(entity,(int)coal);
+					if (asbestos >= 1)
+						HbmLivingProps.incrementBlackLung(entity,(int)coal);
+					damage = Math.max(damage,poisoning);
+				}
+				if (damage >= 7.5) {
+					damage /= 2;
+					int ix = MathHelper.floor(entity.posX);
+					int iy = MathHelper.floor(entity.posY);
+					int iz = MathHelper.floor(entity.posZ);
+					final int[] counter = {0};
+					Runnable vomit = new Runnable() {
+						@Override
+						public void run() {
+							if (counter[0] < 10) {
+								NBTTagCompound nbt = new NBTTagCompound();
+								nbt.setString("type", "vomit");
+								nbt.setString("mode", "normal");
+								nbt.setInteger("count", 15);
+								nbt.setInteger("entity", entity.getEntityId());
+								PacketThreading.createAllAroundThreadedPacket(new AuxParticlePacketNT(nbt, 0, 0, 0),  new TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 25));
+								LeafiaPassiveServer.queueFunction(this);
+							}
+							counter[0]++;
+						}
+					};
+					LeafiaPassiveServer.queueFunction(vomit);
+
+					worldIn.playSound(null, ix, iy, iz, HBMSoundHandler.vomit, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+					entity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 60, 19));
+				}
+				if (damage >= 0.05) {
+					entity.attackEntityFrom(LeafiaDamageSource.poison,damage);
+					entity.addPotionEffect(new PotionEffect(MobEffects.POISON,(int)(damage*20),(int)Math.max(0,damage/5-1)));
+				}
+			}
+			if (fluid.temperature > 60) {
+				// BURNING
+				float damage = (fluid.temperature-60)/100f*20;// maybe it was too weak
+				entity.attackEntityFrom(LeafiaDamageSource.drinkhot,damage);
+			}
+			else if (fluid.temperature < -20) {
+				// FREEZING
+				float damage = -(fluid.temperature+20)/100f;
+				entity.attackEntityFrom(LeafiaDamageSource.drinkcryo,damage);
+			}
+			if (player != null) {
+				// HUNGER
+				int fill = 2;
+				if (fluid.hasTrait(FT_Delicious.class))
+					fill = 5;
+				player.getFoodStats().addStats(fill,fill);
+			}
+		}
+		if (player != null) {
+			if (!player.isCreative()) {
+				return new ItemStack(Items.GLASS_BOTTLE);
+			}
+		}
+		return stack;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack,@Nullable World worldIn,List<String> tooltip,ITooltipFlag flagIn) {
+		getFluidFromStack(stack).addInfoItemTanks(tooltip);
+		super.addInformation(stack,worldIn,tooltip,flagIn);
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+		return I18nUtil.resolveKey("item.ntmfbottle.name",getFluidFromStack(stack).getLocalizedName());
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tab,NonNullList<ItemStack> items) {
+		if (this.isInCreativeTab(tab)) {
+			FluidType[] order = Fluids.getInNiceOrder();
+			for (FluidType fluidType : order) {
+				if (isValidFluid(fluidType))
+					items.add(new ItemStack(this,1,fluidType.getID()));
+			}
 		}
 	}
 
@@ -66,7 +239,8 @@ public class ItemNTMFBottle extends AddonItemBaked {
 	public void registerModel() {
 		FluidType[] order = Fluids.getInNiceOrder();
 		for (FluidType fluidType : order) {
-			ModelLoader.setCustomModelResourceLocation(this, fluidType.getID(), getModelLocation(fluidType.getID()));
+			if (isValidFluid(fluidType))
+				ModelLoader.setCustomModelResourceLocation(this, fluidType.getID(), getModelLocation(fluidType.getID()));
 		}
 	}
 
@@ -76,12 +250,14 @@ public class ItemNTMFBottle extends AddonItemBaked {
 		map.registerSprite(this.baseTextureLocation);
 		FluidType[] order = Fluids.getInNiceOrder();
 		for (FluidType fluidType : order) {
-			ResourceLocation spriteLoc = new ResourceLocation("leafia", "items/"+this.getRegistryName()+"_overlay_"+fluidType.getID());
-			TextureAtlasSpriteMask maskedSpr = new TextureAtlasSpriteMask(
-					spriteLoc.toString(),
-					new ResourceLocation("minecraft","items/potion_overlay"),fluidType.getTexture()
-			);
-			map.setTextureEntry(maskedSpr);
+			if (isValidFluid(fluidType)) {
+				ResourceLocation spriteLoc = new ResourceLocation("leafia","items/"+this.getRegistryName()+"_overlay_"+fluidType.getID());
+				TextureAtlasSpriteMask maskedSpr = new TextureAtlasSpriteMask(
+						spriteLoc.toString(),
+						new ResourceLocation("minecraft","textures/items/potion_overlay.png"),fluidType.getTexture()
+				);
+				map.setTextureEntry(maskedSpr);
+			}
 		}
 	}
 }

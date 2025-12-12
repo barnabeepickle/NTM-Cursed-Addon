@@ -1,6 +1,8 @@
 container.dfcEmitter=DFC Booster
 container.dfcReceiver=DFC Absorber
 death.attack.back=%1$s was deatomized and sent to the backrooms
+death.attack.drinkcryo=%$1s's innards froze
+death.attack.drinkhot=%$1s ingested deadly hot substance
 death.attack.fleija=%1$s got their lungs exploded in the air around violently filling in the vacuum
 death.attack.dfc=%1$s burned away from immense microwave rays
 death.attack.dfcMeltdown=%1$s was vaporized in the fire of a collapsing star
@@ -31,6 +33,7 @@ item.fuzzy_identifier.message=Identifier set to %s
 item.fuzzy_identifier.name=Fuzzy Identifier
 item.leafiarod=Nuclear Fuel Rod "%s"
 item.leafiarodempty=Nuclear Fuel Rod Assembly
+item.ntmfbottle.name=%s Bottle
 item.wand_v.name=Visualizer Wand
 subtitles.weapon.nuke=Nuclear Explosion
 subtitles.weapon.nuke_d=Distant Nuclear Explosion

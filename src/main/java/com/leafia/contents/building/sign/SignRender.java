@@ -45,12 +45,15 @@ public class SignRender extends TileEntitySpecialRenderer<SignTE>  {
 						LeafiaGls.scale(1/7f);
 						FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 						String s = sign.letter;
+						boolean unicode = font.getUnicodeFlag();
+						font.setUnicodeFlag(false);
 						int width = font.getStringWidth(s);
 						LeafiaGls.translate(-width/2f,0,0);
 						LeafiaGls.translate(-0.25,0,0);
 						font.drawString(s,0,0,0xFFFFFF);
 						LeafiaGls.translate(0.5,0,0);
 						font.drawString(s,0,0,0xFFFFFF);
+						font.setUnicodeFlag(unicode);
 						LeafiaGls.popMatrix();
 					}
 				}
@@ -67,12 +70,15 @@ public class SignRender extends TileEntitySpecialRenderer<SignTE>  {
 					LeafiaGls.scale(1/7f);
 					FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 					String s = sign.letter;
+					boolean unicode = font.getUnicodeFlag();
+					font.setUnicodeFlag(false);
 					int width = font.getStringWidth(s);
 					LeafiaGls.translate(-width/2f,0,0);
 					LeafiaGls.translate(-0.25,0,0);
 					font.drawString(s,0,0,0xFFFFFF);
 					LeafiaGls.translate(0.5,0,0);
 					font.drawString(s,0,0,0xFFFFFF);
+					font.setUnicodeFlag(unicode);
 				}
 			}
 		}
@@ -91,12 +97,15 @@ public class SignRender extends TileEntitySpecialRenderer<SignTE>  {
 			LeafiaGls.scale(1/7f);
 			LeafiaGls.scale(-1,-1,1);
 			String s = sign.letter;
+			boolean unicode = font.getUnicodeFlag();
+			font.setUnicodeFlag(false);
 			int width = font.getStringWidth(s);
 			LeafiaGls.translate(-width/2f,0,0);
 			LeafiaGls.translate(-0.25,0,0);
 			font.drawString(s,0,0,te.color.getColorValue());
 			LeafiaGls.translate(0.5,0,0);
 			font.drawString(s,0,0,te.color.getColorValue());
+			font.setUnicodeFlag(unicode);
 			LeafiaGls.enableCull();
 		}
 		LeafiaGls.popMatrix();

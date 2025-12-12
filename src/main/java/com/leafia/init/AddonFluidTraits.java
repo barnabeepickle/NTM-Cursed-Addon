@@ -29,7 +29,7 @@ public class AddonFluidTraits {
 		Fluids.SOLVENT.addTraits(new FT_DFCFuel(1.45F));
 		Fluids.RADIOSOLVENT.addTraits(new FT_DFCFuel(1.6F));
 		Fluids.NITROGLYCERIN.addTraits(new FT_DFCFuel(1.5F));
-		//Fluids.LIQUID_OSMIRIDIUM.addTraits(new FT_DFCFuel(1.8F));
+		Fluids.DEATH.addTraits(new FT_DFCFuel(1.8F));
 		Fluids.WATZ.addTraits(new FT_DFCFuel(1.5F));
 		Fluids.XENON.addTraits(new FT_DFCFuel(1.25F));
 		Fluids.BALEFIRE.addTraits(new FT_DFCFuel(2.4F));

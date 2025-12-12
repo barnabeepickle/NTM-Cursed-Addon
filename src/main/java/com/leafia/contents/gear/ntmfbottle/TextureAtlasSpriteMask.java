@@ -24,7 +24,7 @@ public class TextureAtlasSpriteMask extends TextureAtlasSprite {
 	public final ResourceLocation mask;
 	public final ResourceLocation texture;
 	private int mipmap = 0;
-	private final String basePath = "textures";
+	//private final String basePath = "textures";
 
 	public TextureAtlasSpriteMask(String spriteName,ResourceLocation mask,ResourceLocation texture) {
 		super(spriteName);
@@ -36,16 +36,16 @@ public class TextureAtlasSpriteMask extends TextureAtlasSprite {
 	public boolean hasCustomLoader(IResourceManager manager,ResourceLocation location) {
 		return true;
 	}
-	private ResourceLocation completeResourceLocation(ResourceLocation loc) {
+	/*private ResourceLocation completeResourceLocation(ResourceLocation loc) {
 		return new ResourceLocation(loc.getNamespace(), String.format("%s/%s%s", new Object[] { this.basePath, loc.getPath(), ".png" }));
-	}
+	}*/
 
 	@Override
 	public boolean load(IResourceManager man, ResourceLocation resourcelocation, Function<ResourceLocation, TextureAtlasSprite> textureGetter) {
 
 
-		ResourceLocation baseSpriteResourceLocationFull = this.completeResourceLocation(this.mask);
-		ResourceLocation overlaySpriteResourceLocationFull = this.completeResourceLocation(this.texture);
+		ResourceLocation baseSpriteResourceLocationFull = mask; //this.completeResourceLocation(this.mask);
+		ResourceLocation overlaySpriteResourceLocationFull = texture; //this.completeResourceLocation(this.texture);
 
 		IResource iresource = null;
 		IResource overlayResource = null;
@@ -63,6 +63,8 @@ public class TextureAtlasSpriteMask extends TextureAtlasSprite {
 			boolean overlayHasAnimation = iresource.getMetadata("animation") != null;
 			this.loadSprite(overlayPngSizeInfo, overlayHasAnimation);
 
+			if (pngSizeInfo.pngWidth != overlayPngSizeInfo.pngWidth || pngSizeInfo.pngHeight != overlayPngSizeInfo.pngHeight)
+				throw new RuntimeException("no");
 
 			iresource = man.getResource(baseSpriteResourceLocationFull);
 			overlayResource = man.getResource(overlaySpriteResourceLocationFull);
@@ -92,6 +94,7 @@ public class TextureAtlasSpriteMask extends TextureAtlasSprite {
 			BufferedImage texImg = ImageIO.read(overlayRsc.getInputStream());
 			int[][] overlayData = new int[mipmapLevels][];
 			overlayData[0] = new int[texImg.getWidth() * texImg.getHeight()];
+			//if (texImg.getWidth() != maskImg.getWidth() || texImg.getHeight() != maskImg.getHeight()) return;
 
 			int height = maskImg.getHeight();
 			int width = maskImg.getWidth();
@@ -131,6 +134,15 @@ public class TextureAtlasSpriteMask extends TextureAtlasSprite {
 
 				this.animationMetadata = new AnimationMetadataSection(frames, this.width, this.height, animationMetadataSection.getFrameTime(), animationMetadataSection.isInterpolate());
 			}
+		}
+	}
+
+	@Override
+	public int[][] getFrameTextureData(int index) {
+		try {
+			return super.getFrameTextureData(index);
+		} catch (IndexOutOfBoundsException e) {
+			return null;
 		}
 	}
 
