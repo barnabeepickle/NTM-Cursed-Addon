@@ -109,9 +109,12 @@ public class FFPumpTE extends FFDuctUtilityTEBase implements ITickable, IFluidHa
 	@Override
 	public void onReceivePacketLocal(byte key,Object value) {
 		super.onReceivePacketLocal(key,value);
-		if (key == 0)
-			tank.setFluid(new FluidStack(getType().getFF(),(int)value));
-		else if (key == 1 && tank.getFluid() != null)
+		if (key == 0) {
+			if (getType().getFF() == null)
+				tank.setFluid(null);
+			else
+				tank.setFluid(new FluidStack(getType().getFF(),(int) value));
+		} else if (key == 1 && tank.getFluid() != null)
 			tank.getFluid().tag = (NBTTagCompound)value;
 	}
 

@@ -4,7 +4,7 @@ import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionHandler.PollutionType;
 import com.hbm.inventory.fluid.trait.FT_Polluting;
 import com.hbm.util.I18nUtil;
-import com.mojang.realmsclient.gui.ChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,15 +26,15 @@ public class MixinFT_Polluting {
 	@Overwrite
 	public void addInfoHidden(List<String> info) {
 		if(!this.releaseMap.isEmpty()) {
-			info.add(ChatFormatting.GOLD+"-::"+I18nUtil.resolveKey("trait.polluspill"));
+			info.add(TextFormatting.GOLD+"-::"+I18nUtil.resolveKey("trait.polluspill"));
 			for(Map.Entry<PollutionHandler.PollutionType, Float> entry : releaseMap.entrySet())
-				info.add(ChatFormatting.GOLD+"-::"+ChatFormatting.GREEN + " " + entry.getValue()*1000 + " " + I18nUtil.resolveKey(entry.getKey().name) + " / B");
+				info.add(TextFormatting.GOLD+"-::"+TextFormatting.GREEN + " " + entry.getValue()*1000 + " " + I18nUtil.resolveKey(entry.getKey().name) + " / B");
 		}
 
 		if(!this.burnMap.isEmpty()) {
-			info.add(ChatFormatting.GOLD+"-::"+I18nUtil.resolveKey("trait.polluburn"));
+			info.add(TextFormatting.GOLD+"-::"+I18nUtil.resolveKey("trait.polluburn"));
 			for(Map.Entry<PollutionHandler.PollutionType, Float> entry : burnMap.entrySet())
-				info.add(ChatFormatting.GOLD+"-::"+ChatFormatting.RED + " " + entry.getValue()*1000 + " " + I18nUtil.resolveKey(entry.getKey().name) + " / B");
+				info.add(TextFormatting.GOLD+"-::"+TextFormatting.RED + " " + entry.getValue()*1000 + " " + I18nUtil.resolveKey(entry.getKey().name) + " / B");
 		}
 	}
 }

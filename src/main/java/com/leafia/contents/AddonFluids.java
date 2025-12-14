@@ -1,23 +1,27 @@
 package com.leafia.contents;
 
 import com.hbm.handler.pollution.PollutionHandler;
+import com.hbm.handler.pollution.PollutionHandler.PollutionType;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
-import com.hbm.inventory.fluid.trait.FT_Polluting;
-import com.hbm.inventory.fluid.trait.FT_VentRadiation;
+import com.hbm.inventory.fluid.trait.*;
 import com.hbm.render.misc.EnumSymbol;
 import com.leafia.contents.fluids.AddonFluidType;
 import com.leafia.contents.fluids.FluorideFluid;
+import com.leafia.contents.fluids.traits.FT_LFTRCoolant;
 import com.llib.exceptions.LeafiaDevFlaw;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 import static com.hbm.inventory.fluid.Fluids.*;
 
 public class AddonFluids {
+	private static final HashMap<Fluid,FluidType> fluidMapping = new HashMap();
 	public static final List<FluidType> metaOrderPointer;
 	static {
 		Field metaField = null;
@@ -42,6 +46,14 @@ public class AddonFluids {
 			fluoride = FluidRegistry.getFluid("fluoride");
 		}
 	}
+	public static void addCompatFluid(FluidType fluid) {
+		if (fluid.getFF() == null) return;
+		fluidMapping.put(fluid.getFF(),fluid);
+	}
+	public static FluidType fromFF(Fluid fluid) {
+		return fluidMapping.getOrDefault(fluid,Fluids.NONE);
+	}
+	/// this particular salt does have a caveat, the lithium isotope it needs to use is Lithium-7 cause Lithium-6 absorbs a neutron to turn into tritium and helium-4 - whatsapp_2
 	public static FluidType FLUORIDE;
 	//public static FluidType FLUORINE; oh boy fluorine already exists
 	public static FluidType UF6_233;
@@ -50,12 +62,17 @@ public class AddonFluids {
 	public static FluidType HOT_AIR;
 	public static FluidType RADSPICE_SLOP;
 	public static void init() {
-		FLUORIDE = new AddonFluidType("FLUORIDE",0xd3d8b9,5,0,0,EnumSymbol.NONE).setTemp(500).addTraits(LIQUID,new FT_Polluting().release(PollutionHandler.PollutionType.POISON, POISON_EXTREME)).setFFNameOverride("fluoride");
+		Function<FluidTrait,Boolean> rejectBoiling = (trait)->{
+			if (trait instanceof FT_Heatable) return false;
+			if (trait instanceof FT_Coolable) return false;
+			return true;
+		};
+		FLUORIDE = new AddonFluidType("FLIBE",0xd3d8b9,5,0,0,EnumSymbol.NONE).setTemp(500).addTraits(LIQUID,new FT_Polluting().release(PollutionHandler.PollutionType.POISON, POISON_EXTREME/2).release(PollutionType.HEAVYMETAL,LEAD_FUEL),new FT_LFTRCoolant(1)).setFFNameOverride("fluoride");
 		//FLUORINE = new FluidType("FLUORINE",0xc5b055,4,0,4,EnumSymbol.NOWATER).addTraits(GASEOUS);
 		UF6_233 = new AddonFluidType("UF6_233",UF6);
 		UF6_235 = new AddonFluidType("UF6_235",UF6);
-		HOT_WATER = new AddonFluidType("HOT_WATER",WATER).setTemp(70);
-		HOT_AIR = new AddonFluidType("HOT_AIR",AIR).setTemp(50);
+		HOT_WATER = new AddonFluidType("HOT_WATER",WATER,rejectBoiling).setTemp(70);
+		HOT_AIR = new AddonFluidType("HOT_AIR",AIR,rejectBoiling).setTemp(50);
 		RADSPICE_SLOP = new AddonFluidType("RADSPICE_SLOP",0x8baf2d,9999999,99999999,9999999,EnumSymbol.RADIATION).addTraits(LIQUID,new FT_VentRadiation(20_000/1000f),VISCOUS);
 	}
 }

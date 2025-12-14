@@ -13,6 +13,7 @@ import com.leafia.dev.NTMFNBT;
 import com.leafia.init.*;
 import com.leafia.eventbuses.LeafiaServerListener;
 import com.leafia.init.proxy.LeafiaServerProxy;
+import com.leafia.init.recipes.AddonChemplantRecipes;
 import com.leafia.overwrite_contents.other.LCEItemCatalyst;
 import com.leafia.settings.AddonConfig;
 import com.llib.exceptions.LeafiaDevFlaw;
@@ -134,6 +135,7 @@ public class AddonBase {
 	// postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
 	public void postInit(FMLPostInitializationEvent event) {
 		AddonFF.setFromRegistry();
+		AddonChemplantRecipes.register();
 	}
 
 	@EventHandler

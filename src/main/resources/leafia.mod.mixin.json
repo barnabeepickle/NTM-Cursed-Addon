@@ -25,6 +25,7 @@
     "hbm.MixinEntityGrenadeASchrab",
     "hbm.MixinEntityNukeExplosionMK3",
     "hbm.MixinEntityNukeTorex",
+    "hbm.MixinFluids",
     "hbm.MixinFT_Polluting",
     "hbm.MixinHazardSystem",
     "hbm.MixinItemCatalyst",

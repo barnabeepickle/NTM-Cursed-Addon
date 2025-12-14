@@ -9,7 +9,10 @@ import com.leafia.contents.AddonItems;
 import com.leafia.contents.AddonItems.LeafiaRods;
 import com.leafia.contents.building.sign.SignRender;
 import com.leafia.contents.building.sign.SignRender.SignItemRender;
+import com.leafia.contents.machines.misc.heatex.CoolantHeatexRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCComponentRender;
+import com.leafia.contents.machines.processing.mixingvat.MixingVatRender;
+import com.leafia.contents.machines.processing.mixingvat.MixingVatRender.MixingVatItemRender;
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorRender;
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorRender.SaltSeparatorItemRender;
 import com.leafia.contents.network.ff_duct.utility.FFDuctUtilityRender.FFDuctUtilityItemRender;
@@ -41,6 +44,8 @@ public class ItemRendererInit {
 		register(AddonBlocks.ff_pump,ductUtilRenderer);
 
 		register(AddonBlocks.salt_separator,new SaltSeparatorItemRender());
+		register(AddonBlocks.mixingvat,new MixingVatItemRender());
+		register(AddonBlocks.coolant_heatex,new CoolantHeatexRender());
 
 		/*fix(AddonItems.ams_focus_blank);
 		fix(AddonItems.ams_focus_booster);

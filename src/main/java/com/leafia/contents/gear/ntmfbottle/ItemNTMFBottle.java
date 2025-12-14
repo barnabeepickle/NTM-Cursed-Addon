@@ -66,11 +66,12 @@ public class ItemNTMFBottle extends AddonItemBaked {
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.setMaxStackSize(1);
+		/*
 		FluidType[] order = Fluids.getInNiceOrder();
 		for (FluidType fluidType : order) {
 			if (isValidFluid(fluidType))
 				ModelLoader.setCustomModelResourceLocation(this, fluidType.getID(), getModelLocation(fluidType.getID()));
-		}
+		}*/
 	}
 	public ModelResourceLocation getModelLocation(int meta) {
 		if (!models.containsKey(meta))
@@ -241,6 +242,7 @@ public class ItemNTMFBottle extends AddonItemBaked {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(ItemStack stack) {
 		return I18nUtil.resolveKey("item.ntmfbottle.name",getFluidFromStack(stack).getLocalizedName());
 	}

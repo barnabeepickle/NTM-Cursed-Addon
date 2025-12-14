@@ -1,6 +1,5 @@
 package com.leafia.dev.gui;
 
-import com.hbm.inventory.gui.GuiInfoContainer;
 import com.hbm.lib.Library;
 
 import com.leafia.init.LeafiaSoundEvents;
@@ -20,6 +19,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+/// ntmleafia: I want to explode
 public abstract class LCEGuiInfoContainer extends GuiContainerLeafia {
 
 	ResourceLocation guiUtil =  new ResourceLocation("hbm" + ":textures/gui/gui_utility.png");
@@ -47,12 +47,12 @@ public abstract class LCEGuiInfoContainer extends GuiContainerLeafia {
     {
         return this.isPointInRegion(slotIn.xPos, slotIn.yPos, 16, 16, mouseX, mouseY);
     }
-	public void drawElectricityInfo(GuiInfoContainer gui,int mouseX,int mouseY,int x,int y,int width,int height,long power,long maxPower) {
+	public void drawElectricityInfo(LCEGuiInfoContainer gui,int mouseX,int mouseY,int x,int y,int width,int height,long power,long maxPower) {
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
 			gui.drawFluidInfo(new String[] { Library.getShortNumber(power) + "/" + Library.getShortNumber(maxPower) + "HE" }, mouseX, mouseY);
 	}
 	
-	public void drawCustomInfo(GuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height, String[] text) {
+	public void drawCustomInfo(LCEGuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height, String[] text) {
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
 			this.drawHoveringText(Arrays.asList(text), mouseX, mouseY);
 	}

@@ -1,6 +1,7 @@
 package com.leafia.contents;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.BlockPipe;
 import com.hbm.main.MainRegistry;
 import com.leafia.AddonBase;
 import com.leafia.contents.AddonFluids.AddonFF;
@@ -9,9 +10,15 @@ import com.leafia.contents.building.pinkdoor.BlockPinkDoor;
 import com.leafia.contents.building.sign.SignBlock;
 import com.leafia.contents.debug.ff_test.source.FFSourceBlock;
 import com.leafia.contents.debug.ff_test.tank.FFTankBlock;
-import com.leafia.contents.fluids.FluorideFluid;
 import com.leafia.contents.fluids.FluorideFluid.FluorideFluidBlock;
+import com.leafia.contents.machines.misc.heatex.CoolantHeatexBlock;
 import com.leafia.contents.machines.powercores.dfc.AddonCoreComponent;
+import com.leafia.contents.machines.processing.mixingvat.MixingVatBlock;
+import com.leafia.contents.machines.reactors.lftr.components.arbitrary.MSRArbitraryBlock;
+import com.leafia.contents.machines.reactors.lftr.components.control.MSRControlBlock;
+import com.leafia.contents.machines.reactors.lftr.components.ejector.MSREjectorBlock;
+import com.leafia.contents.machines.reactors.lftr.components.element.MSRElementBlock;
+import com.leafia.contents.machines.reactors.lftr.components.plug.MSRPlugBlock;
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorBlock;
 import com.leafia.contents.network.ff_duct.FFDuctStandard;
 import com.leafia.contents.network.ff_duct.utility.pump.FFPumpBlock;
@@ -157,6 +164,20 @@ public class AddonBlocks {
 	}
 
 	public static final Block salt_separator = new SaltSeparatorBlock(Material.IRON,"salt_separator").setHardness(5.0F).setResistance(20.0F).setCreativeTab(MainRegistry.machineTab);
+
+	static boolean msr_dummy = LFTR.dummy;
+	public static class LFTR {
+		static boolean dummy = false;
+		public static final float generalHardness = 12;
+		public static final Block element = new MSRElementBlock(Material.IRON,"msr_element").setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness);
+		public static final Block plug = new MSRPlugBlock(Material.IRON,"msr_plug").setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness);
+		public static final Block control = new MSRControlBlock(Material.IRON,"msr_control").setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness);
+		public static final Block extension = new BlockPipe(Material.IRON,"msr_control_extension").setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness);
+		public static final Block arbitrary = new MSRArbitraryBlock(Material.IRON,"msr_arbitrary").setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness);
+		public static final Block ejector = new MSREjectorBlock(Material.IRON,"msr_ejector").setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness);
+	}
+	public static final Block mixingvat = new MixingVatBlock(Material.IRON,"mixingvat").setCreativeTab(MainRegistry.machineTab);
+	public static final Block coolant_heatex = new CoolantHeatexBlock(Material.IRON, "coolant_heatex").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 
 	private static void modifyBlockParams() {
 		ModBlocks.dfc_core.setResistance(65000000);

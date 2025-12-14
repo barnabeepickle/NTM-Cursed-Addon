@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"facing=north": { "model": "leafia:msr_ejector" },
+ 	   	"facing=south": { "model": "leafia:msr_ejector", "y": 180 },
+  	  	"facing=west":  { "model": "leafia:msr_ejector", "y": 270 },
+  		"facing=east":  { "model": "leafia:msr_ejector", "y": 90 },
+		"facing=up": 	{ "model": "leafia:msr_ejector", "x": 270 },
+		"facing=down":  { "model": "leafia:msr_ejector", "x": 90 }
+	}
+}

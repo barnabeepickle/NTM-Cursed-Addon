@@ -16,7 +16,7 @@ import static com.hbm.inventory.OreDictManager.ZR;
 import static com.hbm.main.CraftingManager.addRecipeAuto;
 import static com.hbm.main.CraftingManager.addShapelessAuto;
 
-public class AddonCrafting {
+public class AddonCraftingRecipes {
 	public static void craftingRegister() {
 		addRecipeAuto(new ItemStack(AddonBlocks.spk_cable, 16), " W ", "RRR", " W ", 'W', ModItems.plate_dineutronium, 'R',OreDictManager.MAGTUNG.wireFine());
 		addShapelessAuto(new ItemStack(ModBlocks.dfc_receiver, 1), AddonItems.dfcsh_beam, AddonItems.dfcsh_cable, AddonItems.dfcsh_corner, AddonItems.dfcsh_core, OreDictManager.STEEL.heavyBarrel(), AddonItems.dfcsh_front, AddonItems.dfcsh_corner, AddonItems.dfcsh_beam, AddonItems.dfcsh_beam);

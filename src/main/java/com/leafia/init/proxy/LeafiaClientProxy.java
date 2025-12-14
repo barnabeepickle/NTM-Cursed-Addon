@@ -19,12 +19,19 @@ import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodRender;
 import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudFleija;
 import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudRainbow;
 import com.leafia.contents.gear.utility.FuzzyIdentifierRender;
+import com.leafia.contents.machines.misc.heatex.CoolantHeatexRender;
+import com.leafia.contents.machines.misc.heatex.CoolantHeatexTE;
 import com.leafia.contents.machines.powercores.dfc.components.cemitter.CoreCEmitterTE;
 import com.leafia.contents.machines.powercores.dfc.components.exchanger.CoreExchangerTE;
 import com.leafia.contents.machines.powercores.dfc.render.DFCComponentRender;
 import com.leafia.contents.machines.powercores.dfc.debris.AbsorberShrapnelEntity;
 import com.leafia.contents.machines.powercores.dfc.debris.AbsorberShrapnelRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCCoreRender;
+import com.leafia.contents.machines.processing.mixingvat.MixingVatRender;
+import com.leafia.contents.machines.processing.mixingvat.MixingVatTE;
+import com.leafia.contents.machines.reactors.lftr.components.arbitrary.MSRArbitraryRender;
+import com.leafia.contents.machines.reactors.lftr.components.arbitrary.MSRArbitraryTE;
+import com.leafia.contents.machines.reactors.lftr.components.control.MSRControlTE;
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorRender;
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorTE;
 import com.leafia.contents.network.ff_duct.utility.FFDuctUtilityRender;
@@ -95,6 +102,9 @@ public class LeafiaClientProxy extends LeafiaServerProxy {
 			ClientRegistry.bindTileEntitySpecialRenderer(FFPumpTE.class,ffUtilityRender);
 
 			ClientRegistry.bindTileEntitySpecialRenderer(SaltSeparatorTE.class,new SaltSeparatorRender());
+			ClientRegistry.bindTileEntitySpecialRenderer(MSRArbitraryTE.class,new MSRArbitraryRender());
+			ClientRegistry.bindTileEntitySpecialRenderer(MixingVatTE.class,new MixingVatRender());
+			ClientRegistry.bindTileEntitySpecialRenderer(CoolantHeatexTE.class,new CoolantHeatexRender());
 		}
 	}
 	@Override

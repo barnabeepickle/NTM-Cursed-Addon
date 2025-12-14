@@ -37,7 +37,8 @@ public class FFNet extends NodeNet<IFFReceiver,IFFProvider,FFNode,FFNet> {
 			Set<FluidTank> tanks = tankMap.get(prov);
 			if (tanks != null) {
 				for (FluidTank tank : tanks) {
-					if (tank.getFluid() == null) continue;
+					if (tank == null) continue;
+					if (tank.getFluid() == null || tank.getFluidAmount() <= 0) continue;
 					final List<IFFReceiver> receivers = new ArrayList<>();
 					ObjectIterator<Object2LongMap.Entry<IFFReceiver>> recIt = receiverEntries.object2LongEntrySet().fastIterator();
 					int totalDemand = 0;
@@ -49,8 +50,9 @@ public class FFNet extends NodeNet<IFFReceiver,IFFProvider,FFNode,FFNet> {
 							continue;
 						}
 						FluidTank receiving = rec.getCorrespondingTank(tank.getFluid());
+						if (receiving == null) continue;
 						if (receiving.equals(tank)) continue;
-						if (receiving.getFluid() != null && !receiving.getFluid().equals(tank.getFluid())) continue;
+						if (receiving.getFluid() != null && !receiving.getFluid().getFluid().equals(tank.getFluid().getFluid())) continue;
 						if (FFNBT.areTagsCompatible(tank.getFluid(),receiving)) {
 							int demand = receiving.getCapacity()-receiving.getFluidAmount();
 							totalDemand += demand;
@@ -60,6 +62,7 @@ public class FFNet extends NodeNet<IFFReceiver,IFFProvider,FFNode,FFNet> {
 					}
 					int totalAmt = tank.getFluidAmount();
 					for (IFFReceiver rec : receivers) {
+						if (tank.getFluid() == null) break; // genuinely fuck you
 						FluidTank receiving = rec.getCorrespondingTank(tank.getFluid());
 						int demand = receiving.getCapacity()-receiving.getFluidAmount();
 						float ratio = demand/(float)totalDemand;

@@ -4,12 +4,14 @@ import com.custom_hbm.GuiBackupsWarning;
 import com.google.gson.JsonSyntaxException;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.capability.HbmLivingProps;
 import com.hbm.interfaces.IHasCustomModel;
 import com.hbm.items.IDynamicModels;
 import com.hbm.items.ModItems;
 import com.hbm.render.GuiCTMWarning;
 import com.custom_hbm.util.LCETuple.*;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.util.I18nUtil;
 import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonItems;
 import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodBakedModel;
@@ -34,6 +36,8 @@ import com.leafia.transformer.LeafiaGls;
 import com.leafia.unsorted.IEntityCustomCollision;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -66,6 +70,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.*;
@@ -74,6 +79,98 @@ import java.util.Map.Entry;
 import static com.hbm.main.client.NTMClientRegistry.swapModels;
 
 public class LeafiaClientListener {
+	public static class Digamma {
+		public static float digammaDose = 1;
+		static Random rand = new Random();
+		static List<DigammaText> texts = new ArrayList<>();
+		@SubscribeEvent
+		public void fovUpdate(FOVUpdateEvent e){
+			float fovMultiplier = 1-digammaDose*0.21428571428f;
+			e.setNewfov(e.getFov()*fovMultiplier);
+		}
+		@SubscribeEvent
+		public void shake(EntityViewRenderEvent.CameraSetup e) {
+			if (digammaDose > 0.25f) {
+				float ratio = (digammaDose-0.25f)/0.75f;
+				GL11.glTranslated(rand.nextGaussian()*ratio*0.065,0,0);
+			}
+		}
+		@SubscribeEvent
+		public void onOverlayRender(RenderGameOverlayEvent.Pre event) {
+			if (event.getType() == ElementType.CROSSHAIRS) {
+				ScaledResolution resolution = event.getResolution();
+				FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+				for (DigammaText text : texts) {
+					int w = font.getStringWidth(text.message);
+					int h = font.FONT_HEIGHT;
+					LeafiaGls.pushMatrix();
+					float shakex = rand.nextFloat()*4-2;
+					float shakey = rand.nextFloat()*4-2;
+					LeafiaGls.translate(resolution.getScaledWidth()*text.x+shakex,resolution.getScaledHeight()*text.y+shakey,0);
+					LeafiaGls.scale(text.scale);
+					LeafiaGls.translate(-w/2f,-h/2f,0);
+					/*
+					int alphaChannel = 0x01000000;
+					float alpha = text.timeElapsed;
+					if (text.timeElapsed >= 1) {
+						if (text.timeElapsed > 5)
+							alpha = (1-(text.timeElapsed-5))*255;
+						else
+							alpha = 1;
+					}
+					int value = alphaChannel*(int)Math.ceil(alpha*255);*/ // fuck off
+					font.drawString(text.message,0,0,0xFFFFFF);
+					LeafiaGls.popMatrix();
+				}
+			}
+		}
+		static float timer = 0;
+		static float timerMax = 5;
+		public static int messageVariants = 10;
+		public static void update() {
+			digammaDose = (float)HbmLivingProps.getDigamma(Minecraft.getMinecraft().player)/10;
+			int needle = 0;
+			while (needle < texts.size()) {
+				DigammaText text = texts.get(needle);
+				text.timeElapsed += 0.05f;
+				if (text.timeElapsed > text.lifetime)
+					texts.remove(needle);
+				else
+					needle++;
+			}
+			timer = timer + 0.05f;
+			if (timer >= timerMax) {
+				timer = 0;
+				timerMax = rand.nextFloat()*3f+1;
+				if (rand.nextFloat()+0.1f < digammaDose) {
+					String msg = I18nUtil.resolveKey("gui.digamma_message."+rand.nextInt(messageVariants));
+					float offset = rand.nextFloat()-0.5f;
+					texts.add(new DigammaText(
+							msg,
+							0.5f+offset*Math.max(0,1-msg.length()/60f),
+							0.1f+rand.nextFloat()*0.8f,
+							1f+rand.nextFloat(),
+							5+rand.nextFloat()*4
+					));
+				}
+			}
+		}
+		public static class DigammaText {
+			final float x;
+			final float y;
+			final float scale;
+			final String message;
+			float timeElapsed = 0;
+			final float lifetime;
+			public DigammaText(String message,float x,float y,float scale,float lifetime) {
+				this.message = message;
+				this.x = x;
+				this.y = y;
+				this.scale = scale;
+				this.lifetime = lifetime;
+			}
+		}
+	}
 	public static class HandlerClient {
 		@SubscribeEvent
 		public void modelBaking(ModelBakeEvent evt) {

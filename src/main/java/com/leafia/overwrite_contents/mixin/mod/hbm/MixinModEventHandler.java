@@ -1,7 +1,7 @@
 package com.leafia.overwrite_contents.mixin.mod.hbm;
 
 import com.hbm.main.ModEventHandler;
-import com.leafia.init.recipes.AddonCrafting;
+import com.leafia.init.recipes.AddonCraftingRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent.Register;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,6 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinModEventHandler {
 	@Inject(method = "craftingRegister",at = @At(value = "INVOKE", target = "Lcom/hbm/main/CraftingManager;init()V", shift = Shift.AFTER, remap = false),remap = false,require = 1)
 	public void onCraftingRegister(Register<IRecipe> e,CallbackInfo ci) {
-		AddonCrafting.craftingRegister();
+		AddonCraftingRecipes.craftingRegister();
 	}
 }

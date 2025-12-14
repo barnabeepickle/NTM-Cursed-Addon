@@ -63,6 +63,9 @@ public class FluorideFluid extends Fluid {
 		}
 	}
 	public FluorideFluid(String name){
-		super(name, new ResourceLocation(AddonBase.MODID,"blocks/forgefluid/fluoride_still"), new ResourceLocation(AddonBase.MODID,"blocks/forgefluid/fluoride_flow"), Color.white);
+		super(name, new ResourceLocation("leafia","blocks/forgefluid/fluoride_still"), new ResourceLocation("leafia","blocks/forgefluid/fluoride_flow"), Color.white);
+	}
+	public String getUnlocalizedName() {
+		return "hbmfluid.flibe";
 	}
 }

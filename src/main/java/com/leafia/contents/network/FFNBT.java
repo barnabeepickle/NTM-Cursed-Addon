@@ -1,5 +1,10 @@
 package com.leafia.contents.network;
 
+import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.Fluids;
+import com.leafia.contents.AddonFluids;
+import com.leafia.contents.fluids.traits.FT_LFTRCoolant;
+import com.leafia.contents.machines.reactors.lftr.components.MSRTEBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -17,7 +22,10 @@ public class FFNBT {
 		NBTTagCompound receivingTag = receiving.getFluid().tag;
 		if (receivingTag == null) return true;
 		if (receivingTag.equals(sendingTag)) return true;
-		//if (sending.getTankType().equals(AddonFluids.FLUORIDE)) return true; for future; MSR
+		FluidType ntmf = AddonFluids.fromFF(sending.getFluid());
+		if (!ntmf.equals(Fluids.NONE)) {
+			if (ntmf.hasTrait(FT_LFTRCoolant.class)) return true;
+		}
 		return false;
 	}
 
@@ -37,6 +45,11 @@ public class FFNBT {
 			receivingTag = new NBTTagCompound();
 			for (String s : sendingTag.getKeySet())
 				receivingTag.setTag(s,sendingTag.getTag(s));
+		}
+		FluidType ntmf = AddonFluids.fromFF(sending.getFluid().getFluid());
+		if (!ntmf.equals(Fluids.NONE)) {
+			if (ntmf.hasTrait(FT_LFTRCoolant.class))
+				MSRTEBase.transferStats(sending.getFluid(),receiving.getFluid(),1);
 		}
 		receiving.getFluid().tag = receivingTag;
 	}

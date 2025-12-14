@@ -2,7 +2,9 @@ package com.leafia.init;
 
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.trait.FluidTrait;
+import com.leafia.contents.AddonFluids;
 import com.leafia.contents.fluids.traits.FT_DFCFuel;
+import com.leafia.contents.fluids.traits.FT_LFTRCoolant;
 
 import static com.hbm.inventory.fluid.trait.FluidTrait.traitList;
 import static com.hbm.inventory.fluid.trait.FluidTrait.traitNameMap;
@@ -10,6 +12,7 @@ import static com.hbm.inventory.fluid.trait.FluidTrait.traitNameMap;
 public class AddonFluidTraits {
 	static {
 		registerTrait("dfceff",FT_DFCFuel.class);
+		registerTrait("lftrcoolant",FT_LFTRCoolant.class);
 	}
 	public static void preInit() {
 		Fluids.DEUTERIUM.addTraits(new FT_DFCFuel(1.2F));

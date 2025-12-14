@@ -7,6 +7,7 @@ import com.hbm.render.loader.WaveFrontObjectVAO;
 import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudFleija;
 import com.leafia.contents.machines.powercores.dfc.render.DFCComponentRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCCoreRender;
+import com.leafia.contents.machines.processing.mixingvat.MixingVatRender;
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorRender;
 import com.leafia.contents.network.ff_duct.utility.FFDuctUtilityRender;
 import com.leafia.contents.network.spk_cable.SPKCableRender;
@@ -34,6 +35,7 @@ public class ResourceInit {
 		_initClass(SPKCableRender.class);
 		_initClass(FFDuctUtilityRender.class);
 		_initClass(SaltSeparatorRender.class);
+		_initClass(MixingVatRender.class);
 	}
 
 	public static void init() {

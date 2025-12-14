@@ -4,8 +4,16 @@ import com.leafia.AddonBase;
 import com.leafia.contents.building.sign.SignTE;
 import com.leafia.contents.debug.ff_test.source.FFSourceTE;
 import com.leafia.contents.debug.ff_test.tank.FFTankTE;
+import com.leafia.contents.machines.misc.heatex.CoolantHeatexTE;
 import com.leafia.contents.machines.powercores.dfc.components.cemitter.CoreCEmitterTE;
 import com.leafia.contents.machines.powercores.dfc.components.exchanger.CoreExchangerTE;
+import com.leafia.contents.machines.processing.mixingvat.MixingVatTE;
+import com.leafia.contents.machines.processing.mixingvat.proxy.MixingVatProxy;
+import com.leafia.contents.machines.reactors.lftr.components.arbitrary.MSRArbitraryTE;
+import com.leafia.contents.machines.reactors.lftr.components.control.MSRControlTE;
+import com.leafia.contents.machines.reactors.lftr.components.ejector.MSREjectorTE;
+import com.leafia.contents.machines.reactors.lftr.components.element.MSRElementTE;
+import com.leafia.contents.machines.reactors.lftr.components.plug.MSRPlugTE;
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorTE;
 import com.leafia.contents.network.ff_duct.FFDuctTE;
 import com.leafia.contents.network.ff_duct.utility.pump.FFPumpTE;
@@ -28,6 +36,14 @@ public class TEInit {
 		register(FFDuctTE.class,"ff_duct_te");
 		register(FFPumpTE.class,"ff_pump_te");
 		register(SaltSeparatorTE.class,"salt_separator_te");
+		register(MSRArbitraryTE.class,"lftr_arbitrary_te");
+		register(MSRControlTE.class,"lftr_control_te");
+		register(MSREjectorTE.class,"lftr_ejector_te");
+		register(MSRElementTE.class,"lftr_element_te");
+		register(MSRPlugTE.class,"lftr_plug_te");
+		register(MixingVatTE.class,"mixing_vat_te");
+		register(MixingVatProxy.class,"mixing_vat_proxy_te");
+		register(CoolantHeatexTE.class,"coolant_heatex_te");
 	}
 	private static void register(Class<? extends TileEntity> clazz,String res) {
 		GameRegistry.registerTileEntity(clazz,new ResourceLocation(AddonBase.MODID,res));
