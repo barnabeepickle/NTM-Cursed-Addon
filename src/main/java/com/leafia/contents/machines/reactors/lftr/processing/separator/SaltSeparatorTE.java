@@ -197,7 +197,7 @@ public class SaltSeparatorTE extends TileEntityMachineBase implements ITickable,
 				fillMixture.put(entry.getKey().name(),entry.getValue());
 			NBTTagCompound fillTag = new NBTTagCompound();
 			fillTag.setTag("itemMixture",MSRElementTE.writeMixture(fillMixture));
-			FluidStack wh = new FluidStack(saltType.getFF(),saltTank.getFluidAmount()+(int)(conversion*multiplier),fillTag);
+			FluidStack wh = new FluidStack(saltType.getFF(),saltTank.getFluidAmount()+(int)(conversion*multiplier*(1-postMix/ogMix)),fillTag);
 			System.out.println(wh);
 			saltTank.setFluid(wh);
 		}

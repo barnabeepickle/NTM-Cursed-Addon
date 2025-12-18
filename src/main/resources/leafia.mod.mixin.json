@@ -16,6 +16,7 @@
   "mixins": [
     "hbm.MixinBlockCoalOil",
     "hbm.MixinBlockStorageCrate",
+    "hbm.MixinBossSpawnHandler",
     "hbm.MixinControlEvent",
     "hbm.MixinCoreComponent",
     "hbm.MixinCoreCore",
