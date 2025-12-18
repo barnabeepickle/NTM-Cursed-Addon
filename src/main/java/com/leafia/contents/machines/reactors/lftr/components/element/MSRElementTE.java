@@ -8,6 +8,7 @@ import com.leafia.contents.AddonFluids;
 import com.leafia.contents.machines.reactors.lftr.components.MSRTEBase;
 import com.leafia.contents.machines.reactors.lftr.components.arbitrary.MSRArbitraryBlock;
 import com.leafia.contents.machines.reactors.lftr.components.arbitrary.MSRArbitraryTE;
+import com.leafia.contents.machines.reactors.pwr.blocks.PWRReflectorBlock;
 import com.leafia.dev.LeafiaDebug.Tracker;
 import com.leafia.dev.container_utility.LeafiaPacket;
 import com.leafia.dev.math.FiaMatrix;
@@ -32,6 +33,10 @@ public class MSRElementTE extends MSRTEBase {
 	public enum MSRByproduct {
 		th232(
 				1,
+				new Pair<>("pa233",1d)
+		),
+		pa233(
+				1,
 				new Pair<>("u233",1d)
 		),
 		u233(
@@ -53,6 +58,14 @@ public class MSRElementTE extends MSRTEBase {
 				(x)->Math.pow(x/2,0.6),
 				100000000d,
 				MSRByproduct.th232
+		),
+		pa233(
+				new Item[]{},
+				new String[]{},
+				"(x÷2)^0.6/B",
+				(x)->Math.pow(x/2,0.6),
+				100000000d,
+				MSRByproduct.pa233
 		),
 		u233(
 				new Item[]{},
@@ -122,8 +135,8 @@ public class MSRElementTE extends MSRTEBase {
 
 	MSRElementTE getReactionTarget(BlockPos pos) {
 		Block block = getBlockArbitrary(pos);
-		//if (block instanceof PWRReflectorBlock)
-		//	return this;
+		if (block instanceof PWRReflectorBlock)
+			return this;
 		if (world.getTileEntity(pos) instanceof MSRElementTE te)
 			return te;
 		return null;

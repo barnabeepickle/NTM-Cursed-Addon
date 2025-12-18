@@ -2,22 +2,38 @@ package com.leafia.init;
 
 import com.hbm.hazard.HazardData;
 import static com.hbm.hazard.HazardRegistry.*;
+
+import com.hbm.hazard.HazardEntry;
 import com.hbm.hazard.HazardSystem;
+import com.hbm.hazard.type.HazardTypeHydroactive;
 import com.hbm.hazard.type.IHazardType;
 import com.hbm.inventory.OreDictManager;
+import com.hbm.inventory.OreDictManager.DictFrame;
+import com.hbm.inventory.RecipesCommon;
 import com.hbm.items.ModItems;
 import com.leafia.contents.AddonItems;
-import com.leafia.dev.hazards.ItemRads;
-import com.leafia.dev.hazards.types.HazardTypeSharpEdges;
+import com.leafia.database.AddonOreDictHazards;
+import com.leafia.init.hazards.ItemRads;
+import com.leafia.init.hazards.types.HazardTypeAlkaline;
+import com.leafia.init.hazards.types.HazardTypeSharpEdges;
+import net.minecraft.item.Item;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 
 public class AddonHazards {
 	public static final IHazardType SHARP = new HazardTypeSharpEdges();
+	public static final IHazardType ALKALINE = new HazardTypeAlkaline();
 	//call after com.hbm.hazard.HazardRegistry.registerItems
 	public static void register() {
 		//cobalt60.register(ModItems.ingot_co60);
 		//HashMap<String,HazardData> dat = HazardSystem.oreMap;
 		//Map<String,Float> fuck = dictMap.get(OreDictManager.CO60);
 		//System.out.println(fuck);
+
 		ItemRads.actinium227.register(OreDictManager.AC227);
 		ItemRads.americium241.register(OreDictManager.AM241);
 		ItemRads.americium242.register(OreDictManager.AM242);
@@ -55,6 +71,55 @@ public class AddonHazards {
 		HazardSystem.register(AddonItems.dfcsh_corner,makeData(SHARP,5).addEntry(DIGAMMA,0.005));
 		HazardSystem.register(AddonItems.dfcsh_front,makeData(DIGAMMA,0.004F));
 		HazardSystem.register(AddonItems.dfcsh_beam,makeData(SHARP,25).addEntry(DIGAMMA,0.002));
+
+		registerHazard(OreDictManager.LI,new HazardEntry(ALKALINE,1));
+		registerHazard(OreDictManager.NA,new HazardEntry(ALKALINE,2));
+		registerHazard(AddonOreDict.K,new HazardEntry(ALKALINE,3));
+		registerHazard(AddonOreDict.RB,new HazardEntry(ALKALINE,4));
+		registerHazard(OreDictManager.CS,new HazardEntry(ALKALINE,5));
+		registerHazard(OreDictManager.CS137,new HazardEntry(ALKALINE,5));
+		registerHazard(AddonOreDict.FR,new HazardEntry(ALKALINE,6));
+		registerHazard(OreDictManager.SR,new HazardEntry(ALKALINE,1.5));
+		registerHazard(OreDictManager.SR90,new HazardEntry(ALKALINE,1.5));
+
+		compute((object,data)->{
+			// do not fucking modify this array, modify data.entries
+			List<HazardEntry> ____________ = new ArrayList<>(data.entries);
+			List<HazardEntry> entries = data.entries;
+			for (HazardEntry entry : ____________) {
+				if (entry.type instanceof HazardTypeHydroactive)
+					entries.remove(entry);
+			}
+		});
+	}
+	public static void registerHazard(DictFrame frame,HazardEntry... entries) {
+		Map<String,Float> map = AddonOreDictHazards.dictMap.get(frame);
+		if (map == null) {
+			System.out.println("\uD83C\uDF3FCAUTION: dictMap for "+frame.ingot()+" could not be captured");
+			return;
+		}
+		for (Entry<String,Float> entry : map.entrySet()) {
+			HazardData data = HazardSystem.oreMap.computeIfAbsent(entry.getKey(), k -> new HazardData());
+			for (HazardEntry hazard : entries)
+				data.addEntry(hazard);
+		}
+	}
+	public static void computeOreMap(Map<String,HazardData> map,BiConsumer<Object,HazardData> processor) {
+		for (Entry<String,HazardData> entry : map.entrySet())
+			processor.accept(entry.getKey(),entry.getValue());
+	}
+	public static void computeItemMap(Map<Item,HazardData> map,BiConsumer<Object,HazardData> processor) {
+		for (Entry<Item,HazardData> entry : map.entrySet())
+			processor.accept(entry.getKey(),entry.getValue());
+	}
+	public static void computeStackMap(Map<RecipesCommon.ComparableStack,HazardData> map,BiConsumer<Object,HazardData> processor) {
+		for (Entry<RecipesCommon.ComparableStack,HazardData> entry : map.entrySet())
+			processor.accept(entry.getKey(),entry.getValue());
+	}
+	public static void compute(BiConsumer<Object,HazardData> processor) {
+		computeOreMap(HazardSystem.oreMap,processor);
+		computeItemMap(HazardSystem.itemMap,processor);
+		computeStackMap(HazardSystem.stackMap,processor);
 	}
 	// why'd you had to make these private
 	public static HazardData makeData(IHazardType hazard) { return (new HazardData()).addEntry(hazard); }

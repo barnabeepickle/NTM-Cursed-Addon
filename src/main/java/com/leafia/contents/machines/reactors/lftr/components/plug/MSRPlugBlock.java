@@ -1,6 +1,7 @@
 package com.leafia.contents.machines.reactors.lftr.components.plug;
 
 import com.hbm.blocks.ILookOverlay;
+import com.hbm.blocks.ITooltipProvider;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.BlockMachineBase;
 import com.hbm.handler.radiation.RadiationSystemNT;
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MSRPlugBlock extends BlockMachineBase implements ILookOverlay, IRadResistantBlock {
+public class MSRPlugBlock extends BlockMachineBase implements ILookOverlay, IRadResistantBlock, ITooltipProvider {
 	public MSRPlugBlock(Material materialIn,String s) {
 		super(materialIn,0,s);
 		ModBlocks.ALL_BLOCKS.remove(this);
@@ -54,6 +55,7 @@ public class MSRPlugBlock extends BlockMachineBase implements ILookOverlay, IRad
 	public void addInformation(ItemStack stack,@Nullable World worldIn,List<String> tooltip,ITooltipFlag flagIn) {
 		MachineTooltip.addMultiblock(tooltip);
 		MachineTooltip.addModular(tooltip);
+		addStandardInfo(tooltip);
 		super.addInformation(stack,worldIn,tooltip,flagIn);
 		tooltip.add("§2[" + I18nUtil.resolveKey("trait.radshield") + "]");
 	}

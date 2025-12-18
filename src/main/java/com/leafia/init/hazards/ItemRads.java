@@ -1,4 +1,4 @@
-package com.leafia.dev.hazards;
+package com.leafia.init.hazards;
 
 import com.hbm.hazard.HazardData;
 import com.hbm.hazard.HazardEntry;
@@ -7,9 +7,9 @@ import com.hbm.hazard.HazardSystem;
 import com.hbm.hazard.type.HazardTypeRadiation;
 import com.hbm.inventory.OreDictManager.DictFrame;
 import com.leafia.database.AddonOreDictHazards;
-import com.leafia.dev.hazards.modifiers.NBTModifier;
-import com.leafia.dev.hazards.modifiers.NBTModifier.NBTKey;
-import com.leafia.dev.hazards.types.radiation.*;
+import com.leafia.init.hazards.modifiers.NBTModifier;
+import com.leafia.init.hazards.modifiers.NBTModifier.NBTKey;
+import com.leafia.init.hazards.types.radiation.*;
 import net.minecraft.item.Item;
 
 import java.util.*;

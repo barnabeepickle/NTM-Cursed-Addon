@@ -1,5 +1,6 @@
 package com.leafia.contents.machines.reactors.lftr.components.ejector;
 
+import com.hbm.blocks.ITooltipProvider;
 import com.leafia.contents.AddonBlocks;
 import com.leafia.dev.machine.MachineTooltip;
 import net.minecraft.block.BlockContainer;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MSREjectorBlock extends BlockContainer {
+public class MSREjectorBlock extends BlockContainer implements ITooltipProvider {
 
 	public static final PropertyDirection FACING = BlockDirectional.FACING;
 
@@ -38,6 +39,7 @@ public class MSREjectorBlock extends BlockContainer {
 	public void addInformation(ItemStack stack,@Nullable World worldIn,List<String> tooltip,ITooltipFlag flagIn) {
 		MachineTooltip.addMultiblock(tooltip);
 		MachineTooltip.addModular(tooltip);
+		addStandardInfo(tooltip);
 		super.addInformation(stack,worldIn,tooltip,flagIn);
 	}
 

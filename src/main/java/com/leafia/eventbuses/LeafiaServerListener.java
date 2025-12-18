@@ -7,7 +7,7 @@ import com.hbm.hazard.HazardSystem;
 import com.hbm.lib.HBMSoundHandler;
 import com.leafia.contents.machines.reactors.pwr.PWRDiagnosis;
 import com.leafia.contents.potion.LeafiaPotion;
-import com.leafia.dev.hazards.types.HazardTypeSharpEdges;
+import com.leafia.init.hazards.types.HazardTypeSharpEdges;
 import com.leafia.dev.optimization.LeafiaParticlePacket;
 import com.leafia.dev.optimization.LeafiaParticlePacket.Sweat;
 import com.leafia.init.LeafiaSoundEvents;

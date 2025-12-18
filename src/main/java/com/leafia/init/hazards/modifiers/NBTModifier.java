@@ -1,4 +1,4 @@
-package com.leafia.dev.hazards.modifiers;
+package com.leafia.init.hazards.modifiers;
 
 import com.hbm.hazard.modifier.IHazardModifier;
 import net.minecraft.entity.EntityLivingBase;

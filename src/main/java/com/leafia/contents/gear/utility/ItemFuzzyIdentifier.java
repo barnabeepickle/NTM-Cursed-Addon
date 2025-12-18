@@ -1,9 +1,11 @@
 package com.leafia.contents.gear.utility;
 
+import com.hbm.api.fluidmk2.IFluidStandardSenderMK2;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.interfaces.IHasCustomModel;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.tileentity.network.TileEntityPipeBaseNT;
@@ -67,6 +69,7 @@ public class ItemFuzzyIdentifier extends AddonItemBase implements IItemFluidIden
 		} else
 			list.add(TextFormatting.RED+I18nUtil.resolveKey("desc.leafia.fuzzy.unset"));
 	}
+	static int index = 0;
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player,World worldIn,BlockPos pos,EnumHand hand,EnumFacing facing,float hitX,float hitY,float hitZ) {
 		if (!player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemFuzzyIdentifier) {
@@ -114,6 +117,19 @@ public class ItemFuzzyIdentifier extends AddonItemBase implements IItemFluidIden
 				if (te != null) {
 					if (te instanceof IFuzzyCompatible fz) {
 						FluidType fluid = fz.getOutputType();
+						NBTTagCompound nbt = stack.getTagCompound();
+						if (nbt == null) nbt = new NBTTagCompound();
+						nbt.setString("fluidtype",fluid.getName());
+						stack.setTagCompound(nbt);
+						if (!worldIn.isRemote)
+							worldIn.playSound(null,player.getPosition(),HBMSoundHandler.techBleep,SoundCategory.PLAYERS,1,1);
+						else
+							Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("item.fuzzy_identifier.message",fluid.getLocalizedName()).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+					} else if (te instanceof IFluidStandardSenderMK2 mk2) {
+						FluidTankNTM[] sending = mk2.getSendingTanks();
+						if (index >= sending.length) index = 0;
+						FluidType fluid = sending[index].getTankType();
+						index++;
 						NBTTagCompound nbt = stack.getTagCompound();
 						if (nbt == null) nbt = new NBTTagCompound();
 						nbt.setString("fluidtype",fluid.getName());

@@ -1,11 +1,11 @@
-package com.leafia.dev.hazards.types.radiation;
+package com.leafia.init.hazards.types.radiation;
 
 import com.hbm.hazard.modifier.IHazardModifier;
 import com.hbm.hazard.type.IHazardType;
 import com.hbm.util.ContaminationUtil;
 import com.leafia.contents.potion.LeafiaPotion;
-import com.leafia.dev.hazards.types.HazardTypeHelper;
-import com.leafia.dev.hazards.types.LCERad;
+import com.leafia.init.hazards.types.HazardTypeHelper;
+import com.leafia.init.hazards.types.LCERad;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;

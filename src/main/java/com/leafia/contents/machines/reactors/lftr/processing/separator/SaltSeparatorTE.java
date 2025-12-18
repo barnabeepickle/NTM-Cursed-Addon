@@ -187,9 +187,15 @@ public class SaltSeparatorTE extends TileEntityMachineBase implements ITickable,
 			}
 			stack.tag.setTag("itemMixture",MSRElementTE.writeMixture(outputMixture));
 			FluidTank buf = new FluidTank(conversion);
-			stack.amount = (ogMix > 0) ? (int)(stack.amount*(postMix/ogMix)) : 0;
+			boolean dontstop = (int)(stack.amount*(1-postMix/ogMix)) > 0 && (int)(stack.amount*(postMix/ogMix)) > 0;
+			if (dontstop)
+				stack.amount = (ogMix > 0) ? (int)(stack.amount*(postMix/ogMix)) : 0;
+			else
+				stack.tag = tag;
 			buf.setFluid(stack);
 			LeafiaUtil.fillFF(buf,bufferOut,buf.getFluidAmount());
+			if (!dontstop)
+				return;
 			if (buf.getFluidAmount() > 0)
 				throw new LeafiaDevFlaw("Salt Separator: "+buf.getFluidAmount()+"mB was sent into the backrooms. How?\n\nExtended Information: Output was "+bufferOut.getFluidAmount()+"/"+bufferOut.getCapacity()+"mB");
 			Map<String,Double> fillMixture = new HashMap<>();

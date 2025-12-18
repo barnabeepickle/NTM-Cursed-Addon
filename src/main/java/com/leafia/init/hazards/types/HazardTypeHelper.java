@@ -1,4 +1,4 @@
-package com.leafia.dev.hazards.types;
+package com.leafia.init.hazards.types;
 
 import com.leafia.settings.AddonConfig;
 

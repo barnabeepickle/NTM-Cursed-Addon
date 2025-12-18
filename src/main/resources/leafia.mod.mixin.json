@@ -44,6 +44,7 @@
     "hbm.MixinModBlocks",
     "hbm.MixinModEventHandler",
     "hbm.MixinModItems",
+    "hbm.MixinOreDictManager",
     "hbm.MixinPacketDispatcher",
     "hbm.MixinSerializableRecipe",
     "hbm.MixinTileEntityBarrel",

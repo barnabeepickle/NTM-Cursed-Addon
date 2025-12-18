@@ -13,6 +13,7 @@ import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.machines.reactors.lftr.components.MSRTEBase;
 import com.leafia.dev.machine.MachineTooltip;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,6 +45,7 @@ public class MSRArbitraryBlock extends BlockMachineBase implements ITooltipProvi
 	public void addInformation(ItemStack stack,@Nullable World worldIn,List<String> tooltip,ITooltipFlag flagIn) {
 		MachineTooltip.addMultiblock(tooltip);
 		MachineTooltip.addModular(tooltip);
+		addStandardInfo(tooltip);
 		super.addInformation(stack,worldIn,tooltip,flagIn);
 	}
 
@@ -64,9 +66,13 @@ public class MSRArbitraryBlock extends BlockMachineBase implements ITooltipProvi
 		ItemStack stack = element.inventory.getStackInSlot(0);
 		if (held.isEmpty()) return false;
 		if (stack.isEmpty()) {
-			if (held.getItem() instanceof ItemBlock) {
+			if (held.getItem() instanceof ItemBlock block) {
 				if (held.getItem() instanceof ItemTooling)
 					return false;
+				if (block.getBlock() instanceof IBlockProperties properties) {
+					if (!properties.getRenderType().equals(EnumBlockRenderType.MODEL))
+						return false;
+				}
 				ItemStack stack1 = held.copy();
 				stack1.setCount(1);
 				element.inventory.setStackInSlot(0,stack1);

@@ -34,7 +34,7 @@ public class AddonFluids {
 		}
 	}
 	public static class AddonFF {
-		public static Fluid fluoride = new FluorideFluid("fluoride").setDensity(1000);
+		public static Fluid fluoride = new FluorideFluid("fluoride").setDensity(1000).setTemperature(500+273);
 		public static void init() {
 			registerFluid(fluoride);
 		}

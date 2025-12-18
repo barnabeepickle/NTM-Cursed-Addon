@@ -1,6 +1,6 @@
 package com.leafia.dev.items.itembase;
 
-import com.leafia.dev.hazards.ItemRads.MultiRadContainer;
+import com.leafia.init.hazards.ItemRads.MultiRadContainer;
 
 public class AddonItemHazardBase extends AddonItemBase {
 	public AddonItemHazardBase(String s) {

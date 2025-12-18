@@ -1,6 +1,7 @@
 package com.leafia.contents.machines.reactors.lftr.components.element;
 
 import com.hbm.blocks.ILookOverlay;
+import com.hbm.blocks.ITooltipProvider;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.I18nUtil;
 import com.leafia.contents.AddonBlocks;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MSRElementBlock extends BlockContainer implements ILookOverlay {
+public class MSRElementBlock extends BlockContainer implements ILookOverlay, ITooltipProvider {
 	public MSRElementBlock(Material m,String s) {
 		super(m);
 		this.setTranslationKey(s);
@@ -35,6 +36,7 @@ public class MSRElementBlock extends BlockContainer implements ILookOverlay {
 		MachineTooltip.addMultiblock(tooltip);
 		MachineTooltip.addModular(tooltip);
 		MachineTooltip.addNuclear(tooltip);
+		addStandardInfo(tooltip);
 		super.addInformation(stack,worldIn,tooltip,flagIn);
 	}
 	@Override

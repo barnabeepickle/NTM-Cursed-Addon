@@ -7,6 +7,7 @@ import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonFluids;
 import com.leafia.contents.fluids.traits.FT_LFTRCoolant;
 import com.leafia.contents.machines.reactors.lftr.components.MSRTEBase;
+import com.leafia.contents.network.ff_duct.uninos.IFFProvider;
 import com.leafia.contents.network.ff_duct.uninos.IFFReceiver;
 import com.leafia.dev.LeafiaDebug;
 import com.leafia.dev.container_utility.LeafiaPacket;
@@ -26,7 +27,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import org.jetbrains.annotations.Nullable;
 
-public class MSRPlugTE extends MSRTEBase implements IFluidHandler, IFFReceiver {
+public class MSRPlugTE extends MSRTEBase implements IFluidHandler, IFFReceiver, IFFProvider {
 	public boolean molten = false;
 	FluidType inputType = AddonFluids.FLUORIDE;
 	public void setType(FluidType type) {
@@ -127,6 +128,8 @@ public class MSRPlugTE extends MSRTEBase implements IFluidHandler, IFFReceiver {
 			if (tank.getFluid() != null) {
 				if (nbtProtocol(tank.getFluid().tag).getDouble("heat") > 4000-getBaseTemperature(AddonFluids.fromFF(tank.getFluid().getFluid())))
 					molten = true;
+				if (molten)
+					tryProvide(tank,world,pos.down(),ForgeDirection.DOWN);
 				Material mat = world.getBlockState(pos.down()).getMaterial();
 				if (molten && mat.isReplaceable() && !mat.isLiquid()) {
 					this.world.playSound(null,pos,SoundEvents.ENTITY_GENERIC_SPLASH,SoundCategory.BLOCKS,3.0F,0.5F);
