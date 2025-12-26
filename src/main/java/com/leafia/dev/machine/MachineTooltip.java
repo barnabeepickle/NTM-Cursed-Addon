@@ -171,6 +171,21 @@ public class MachineTooltip {
 					addMultiblock(tooltip);
 					addNuclear(tooltip);
 					break;
+
+				// HADRON
+				case "pa_source":
+				case "pa_detector":
+					addMultiblock(tooltip);
+					addModular(tooltip);
+					addCore(tooltip);
+					break;
+				case "pa_beamline":
+				case "pa_rfc":
+				case "pa_quadrupole":
+				case "pa_dipole":
+					addMultiblock(tooltip);
+					addModular(tooltip);
+					break;
 			}
 		}
 	}
