@@ -1,3 +1,9 @@
+advancement.leafia.nukebwr=チェルノブイリの見習い
+advancement.leafia.nukebwr.desc=PWRでBWRを作り福島第一原子力発電所事故を再現する
+advancement.leafia.nukepwr=解体業者
+advancement.leafia.nukepwr.desc=どうやったらそんな大胆にミスれるの?
+advancement.leafia.openpwr=ぼくの初めての原子炉
+advancement.leafia.openpwr.desc=加圧式軽水炉にアクセスする
 cannery.leafia.pwr=加圧式軽水炉
 cannery.leafia.pwr.0=PWR (LWR)は完全に自由に作れる マルチブロックの原子炉です。
 cannery.leafia.pwr.1=NTM CursedのPWRは 原作のPWRとは かなり違う挙動をします。

@@ -2,6 +2,7 @@ package com.leafia.contents.machines.reactors.pwr;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.fluid.CoriumFinite;
+import com.hbm.config.MobConfig;
 import com.hbm.explosion.ExplosionNT;
 import com.hbm.explosion.ExplosionNT.ExAttrib;
 import com.hbm.explosion.ExplosionNukeGeneric;
@@ -13,9 +14,11 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Heatable;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingStep;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Gaseous;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Liquid;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.lib.HBMSoundHandler;
+import com.hbm.main.AdvancementManager;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.util.Tuple.Pair;
@@ -38,6 +41,7 @@ import com.leafia.dev.LeafiaDebug;
 import com.leafia.dev.LeafiaUtil;
 import com.leafia.dev.container_utility.LeafiaPacket;
 import com.leafia.dev.container_utility.LeafiaPacketReceiver;
+import com.leafia.init.AddonAdvancements;
 import com.leafia.init.LeafiaSoundEvents;
 import com.llib.exceptions.LeafiaDevFlaw;
 import com.llib.exceptions.messages.TextWarningLeafia;
@@ -59,6 +63,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -634,12 +639,12 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 			for (BlockPos member : members) {
 				Block block = world.getBlockState(member).getBlock();
 				if (block instanceof PWRChannelBlock || block instanceof PWRConductorBlock) {
-					world.setBlockToAir(member);
+					world.setBlockState(member,ModBlocks.gas_radon_dense.getDefaultState());
 					for (EnumFacing face : EnumFacing.values()) {
 						BlockPos offs = member.offset(face);
 						if (world.isValid(offs) && world.getBlockState(offs).getBlock() instanceof PWRComponentBlock) {
 							if (world.rand.nextInt(5) == 0)
-								world.setBlockToAir(offs);
+								world.setBlockState(offs,ModBlocks.gas_radon.getDefaultState());
 						}
 					}
 				}
@@ -650,7 +655,7 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 		protected void explodeLv2() {
 			for (BlockPos member : members) {
 				if (world.getBlockState(member).getBlock() instanceof PWRComponentBlock)
-					world.setBlockToAir(member);
+					world.setBlockState(member,ModBlocks.gas_radon_dense.getDefaultState());
 			}
 			world.newExplosion(null, centerPoint.x + 0.5, centerPoint.y + 0.5, centerPoint.z + 0.5, 24.0F, true, true);
 		}
@@ -673,6 +678,12 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 					plr.sendMessage(new TextComponentString("  z: " + minZ + " : " + maxZ));
 				}
 			}
+			List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(new BlockPos(centerPoint)).grow(100));
+			if (tankTypes[1].equals(Fluids.ULTRAHOTSTEAM))for (EntityPlayer player : players)
+				AdvancementManager.grantAchievement(player,AddonAdvancements.nukebwr);
+			else if (tankTypes[1].hasTrait(FT_Liquid.class))for (EntityPlayer player : players)
+				AdvancementManager.grantAchievement(player,AddonAdvancements.nukepwr);
+
 			// mmm this is gonna be crispy computer
 			growMembers(growMembers(growMembers(growMembers(members))));
 
@@ -699,7 +710,7 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 				if (block instanceof PWRElementBlock) {
 					//world.newExplosion(null,member.getX()+0.5,member.getY()+0.5,member.getZ()+0.5,11,true,true);
 					//world.setBlockState(member,ModBlocks.corium_block.getDefaultState());
-					world.setBlockToAir(member);
+					world.setBlockState(member,ModBlocks.gas_meltdown.getDefaultState());
 					continue;
 				}
 				//Block fuckyou = Blocks.BLACK_GLAZED_TERRACOTTA;
@@ -781,7 +792,7 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 							entitiesToSpawn.add(debris);
 						}
 					}
-					world.setBlockToAir(pos);
+					world.setBlockState(pos,ModBlocks.gas_radon_dense.getDefaultState());
 				}
 			}
 			// TODO: add cam shake
@@ -830,15 +841,17 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 			for (BlockPos member : allDebris) {
 				IBlockState state = getBlockLv3(member, placeMap, world);
 				Block block = state.getBlock();
-				SoundType soundType = block.getSoundType();
-				Material material = block.getMaterial(state);
 				Vec3d ray = new Vec3d(member).add(0.5, 0.5, 0.5).subtract(centerPoint);
 
 				if (block instanceof PWRControlBlock) {
 					world.setBlockState(member, ModBlocks.block_electrical_scrap.getDefaultState());
 					antiPlaceSet.add(member);
+					state = ModBlocks.block_electrical_scrap.getDefaultState();
+					block = state.getBlock();
 					//continue;
 				}
+				SoundType soundType = block.getSoundType();
+				Material material = block.getMaterial(state);
 				double heatBase = MathHelper.clamp(Math.pow(MathHelper.clamp(1 - ray.length() / (reactorSize / 2), 0, 1), 0.45) * 8, 0, 7);
 				int heat = (int) heatBase;
 				int heatRand = world.rand.nextInt(3);
@@ -1035,9 +1048,9 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 
 		PWRExplosion boom = new PWRExplosion(world, centerPoint, minX, minY, minZ, maxX, maxY, maxZ);
 		if (forceLevel == 0) {
-			if (toughness >= 13_000)
+			if (toughness >= 15_000)
 				boom.explodeLv3();
-			else if (toughness >= 7_000)
+			else if (toughness >= 10_000)
 				boom.explodeLv2();
 			else
 				boom.explodeLv1();
@@ -1066,6 +1079,14 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 			doNuke.nuke(world,new BlockPos(centerPoint));
 		ExplosionNukeGeneric.waste(world, (int) centerPoint.x, (int) centerPoint.y, (int) centerPoint.z, 35);
 		ChunkRadiationManager.proxy.incrementRad(world, new BlockPos(centerPoint), 3000F, 4000F);
+
+		List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(new BlockPos(centerPoint)).grow(100));
+
+		if(MobConfig.enableElementals) {
+			for(EntityPlayer player : players) {
+				player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setBoolean("radMark", true);
+			}
+		}
 	}
 
 	public static LeafiaPacket addDataToPacket(LeafiaPacket packet, @Nullable PWRData self) {

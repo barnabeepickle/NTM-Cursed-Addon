@@ -103,7 +103,7 @@ public class AddonBlocks {
 		ORE_HEAVY(8),
 		ORE_HEAVY_CLUSTER(9),
 
-		PWR_CASING(135),
+		PWR_CASING(165),
 		PWR_INSIDE(27),
 		;
 		public final float v;

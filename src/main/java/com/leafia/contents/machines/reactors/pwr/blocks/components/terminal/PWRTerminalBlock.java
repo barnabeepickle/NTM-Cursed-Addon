@@ -5,12 +5,14 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.BlockMachineBase;
 import com.hbm.handler.radiation.RadiationSystemNT;
 import com.hbm.interfaces.IRadResistantBlock;
+import com.hbm.main.AdvancementManager;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.I18nUtil;
 import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.PWRComponentBlock;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.PWRComponentEntity;
 import com.leafia.dev.machine.MachineTooltip;
+import com.leafia.init.AddonAdvancements;
 import com.leafia.passive.LeafiaPassiveServer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -72,6 +74,7 @@ public class PWRTerminalBlock extends BlockMachineBase implements ITooltipProvid
 	public boolean onBlockActivated(World world,BlockPos pos,IBlockState state,EntityPlayer player,EnumHand hand,EnumFacing facing,float hitX,float hitY,float hitZ) {
 		PWRComponentEntity entity = getPWR(world,pos);
 		if (entity != null && entity.getLinkedCore() != null) {
+			AdvancementManager.grantAchievement(player,AddonAdvancements.openpwr);
 			return super.onBlockActivated(world,pos,state,player,hand,facing,hitX,hitY,hitZ);
 		}
 		return false;

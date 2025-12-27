@@ -1,3 +1,9 @@
+advancement.leafia.nukebwr=Chernobyl Apprentice
+advancement.leafia.nukebwr.desc=Recreate the Fukushima nuclear accident with a BWR (a water-cooled PWR)
+advancement.leafia.nukepwr=Disassembly Crew
+advancement.leafia.nukepwr.desc=How did you mess up so badly?
+advancement.leafia.openpwr=My First Nuclear Reactor
+advancement.leafia.openpwr.desc=Interact with a Pressurized Water Reactor
 cannery.leafia.pwr=Pressurized Water Reactor
 cannery.leafia.pwr.0=The PWR (LWR) is a fully modular multiblock reactor.
 cannery.leafia.pwr.1=PWRs in NTM Cursed behaves quite different from the original.
