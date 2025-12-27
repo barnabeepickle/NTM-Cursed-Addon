@@ -13,6 +13,7 @@ import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSepar
 import com.leafia.contents.machines.reactors.pwr.blocks.components.control.PWRControlRender;
 import com.leafia.contents.machines.reactors.pwr.debris.RenderPWRDebris;
 import com.leafia.contents.network.ff_duct.utility.FFDuctUtilityRender;
+import com.leafia.contents.network.fluid.FluidDuctEquipmentRender;
 import com.leafia.contents.network.spk_cable.SPKCableRender;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -50,6 +51,9 @@ public class ResourceInit {
 		_initClass(SaltSeparatorRender.class);
 		_initClass(MixingVatRender.class);
 		_initClass(RenderPWRDebris.Meshes.class);
+		_initClass(PWRControlRender.class);
+		_initClass(LightRender.class);
+		_initClass(FluidDuctEquipmentRender.class);
 		/*{
 			setWreckModel("intact");
 			setWreckModel("metal_rubble_0");
@@ -66,8 +70,6 @@ public class ResourceInit {
 			setWreckModel("wreck_stone_2");
 			setWreckModel("wreck_stone_3");
 		}*/
-		_initClass(PWRControlRender.class);
-		_initClass(LightRender.class);
 	}
 
 	public static void init() {

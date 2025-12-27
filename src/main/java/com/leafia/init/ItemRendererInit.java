@@ -21,6 +21,7 @@ import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSepar
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorRender.SaltSeparatorItemRender;
 import com.leafia.contents.machines.reactors.pwr.debris.PWRDebrisItemRender;
 import com.leafia.contents.network.ff_duct.utility.FFDuctUtilityRender.FFDuctUtilityItemRender;
+import com.leafia.contents.network.fluid.FluidDuctEquipmentRender.FluidDuctEquipmentItemRender;
 import com.leafia.contents.network.spk_cable.SPKCableRender.SPKCableItemRender;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -59,6 +60,11 @@ public class ItemRendererInit {
 		register(AddonItems.pwr_shrapnel,lwrDebrisRender);
 
 		register(AddonBlocks.lightUnlit,new LightItemRender());
+
+		FluidDuctEquipmentItemRender equipment = new FluidDuctEquipmentItemRender();
+		register(AddonBlocks.fluid_duct_gauge_mdl,equipment);
+		register(AddonBlocks.fluid_duct_valve_mdl,equipment);
+		register(AddonBlocks.fluid_duct_valve_mdl_rs,equipment);
 
 		/*fix(AddonItems.ams_focus_blank);
 		fix(AddonItems.ams_focus_booster);

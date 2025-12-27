@@ -41,6 +41,9 @@ import com.leafia.contents.network.ff_duct.FFDuctRadShielded;
 import com.leafia.contents.network.ff_duct.FFDuctStandard;
 import com.leafia.contents.network.ff_duct.utility.converter.FFConverterBlock;
 import com.leafia.contents.network.ff_duct.utility.pump.FFPumpBlock;
+import com.leafia.contents.network.fluid.gauges.FluidDuctGauge;
+import com.leafia.contents.network.fluid.valves.FluidDuctValve;
+import com.leafia.contents.network.fluid.valves.FluidDuctValveRS;
 import com.leafia.contents.network.pipe_amat.AmatDuctStandard;
 import com.leafia.contents.network.pipe_amat.charger.AmatDuctChargerBlock;
 import com.leafia.contents.network.spk_cable.SPKCableBlock;
@@ -244,6 +247,10 @@ public class AddonBlocks {
 
 	public static final Block control_torch = new ControlTorchBlock("control_torch",true).setCreativeTab(null).setLightLevel(0.5F);
 	public static final Block control_torch_unlit = new ControlTorchBlock("control_torch_unlit",false);
+
+	public static final Block fluid_duct_gauge_mdl = new FluidDuctGauge(Material.IRON, "fluid_duct_gauge_mdl").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.templateTab);
+	public static final Block fluid_duct_valve_mdl = new FluidDuctValve(Material.IRON, "fluid_duct_valve_mdl").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.templateTab);
+	public static final Block fluid_duct_valve_mdl_rs = new FluidDuctValveRS(Material.IRON, "fluid_duct_valve_mdl_rs").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.templateTab);
 
 	private static void modifyBlockParams() {
 		ModBlocks.dfc_core.setResistance(65000000);

@@ -25,6 +25,8 @@ import com.leafia.contents.machines.reactors.pwr.blocks.wreckage.PWRMeshedWreckE
 import com.leafia.contents.network.ff_duct.FFDuctTE;
 import com.leafia.contents.network.ff_duct.utility.converter.FFConverterTE;
 import com.leafia.contents.network.ff_duct.utility.pump.FFPumpTE;
+import com.leafia.contents.network.fluid.gauges.FluidDuctGaugeTE;
+import com.leafia.contents.network.fluid.valves.FluidDuctValveTE;
 import com.leafia.contents.network.pipe_amat.AmatDuctTE;
 import com.leafia.contents.network.pipe_amat.charger.AmatDuctChargerTE;
 import com.leafia.contents.network.spk_cable.SPKCableTE;
@@ -64,6 +66,8 @@ public class TEInit {
 		register(AmatDuctChargerTE.class,"charger_amat_te");
 		register(LightTE.class,"fluorescent_light_te");
 		register(ControlTorchTE.class,"control_torch_te");
+		register(FluidDuctGaugeTE.class,"duct_gauge_te");
+		register(FluidDuctValveTE.class,"duct_valve_te");
 	}
 	private static void register(Class<? extends TileEntity> clazz,String res) {
 		GameRegistry.registerTileEntity(clazz,new ResourceLocation(AddonBase.MODID,res));

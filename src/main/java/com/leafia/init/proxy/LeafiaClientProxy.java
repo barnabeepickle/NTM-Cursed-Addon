@@ -47,6 +47,9 @@ import com.leafia.contents.machines.reactors.pwr.debris.RenderPWRDebris;
 import com.leafia.contents.network.ff_duct.utility.FFDuctUtilityRender;
 import com.leafia.contents.network.ff_duct.utility.converter.FFConverterTE;
 import com.leafia.contents.network.ff_duct.utility.pump.FFPumpTE;
+import com.leafia.contents.network.fluid.FluidDuctEquipmentRender;
+import com.leafia.contents.network.fluid.gauges.FluidDuctGaugeTE;
+import com.leafia.contents.network.fluid.valves.FluidDuctValveTE;
 import com.leafia.contents.network.spk_cable.SPKCableRender;
 import com.leafia.contents.network.spk_cable.SPKCableTE;
 import com.leafia.eventbuses.LeafiaClientListener;
@@ -123,6 +126,9 @@ public class LeafiaClientProxy extends LeafiaServerProxy {
 			ClientRegistry.bindTileEntitySpecialRenderer(PWRMeshedWreckEntity.class,new RenderPWRMeshedWreck());
 
 			ClientRegistry.bindTileEntitySpecialRenderer(LightTE.class,new LightRender());
+			FluidDuctEquipmentRender equipment = new FluidDuctEquipmentRender();
+			ClientRegistry.bindTileEntitySpecialRenderer(FluidDuctGaugeTE.class,equipment);
+			ClientRegistry.bindTileEntitySpecialRenderer(FluidDuctValveTE.class,equipment);
 		}
 		AddonJars.initJars();
 	}
