@@ -8,7 +8,7 @@ import com.leafia.contents.building.pinkdoor.ItemPinkDoor;
 import com.leafia.contents.building.sign.SignBlock;
 import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
 import com.leafia.contents.gear.ntmfbottle.ItemNTMFBottle;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier;
+import com.leafia.contents.gear.utility.FuzzyIdentifierItem;
 import com.leafia.contents.gear.wands.ItemWandV;
 import com.leafia.contents.machines.powercores.dfc.CrucifixItem;
 import com.leafia.contents.machines.powercores.dfc.LCEItemLens;
@@ -49,7 +49,7 @@ public class AddonItems {
 	public static final Item ams_focus_safe = new LCEItemLens(5000000000L, 8F, 4.5F, 0.1F, "ams_focus_safe").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab);
 
     public static final Item wand_v = new ItemWandV("wand_v","wands/wand_v");
-	public static final Item fuzzy_identifier = new ItemFuzzyIdentifier("fuzzy_identifier").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
+	public static final Item fuzzy_identifier = new FuzzyIdentifierItem("fuzzy_identifier").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
 
 	public static class LeafiaRods {
 		public static final Item leafRod = new LeafiaRodItem.EmptyLeafiaRod().setCreativeTab(MainRegistry.controlTab);

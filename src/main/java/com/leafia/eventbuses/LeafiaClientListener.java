@@ -3,14 +3,11 @@ package com.leafia.eventbuses;
 import com.custom_hbm.GuiBackupsWarning;
 import com.google.gson.JsonSyntaxException;
 import com.hbm.blocks.ILookOverlay;
-import com.hbm.blocks.ModBlocks;
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.interfaces.IHasCustomModel;
 import com.hbm.items.IDynamicModels;
-import com.hbm.items.ModItems;
 import com.hbm.render.GuiCTMWarning;
 import com.custom_hbm.util.LCETuple.*;
-import com.hbm.render.item.ItemRenderBase;
 import com.hbm.render.item.TEISRBase;
 import com.hbm.util.I18nUtil;
 import com.leafia.contents.AddonBlocks;
@@ -22,7 +19,7 @@ import com.leafia.contents.effects.folkvangr.EntityNukeFolkvangr;
 import com.leafia.contents.gear.IADSWeapon;
 import com.leafia.contents.gear.utility.FuzzyIdentifierBakedModel;
 import com.leafia.contents.gear.utility.FuzzyIdentifierRender;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier;
+import com.leafia.contents.gear.utility.FuzzyIdentifierItem;
 import com.leafia.contents.machines.reactors.lftr.components.arbitrary.MSRArbitraryBlock;
 import com.leafia.contents.machines.reactors.lftr.components.ejector.MSREjectorBlock;
 import com.leafia.contents.machines.reactors.lftr.components.element.MSRElementBlock;
@@ -33,7 +30,6 @@ import com.leafia.contents.network.pipe_amat.AmatDuctStandard;
 import com.leafia.dev.LeafiaUtil;
 import com.leafia.dev.container_utility.LeafiaPacket;
 import com.leafia.dev.container_utility.LeafiaPacketReceiver;
-import com.leafia.dev.machine.MachineTooltip;
 import com.leafia.init.ItemRendererInit;
 import com.leafia.init.ResourceInit;
 import com.leafia.passive.LeafiaPassiveLocal;
@@ -205,11 +201,11 @@ public class LeafiaClientListener {
 				swapModels(entry.getKey(), reg);
 			}
 			{
-				Object object = evt.getModelRegistry().getObject(ItemFuzzyIdentifier.fuzzyModel);
+				Object object = evt.getModelRegistry().getObject(FuzzyIdentifierItem.fuzzyModel);
 				if (object instanceof IBakedModel) {
 					IBakedModel model = (IBakedModel) object;
 					FuzzyIdentifierRender.INSTANCE.itemModelFuzzy = model;
-					evt.getModelRegistry().putObject(ItemFuzzyIdentifier.fuzzyModel,new FuzzyIdentifierBakedModel());
+					evt.getModelRegistry().putObject(FuzzyIdentifierItem.fuzzyModel,new FuzzyIdentifierBakedModel());
 				}
 			}
 			{

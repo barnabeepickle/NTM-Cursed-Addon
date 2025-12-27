@@ -10,7 +10,6 @@ import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.tileentity.network.TileEntityPipeBaseNT;
 import com.hbm.util.I18nUtil;
-import com.leafia.contents.AddonItems;
 import com.leafia.contents.network.ff_duct.FFDuctTE;
 import com.leafia.dev.custompacket.LeafiaCustomPacket;
 import com.leafia.dev.custompacket.LeafiaCustomPacketEncoder;
@@ -32,17 +31,15 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ItemFuzzyIdentifier extends AddonItemBase implements IItemFluidIdentifier, IHasCustomModel {
+public class FuzzyIdentifierItem extends AddonItemBase implements IItemFluidIdentifier, IHasCustomModel {
 	public static final ModelResourceLocation fuzzyModel = new ModelResourceLocation("leafia:fuzzy_identifier", "inventory");
-	public ItemFuzzyIdentifier(String s) {
+	public FuzzyIdentifierItem(String s) {
 		super(s);
 	}
 	@Override
@@ -59,7 +56,7 @@ public class ItemFuzzyIdentifier extends AddonItemBase implements IItemFluidIden
 		return Fluids.fromName(type);
 	}
 	public void addInformation(ItemStack stack,World worldIn,List<String> list,ITooltipFlag flagIn) {
-		if (!(stack.getItem() instanceof ItemFuzzyIdentifier))
+		if (!(stack.getItem() instanceof FuzzyIdentifierItem))
 			return;
 		FluidType f = getType(stack);
 		list.add(TextFormatting.GREEN + I18nUtil.resolveKey("desc.leafia.fuzzy.howto"));
@@ -73,7 +70,7 @@ public class ItemFuzzyIdentifier extends AddonItemBase implements IItemFluidIden
 	static int index = 0;
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player,World worldIn,BlockPos pos,EnumHand hand,EnumFacing facing,float hitX,float hitY,float hitZ) {
-		if (!player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemFuzzyIdentifier) {
+		if (!player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof FuzzyIdentifierItem) {
 			ItemStack stack = player.getHeldItem(hand);
 			TileEntity te = worldIn.getTileEntity(pos);
 			if (te instanceof TileEntityPipeBaseNT duct) {
@@ -127,16 +124,17 @@ public class ItemFuzzyIdentifier extends AddonItemBase implements IItemFluidIden
 						else
 							Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("item.fuzzy_identifier.message",fluid.getLocalizedName()).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 					} else if (te instanceof IFluidStandardSenderMK2 mk2) {
-						FluidTankNTM[] sending = mk2.getSendingTanks();
-						if (sending.length <= 0) return EnumActionResult.PASS;
-						if (index >= sending.length) index = 0;
-						FluidType fluid = sending[index].getTankType();
-						index++;
-						NBTTagCompound nbt = stack.getTagCompound();
-						if (nbt == null) nbt = new NBTTagCompound();
-						nbt.setString("fluidtype",fluid.getName());
-						stack.setTagCompound(nbt);
 						if (!worldIn.isRemote) {
+							FluidTankNTM[] sending = mk2.getSendingTanks();
+							if (sending.length <= 0) return EnumActionResult.PASS;
+							if (index >= sending.length) index = 0;
+							FluidType fluid = sending[index].getTankType();
+							index++;
+							NBTTagCompound nbt = stack.getTagCompound();
+							if (nbt == null) nbt = new NBTTagCompound();
+							nbt.setString("fluidtype",fluid.getName());
+							stack.setTagCompound(nbt);
+							player.inventoryContainer.detectAndSendChanges();
 							worldIn.playSound(null,player.getPosition(),HBMSoundHandler.techBleep,SoundCategory.PLAYERS,1,1);
 							FuzzyIdentifierResponsePacket response = new FuzzyIdentifierResponsePacket();
 							response.id = fluid.getID();
@@ -205,7 +203,7 @@ public class ItemFuzzyIdentifier extends AddonItemBase implements IItemFluidIden
 			return (ctx)->{
 				ItemStack stack = ctx.getServerHandler().player.inventory.getItemStack();
 				if (stack != null && !stack.isEmpty()) {
-					if (stack.getItem() instanceof ItemFuzzyIdentifier) {
+					if (stack.getItem() instanceof FuzzyIdentifierItem) {
 						NBTTagCompound nbt = stack.getTagCompound();
 						if (nbt == null) nbt = new NBTTagCompound();
 						nbt.setString("fluidtype",fluidRsc);

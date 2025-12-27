@@ -5,17 +5,14 @@ import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FluidTrait;
-import com.hbm.inventory.gui.GuiInfoContainer;
-import com.hbm.items.ModItems;
-import com.hbm.lib.Library;
 import com.hbm.render.NTMRenderHelper;
 import com.hbm.util.I18nUtil;
 import com.hbm.util.RenderUtil;
 import com.leafia.contents.AddonFluids;
 import com.leafia.contents.AddonItems;
 import com.leafia.contents.fluids.traits.FT_LFTRCoolant;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier.FuzzyIdentifierPacket;
+import com.leafia.contents.gear.utility.FuzzyIdentifierItem;
+import com.leafia.contents.gear.utility.FuzzyIdentifierItem.FuzzyIdentifierPacket;
 import com.leafia.contents.machines.reactors.lftr.components.MSRTEBase;
 import com.leafia.contents.machines.reactors.lftr.components.element.MSRElementTE.MSRFuel;
 import com.leafia.dev.custompacket.LeafiaCustomPacket;
@@ -27,7 +24,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -77,7 +73,7 @@ public class LeafiaClientUtil {
 			if (Mouse.isButtonDown(0) && !lastClicked) {
 				ItemStack item = Minecraft.getMinecraft().player.inventory.getItemStack();
 				if (item != null && !item.isEmpty()) {
-					if (item.getItem() instanceof ItemFuzzyIdentifier) {
+					if (item.getItem() instanceof FuzzyIdentifierItem) {
 						FuzzyIdentifierPacket packet = new FuzzyIdentifierPacket();
 						packet.fluidRsc = tank.getTankType().getName();
 						LeafiaCustomPacket.__start(packet).__sendToServer();
@@ -299,7 +295,7 @@ public class LeafiaClientUtil {
 					ItemStack item = Minecraft.getMinecraft().player.inventory.getItemStack();
 					if (item != null && !item.isEmpty()) {
 						FluidType ntmf = AddonFluids.fromFF(stack.getFluid());
-						if (item.getItem() instanceof ItemFuzzyIdentifier && !ntmf.equals(Fluids.NONE)) {
+						if (item.getItem() instanceof FuzzyIdentifierItem && !ntmf.equals(Fluids.NONE)) {
 							FuzzyIdentifierPacket packet = new FuzzyIdentifierPacket();
 							packet.fluidRsc = ntmf.getName();
 							LeafiaCustomPacket.__start(packet).__sendToServer();

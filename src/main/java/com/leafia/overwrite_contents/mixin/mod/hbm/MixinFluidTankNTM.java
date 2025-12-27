@@ -4,13 +4,11 @@ import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.tank.IFluidLoadingHandler;
 import com.hbm.inventory.gui.GuiInfoContainer;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier.FuzzyIdentifierPacket;
-import com.leafia.dev.LeafiaClientUtil;
+import com.leafia.contents.gear.utility.FuzzyIdentifierItem;
+import com.leafia.contents.gear.utility.FuzzyIdentifierItem.FuzzyIdentifierPacket;
 import com.leafia.dev.custompacket.LeafiaCustomPacket;
 import com.leafia.overwrite_contents.interfaces.IMixin;
 import com.leafia.unsorted.fluids.FluidLoaderBottle;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.Style;
@@ -23,7 +21,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -44,7 +41,7 @@ public class MixinFluidTankNTM implements IMixin {
 		if (Mouse.isButtonDown(0) && !lastClicked) {
 			ItemStack item = Minecraft.getMinecraft().player.inventory.getItemStack();
 			if (item != null && !item.isEmpty()) {
-				if (item.getItem() instanceof ItemFuzzyIdentifier) {
+				if (item.getItem() instanceof FuzzyIdentifierItem) {
 					FuzzyIdentifierPacket packet = new FuzzyIdentifierPacket();
 					packet.fluidRsc = type.getName();
 					LeafiaCustomPacket.__start(packet).__sendToServer();

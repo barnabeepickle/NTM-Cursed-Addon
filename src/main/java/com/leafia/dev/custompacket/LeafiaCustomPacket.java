@@ -2,9 +2,8 @@ package com.leafia.dev.custompacket;
 
 import com.custom_hbm.explosion.LCEExplosionNT.ExplosionNTSyncPacket;
 import com.hbm.packet.PacketDispatcher;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier.FuzzyIdentifierPacket;
-import com.leafia.contents.gear.utility.ItemFuzzyIdentifier.FuzzyIdentifierResponsePacket;
+import com.leafia.contents.gear.utility.FuzzyIdentifierItem.FuzzyIdentifierPacket;
+import com.leafia.contents.gear.utility.FuzzyIdentifierItem.FuzzyIdentifierResponsePacket;
 import com.leafia.dev.LeafiaDebug.Tracker.VisualizerPacket;
 import com.leafia.dev.optimization.bitbyte.LeafiaBuf;
 import com.leafia.dev.optimization.diagnosis.RecordablePacket;
