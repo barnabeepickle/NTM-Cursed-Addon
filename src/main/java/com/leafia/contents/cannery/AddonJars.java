@@ -3,8 +3,10 @@ package com.leafia.contents.cannery;
 import com.hbm.inventory.RecipesCommon;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.leafia.contents.AddonBlocks;
+import com.leafia.contents.AddonBlocks.LFTR;
 import com.leafia.contents.AddonBlocks.PWR;
 import com.leafia.contents.AddonBlocks.TestBlocks;
+import com.leafia.contents.cannery.cannery.CanneryLFTR;
 import com.leafia.contents.cannery.cannery.CanneryPWR;
 import com.leafia.contents.cannery.cannery.CanneryTest;
 
@@ -20,5 +22,10 @@ public class AddonJars {
 		canneries.put(new ComparableStack(PWR.channel),pwr);
 		canneries.put(new ComparableStack(PWR.control),pwr);
 		canneries.put(new ComparableStack(PWR.reactor_control),pwr);
+		CanneryLFTR lftr = new CanneryLFTR();
+		canneries.put(new ComparableStack(LFTR.element),lftr);
+		canneries.put(new ComparableStack(LFTR.control),lftr);
+		canneries.put(new ComparableStack(LFTR.plug),lftr);
+		canneries.put(new ComparableStack(LFTR.arbitrary),lftr);
 	}
 }

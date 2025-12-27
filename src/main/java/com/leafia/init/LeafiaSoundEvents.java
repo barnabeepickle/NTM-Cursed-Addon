@@ -1,5 +1,6 @@
 package com.leafia.init;
 
+import com.hbm.lib.HBMSoundHandler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -124,6 +125,21 @@ public class LeafiaSoundEvents {
 				register("external.furnacestressed04"),
 				register("external.furnacestressed05"),
 				register("external.furnacestressed06")
+		};
+		// replace 1.7.10 geiger sounds with alcater one
+		HBMSoundHandler.geiger1 = register("item.geiger1");
+		HBMSoundHandler.geiger2 = register("item.geiger2");
+		HBMSoundHandler.geiger3 = register("item.geiger3");
+		HBMSoundHandler.geiger4 = register("item.geiger4");
+		HBMSoundHandler.geiger5 = register("item.geiger5");
+		HBMSoundHandler.geiger6 = register("item.geiger6");
+		HBMSoundHandler.geigerSounds = new SoundEvent[]{
+				HBMSoundHandler.geiger1,
+				HBMSoundHandler.geiger2,
+				HBMSoundHandler.geiger3,
+				HBMSoundHandler.geiger4,
+				HBMSoundHandler.geiger5,
+				HBMSoundHandler.geiger6
 		};
 	}
 

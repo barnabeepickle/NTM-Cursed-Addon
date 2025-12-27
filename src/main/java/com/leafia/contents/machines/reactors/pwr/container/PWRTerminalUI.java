@@ -452,9 +452,14 @@ public class PWRTerminalUI extends LCEGuiInfoContainer {
 		LeafiaGls.resetEffects();
 		LeafiaGls.blendFunc(SourceFactor.SRC_ALPHA,DestFactor.ONE);
 		for (int i = -1; i < rodPositions.length; i++) {
-			if (((i < 0) ? core.masterControl : rodPositions[i]) > 0)
+			if (((i < 0) ? core.masterControl : rodPositions[i]) > 0) {
+				LeafiaGls.color(1,1,1,0.1F);
+				drawTexturedModalRect(guiLeft+244+19*i+9,guiTop+containerOffset+7,192,190,6,8);
+				LeafiaGls.color(1,1,1,0.2F);
 				drawTexturedModalRect(guiLeft+244+19*i+9-16,guiTop+containerOffset+7-15,153,190,38,38);
+			}
 		}
+		LeafiaGls.color(1,1,1,1F);
 		LeafiaGls._pop();
 	}
 	int getContainerX() {
@@ -641,6 +646,14 @@ public class PWRTerminalUI extends LCEGuiInfoContainer {
 			if (position > 0)
 				drawTexturedModalRect(x+9,y,192,190,6,8);
 		}
+		LeafiaGls._push();
+		LeafiaGls.resetEffects();
+		LeafiaGls.blendFunc(SourceFactor.SRC_ALPHA,DestFactor.ONE);
+		for (int i = -1; i < rodPositions.length; i++) {
+			if (((i < 0) ? core.masterControl : rodPositions[i]) > 0)
+				drawTexturedModalRect(guiLeft+244+19*i+9-16,guiTop+containerOffset+7-15,153,190,38,38);
+		}
+		LeafiaGls._pop();
 
 		LeafiaGls.scale(calculatedScale,calculatedScale,1);
 		for (Entry<ColumnPos,EdgeTile> entry : edgeTileMap.entrySet()) {

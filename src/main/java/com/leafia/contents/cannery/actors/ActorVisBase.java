@@ -29,6 +29,7 @@ public abstract class ActorVisBase implements ISpecialActor {
 		LeafiaGls.pushMatrix();
 		LeafiaGls._push();
 		LeafiaGls.resetEffects();
+		LeafiaGls.enableDepth();
 		LeafiaGls.blendFunc(SourceFactor.SRC_ALPHA,DestFactor.ONE);
 		LeafiaGls.translate(x,y,z);
 		renderContents();

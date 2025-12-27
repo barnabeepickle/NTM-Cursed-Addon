@@ -730,7 +730,7 @@ public class PWRElementTE extends TileEntityInventoryBase implements PWRComponen
 					//double coolingCap = MathHelper.clamp(heat,20,400+Math.pow(Math.max(heat-400,0),0.5));
 
 
-					rod.HeatFunction(stack,true,heatDetection,channelScale*coolin,coolantTemp,coolantTemp*exchangerScale,required);
+					rod.HeatFunction(stack,true,heatDetection,channelScale*coolin,coolantTemp,400*exchangerScale,required);
 					double rad = Math.pow(heatDetection,0.65)/2;
 					ChunkRadiationManager.proxy.incrementRad(world,pos,(float)rad/8,(float)rad);
 					//DONE PROBABLY: add neutron radiations to indicate emitted chunk radiations
@@ -749,9 +749,11 @@ public class PWRElementTE extends TileEntityInventoryBase implements PWRComponen
 								if (gathered != null)
 									gathered.explode(world,stack);
 							} else */
-							if (gathered != null && gathered.tankTypes[1].hasTrait(FT_Gaseous.class))
-								gathered.explode(world,stack,null,1);
-							else {
+							if (gathered != null && gathered.tankTypes[1].hasTrait(FT_Gaseous.class)) {
+								for (int i = 0; i < height; i++)
+									world.setBlockState(pos.down(height),ModBlocks.corium_block.getDefaultState());
+								gathered.explode(world,stack,null,0);
+							} else {
 								//inventory.setStackInSlot(0,ItemStack.EMPTY);
 								//world.destroyBlock(pos,false);
 								BlockPos pos = this.pos.down(height);

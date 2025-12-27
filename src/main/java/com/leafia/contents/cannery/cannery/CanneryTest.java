@@ -28,20 +28,21 @@ public class CanneryTest extends CanneryBase {
 	public JarScript createScript() {
 		WorldInAJar world = new WorldInAJar(5, 5, 5);
 		JarScript script = new JarScript(world);
+		{
+			JarScene scene = new JarScene(script);
+			for (int x = world.sizeX-1; x >= 0; x--) {
+				for (int z = 0; z < world.sizeZ; z++)
+					scene.add(new ActionSetBlock(x,0,z,ModBlocks.concrete_smooth));
 
-		JarScene scene0 = new JarScene(script);
-		for(int x = world.sizeX - 1; x >= 0 ; x--) {
-			for (int z = 0; z < world.sizeZ; z++)
-				scene0.add(new ActionSetBlock(x,0,z,ModBlocks.concrete_smooth));
+				scene.add(new ActionWait(2));
+			}
+			scene.add(new ActionCreateActor(0,new ActorVisFrame(script,1,1,1,0x00FF00)));
+			scene.add(new ActionCreateActor(1,new ActorVisText(script,1,1,1,0x00FF00,1,"Test")));
+			scene.add(new ActionWait(20));
+			scene.add(new ActionRotateBy(45,-60,20));
 
-			scene0.add(new ActionWait(2));
+			script.addScene(scene);
 		}
-		scene0.add(new ActionCreateActor(0,new ActorVisFrame(script,1,1,1,0x00FF00)));
-		scene0.add(new ActionCreateActor(1,new ActorVisText(script,1,1,1,0x00FF00,1,"Test")));
-		scene0.add(new ActionWait(20));
-		scene0.add(new ActionRotateBy(45,-60,20));
-
-		script.addScene(scene0);
 
 		return script;
 	}
