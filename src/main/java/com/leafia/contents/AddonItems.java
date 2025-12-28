@@ -7,6 +7,7 @@ import com.leafia.AddonBase;
 import com.leafia.contents.building.pinkdoor.ItemPinkDoor;
 import com.leafia.contents.building.sign.SignBlock;
 import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
+import com.leafia.contents.gear.advisor.AdvisorItem;
 import com.leafia.contents.gear.ntmfbottle.ItemNTMFBottle;
 import com.leafia.contents.gear.utility.FuzzyIdentifierItem;
 import com.leafia.contents.gear.wands.ItemWandV;
@@ -218,11 +219,14 @@ public class AddonItems {
 		public static final Item
 				leafRodLEAus
 				= new LeafiaRodItem("LEAus",550000, 7029)
+				.setDecayProduct("heaus")
+				.setEmission(0.3)
 				.setAppearance(ModItems.billet_australium_lesser, BILLET, ISOTOPE)
 				.setCreativeTab(MainRegistry.controlTab);
 		public static final Item
 				leafRodHEAus
 				= new LeafiaRodItem("HEAus",550000, 5211)
+				.setEmission(1.2)
 				.setAppearance(ModItems.billet_australium_greater, BILLET, ISOTOPE)
 				.setCreativeTab(MainRegistry.controlTab);
 		/*public static final Item
@@ -253,7 +257,7 @@ public class AddonItems {
 				.setModerated()
 				.addRad(ItemRads.plutonium238be)
 				.setCreativeTab(MainRegistry.controlTab);
-		public static final Item
+		/*public static final Item
 				leafRodFlashgold
 				= new LeafiaRodItem("Flashgold",1800000, 5000)
 				.setAppearance(ModItems.billet_balefire_gold, BILLET, RAW)
@@ -264,8 +268,8 @@ public class AddonItems {
 				= new LeafiaRodItem("Flashlead",2200000, 5050)
 				.setAppearance(ModItems.billet_flashlead, BILLET, RAW)
 				.addRad(ItemRads.flashlead)
-				.setCreativeTab(MainRegistry.controlTab);
-		public static final Item
+				.setCreativeTab(MainRegistry.controlTab);*/
+		/*public static final Item
 				leafRodBi209ZFB
 				= new LeafiaRodItem("Bi-209 ZFB",180000, 2744)
 				.setAppearance(ModItems.billet_zfb_bismuth, BILLET, BREEDER)
@@ -282,7 +286,7 @@ public class AddonItems {
 				= new LeafiaRodItem("Am-242 ZFB",180000, 3744)
 				.setAppearance(ModItems.billet_zfb_am_mix, BILLET, BREEDER)
 				.addRad(ItemRads.americium242zfb)
-				.setCreativeTab(MainRegistry.controlTab);
+				.setCreativeTab(MainRegistry.controlTab);*/
 		// normal rods-based
 		public static final Item
 				leafRodPu238
@@ -350,6 +354,7 @@ public class AddonItems {
 				leafRodLead
 				= new LeafiaRodItem("Lead",99999999, 0)
 				.setAppearance(ModItems.ingot_lead, BILLET, RAW)
+				.setDecayProduct("pb209")
 				.addToxic(2)
 				.setCreativeTab(MainRegistry.controlTab);
 		public static final Item
@@ -382,11 +387,11 @@ public class AddonItems {
 				.setAppearance(ModItems.billet_th232, BILLET, RAW)
 				.addRad(ItemRads.thorium232)
 				.setCreativeTab(MainRegistry.controlTab);
-		public static final Item
+		/*public static final Item
 				leafRodBi209
 				= new LeafiaRodItem("Bi-209",0, 0)
 				.setAppearance(ModItems.billet_bismuth, BILLET, RAW)
-				.setCreativeTab(MainRegistry.controlTab);
+				.setCreativeTab(MainRegistry.controlTab);*/
 		public static final Item
 				leafRodGold198
 				= new LeafiaRodItem("Au-198",900000, 3850)
@@ -420,6 +425,8 @@ public class AddonItems {
 	public static final Item ingot_potassium = new AddonItemBaked("ingot_potassium","leafia/ingots/ingot_potassium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_rubidium = new AddonItemBaked("ingot_rubidium","leafia/ingots/ingot_rubidium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_francium = new AddonItemBaked("ingot_francium","leafia/ingots/ingot_francium").setCreativeTab(MainRegistry.partsTab);
+
+	public static final Item advisor = new AdvisorItem("advisor").setCreativeTab(MainRegistry.consumableTab);
 
 	private static void modifyItemParams() {
 		ModItems.pwr_fuel.setCreativeTab(null);

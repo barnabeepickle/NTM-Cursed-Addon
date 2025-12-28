@@ -1,6 +1,6 @@
 package com.leafia.passive;
 
-import com.hbm.tileentity.machine.TileEntityCore;
+import com.leafia.contents.gear.advisor.AdvisorItem.Warns;
 import com.leafia.dev.optimization.diagnosis.RecordablePacket;
 import com.leafia.eventbuses.LeafiaClientListener.Digamma;
 import com.leafia.overwrite_contents.interfaces.IMixinTileEntityCore;
@@ -31,6 +31,7 @@ public class LeafiaPassiveLocal {
 			for (IMixinTileEntityCore core : trackingCores)
 				core.setDFCExplosionClock(System.currentTimeMillis());
 		}
+		Warns.tick();
 	}
 	public static void priorTick(World world) {
 		RecordablePacket.previousByteUsage = RecordablePacket.bytesUsage;

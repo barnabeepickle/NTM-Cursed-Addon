@@ -6,6 +6,7 @@ import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.loader.WaveFrontObjectVAO;
 import com.leafia.contents.building.light.LightRender;
 import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudFleija;
+import com.leafia.contents.gear.advisor.AdvisorRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCComponentRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCCoreRender;
 import com.leafia.contents.machines.processing.mixingvat.MixingVatRender;
@@ -54,6 +55,7 @@ public class ResourceInit {
 		_initClass(PWRControlRender.class);
 		_initClass(LightRender.class);
 		_initClass(FluidDuctEquipmentRender.class);
+		_initClass(AdvisorRender.class);
 		/*{
 			setWreckModel("intact");
 			setWreckModel("metal_rubble_0");

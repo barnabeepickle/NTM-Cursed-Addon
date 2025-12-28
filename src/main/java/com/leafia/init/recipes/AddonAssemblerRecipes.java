@@ -8,10 +8,12 @@ import com.hbm.inventory.fluid.FluidStack;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.recipes.AssemblyMachineRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
+import com.hbm.items.ItemEnums.EnumCircuitType;
 import com.hbm.items.ItemEnums.EnumExpensiveType;
 import com.hbm.items.ModItems;
 import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonBlocks.PWR;
+import com.leafia.contents.AddonItems;
 import com.llib.exceptions.LeafiaDevFlaw;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -66,6 +68,14 @@ public class AddonAssemblerRecipes {
 						new OreDictStack(MINGRADE.wireFine())
 				)
 				.inputFluids(new FluidStack(Fluids.MERCURY,5))
+		);
+		INSTANCE.register(new GenericRecipe("ass.leafia.advisor").setup(20,50)
+				.outputItems(new ItemStack(AddonItems.advisor))
+				.inputItems(
+						new OreDictStack(ANY_PLASTIC.ingot(),2),
+						new ComparableStack(ModItems.circuit,EnumCircuitType.ADVANCED.ordinal()),
+						new ComparableStack(Blocks.STONE_BUTTON)
+				)
 		);
 	}
 	public static void remove(String entry) {

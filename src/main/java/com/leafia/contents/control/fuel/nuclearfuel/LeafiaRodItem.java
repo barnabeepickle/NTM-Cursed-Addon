@@ -378,6 +378,25 @@ public class LeafiaRodItem extends AddonItemHazardBase implements IHasCustomMode
 				n = "100(("+flux+"/1000-1)³)-500(("+flux+"/1000-1)²)+("+flux+"+1000)/600+2800 "+TextFormatting.RED+"(DANGEROUS)";
 				break;
 
+				// COPY OLD SHIT
+			case "po210": case "po210be":
+				y = 700+Math.pow(x*2,0.69);
+				n = "700 + ("+flux+"*2)^0.69 "+TextFormatting.GOLD+"(RISKY)";
+				break;
+			case "au198":
+				y = 1580+Math.pow(x,0.75)*2.5;
+				n = "1580 + "+flux+"^0.75 * 2.5 "+TextFormatting.GOLD+"(RISKY)";
+				break;
+			case "pb209":
+				y = 2300+x*0.4;
+				n = "2300 + "+flux+"* 0.4 "+TextFormatting.DARK_RED+"(DANGEROUS)";
+				break;
+
+			case "leaus": case "heaus":
+				y = Math.pow(x*5,0.65)*2;
+				n = "("+flux+"×5)^0.65×2 "+TextFormatting.DARK_GREEN+"(FINE)";
+				break;
+
 			case "debug":
 				y = Math.max(heat,0)+Math.sqrt(x);
 				n = temp+"+20+√"+flux+TextFormatting.GRAY+" (DEBUG)";
@@ -670,6 +689,16 @@ public class LeafiaRodItem extends AddonItemHazardBase implements IHasCustomMode
 		if (nextItem != null)
 			entity.replaceItemInInventory(itemSlot,nextItem);
 	}
+
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		double green = 255;
+		NBTTagCompound data = stack.getTagCompound();
+		if (data != null)
+			green = Math.min(data.getDouble("depletion")/life,1)*200+55;
+		return ((int)green)<<8;
+	}
+
 	protected String[] graph = new String[0];
 	protected String funcColor = "";
 	public LeafiaRodItem(String s,double heatGenerated,double meltingPoint) {

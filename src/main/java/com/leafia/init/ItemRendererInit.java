@@ -13,6 +13,7 @@ import com.leafia.contents.building.light.LightRender;
 import com.leafia.contents.building.light.LightRender.LightItemRender;
 import com.leafia.contents.building.sign.SignRender;
 import com.leafia.contents.building.sign.SignRender.SignItemRender;
+import com.leafia.contents.gear.advisor.AdvisorRender;
 import com.leafia.contents.machines.misc.heatex.CoolantHeatexRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCComponentRender;
 import com.leafia.contents.machines.processing.mixingvat.MixingVatRender;
@@ -65,6 +66,8 @@ public class ItemRendererInit {
 		register(AddonBlocks.fluid_duct_gauge_mdl,equipment);
 		register(AddonBlocks.fluid_duct_valve_mdl,equipment);
 		register(AddonBlocks.fluid_duct_valve_mdl_rs,equipment);
+
+		register(AddonItems.advisor,new AdvisorRender());
 
 		/*fix(AddonItems.ams_focus_blank);
 		fix(AddonItems.ams_focus_booster);
