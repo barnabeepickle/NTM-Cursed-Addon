@@ -411,6 +411,11 @@ public class AddonItems {
 				= new LeafiaRodItem("Debug",0, 0)
 				.setAppearance(ModItems.wand_d, BILLET, UNSTABLE)
 				.setCreativeTab(MainRegistry.controlTab);
+		public static final Item
+				leafRodDyatlov
+				= new LeafiaRodItem("Potential Instant Blowout Applicator",95000000, 650000000)
+				.setAppearance(ModItems.meltdown_tool, BILLET, UNSTABLE)
+				.setCreativeTab(MainRegistry.controlTab);
 		static {
 			LeafiaRodItem.confirmDecayProducts();
 		}

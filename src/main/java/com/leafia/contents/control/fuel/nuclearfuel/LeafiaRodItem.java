@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -285,17 +286,22 @@ public class LeafiaRodItem extends AddonItemHazardBase implements IHasCustomMode
 				// DEPLETED
 			case "depleteduranium": case "depletedmox":
 				y = 80-20;
-				n = "80";
+				n = "80-20";
 				disableDecay = true;
 				break;
 			case "depletedplutonium":
 				y = 90-20;
-				n = "90";
+				n = "90-20";
 				disableDecay = true;
 				break;
 			case "depletedthorium":
 				y = 60-20;
-				n = "60";
+				n = "60-20";
+				disableDecay = true;
+				break;
+			case "depletedschrabidium":
+				y = 100-20;
+				n = "100-20";
 				disableDecay = true;
 				break;
 
@@ -381,7 +387,7 @@ public class LeafiaRodItem extends AddonItemHazardBase implements IHasCustomMode
 				// COPY OLD SHIT
 			case "po210": case "po210be":
 				y = 700+Math.pow(x*2,0.69);
-				n = "700 + ("+flux+"*2)^0.69 "+TextFormatting.GOLD+"(RISKY)";
+				n = "700 + ("+flux+"×2)^0.69 "+TextFormatting.GOLD+"(RISKY)";
 				break;
 			case "au198":
 				y = 1580+Math.pow(x,0.75)*2.5;
@@ -389,8 +395,15 @@ public class LeafiaRodItem extends AddonItemHazardBase implements IHasCustomMode
 				break;
 			case "pb209":
 				y = 2300+x*0.4;
-				n = "2300 + "+flux+"* 0.4 "+TextFormatting.DARK_RED+"(DANGEROUS)";
+				n = "2300 + "+flux+"×0.4 "+TextFormatting.DARK_RED+"(DANGEROUS)";
 				break;
+
+				// SOME RUSHED CRAP
+			case "pu238": case "pu238be":
+				y = 1330+Math.pow(x*2,0.62);
+				n = "1330 + ("+flux+"*2)^0.62 "+TextFormatting.GOLD+"(RISKY)";
+				break;
+
 
 			case "leaus": case "heaus":
 				y = Math.pow(x*5,0.65)*2;
@@ -695,7 +708,7 @@ public class LeafiaRodItem extends AddonItemHazardBase implements IHasCustomMode
 		double green = 255;
 		NBTTagCompound data = stack.getTagCompound();
 		if (data != null)
-			green = Math.min(data.getDouble("depletion")/life,1)*200+55;
+			green = Math.pow(MathHelper.clamp(1-data.getDouble("depletion")/life,0,1),1.25)*155+100;
 		return ((int)green)<<8;
 	}
 

@@ -1,6 +1,7 @@
 package com.leafia.dev.optimization;
 
 import com.custom_hbm.effectNT.EffectNT;
+import com.hbm.handler.threading.PacketThreading;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.particle.ParticleRBMKMush;
@@ -436,7 +437,7 @@ public class LeafiaParticlePacket extends RecordablePacket {
 		public double getDefaultRange() { return 340; }
 		public final void emit(Vec3d pos,Vec3d motion,int dimension) { emit(pos,motion,dimension,getDefaultRange()); }
 		public final void emit(Vec3d pos,Vec3d motion,int dimension,double range) {
-			PacketDispatcher.wrapper.sendToAllAround(packet(pos,motion),new TargetPoint(dimension,pos.x,pos.y,pos.z,range));
+			PacketThreading.createSendToAllTrackingThreadedPacket(packet(pos,motion),new TargetPoint(dimension,pos.x,pos.y,pos.z,range));
 		}
 		public final void emitLocal(Vec3d pos,Vec3d motion) {
 			NBTTagCompound nbt = new NBTTagCompound();

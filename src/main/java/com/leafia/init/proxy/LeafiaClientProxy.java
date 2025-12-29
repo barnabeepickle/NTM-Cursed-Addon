@@ -53,6 +53,7 @@ import com.leafia.contents.network.fluid.valves.FluidDuctValveTE;
 import com.leafia.contents.network.spk_cable.SPKCableRender;
 import com.leafia.contents.network.spk_cable.SPKCableTE;
 import com.leafia.eventbuses.LeafiaClientListener;
+import com.leafia.init.AddonAdvancements;
 import com.leafia.init.ItemRendererInit;
 import com.llib.exceptions.LeafiaDevFlaw;
 import net.minecraft.block.BlockDoor;

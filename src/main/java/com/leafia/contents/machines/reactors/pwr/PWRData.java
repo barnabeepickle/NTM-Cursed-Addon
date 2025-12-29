@@ -807,7 +807,7 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 			nt.overrideResolution(32);
 			nt.explode();
 			double shakeIntensity = toughness / 10_000d;
-			PacketDispatcher.wrapper.sendToAllAround(
+			PacketThreading.createSendToAllTrackingThreadedPacket(
 					new CommandLeaf.ShakecamPacket(new String[]{
 							"type=smooth",
 							"preset=PWR_NEAR",
@@ -817,7 +817,7 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 					}).setPos(new BlockPos(centerPoint)),
 					new NetworkRegistry.TargetPoint(world.provider.getDimension(), centerPoint.x + 0.5, centerPoint.y + 0.5, centerPoint.z + 0.5, reactorSize * 4.25)
 			);
-			PacketDispatcher.wrapper.sendToAllAround(
+			PacketThreading.createSendToAllTrackingThreadedPacket(
 					new CommandLeaf.ShakecamPacket(new String[]{
 							"type=smooth",
 							"preset=PWR_FAR",

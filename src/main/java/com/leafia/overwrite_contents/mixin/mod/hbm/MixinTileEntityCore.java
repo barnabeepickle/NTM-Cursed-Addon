@@ -6,6 +6,7 @@ import com.hbm.blocks.machine.MachineFieldDisturber;
 import com.hbm.entity.effect.EntityCloudFleijaRainbow;
 import com.hbm.entity.logic.EntityNukeExplosionMK3;
 import com.hbm.handler.ArmorUtil;
+import com.hbm.handler.threading.PacketThreading;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.machine.ItemCatalyst;
@@ -343,8 +344,8 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 					double count = Math.ceil(containedEnergy / energyPerShock);
 					for (int i = 0; i < Math.pow(count, 0.25); i++) shock();
 					world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, LeafiaSoundEvents.mus_sfx_a_lithit, SoundCategory.BLOCKS, 6.66f, 1 + (float) world.rand.nextGaussian() * 0.1f);
-					PacketDispatcher.wrapper.sendToAllAround(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=RUPTURE", "duration/4", "blurDulling*2", "intensity/2", "range=50"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 100));
-					PacketDispatcher.wrapper.sendToAllAround(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=QUAKE", "duration/2", "intensity/4", "range=100"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 150));
+					PacketThreading.createSendToAllTrackingThreadedPacket(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=RUPTURE", "duration/4", "blurDulling*2", "intensity/2", "range=50"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 100));
+					PacketThreading.createSendToAllTrackingThreadedPacket(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=QUAKE", "duration/2", "intensity/4", "range=100"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 150));
 					containedEnergy = Math.max(containedEnergy - count * energyPerShock, 0);
 					shockCooldown = 100 - (int) (90 * Math.pow(collapsing, 1.75));
 				}
@@ -406,7 +407,7 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 				} else {
 					world.playSound(null, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 100000.0F, 1.0F);
 					world.playSound(null, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, LeafiaSoundEvents.actualexplosion, SoundCategory.BLOCKS, 50.0F, 1.0F);
-					PacketDispatcher.wrapper.sendToAllAround(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=RUPTURE", "blurDulling*2", "speed*1.5", "duration/2", "range=300"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 400));
+					PacketThreading.createSendToAllTrackingThreadedPacket(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=RUPTURE", "blurDulling*2", "speed*1.5", "duration/2", "range=300"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 400));
 					LeafiaColor col = new LeafiaColor(colorCatalyst);
 					LeafiaParticlePacket.DFCBlastParticle blast = new LeafiaParticlePacket.DFCBlastParticle((float) col.red, (float) col.green, (float) col.blue, 250);
 					blast.emit(new Vec3d(pos).add(0.5, 0.5, 0.5), new Vec3d(0, 1, 0), world.provider.getDimension(), 200);
@@ -448,8 +449,8 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 					explosionClock = time;
 					if (explosionIn <= 15 && !finalPhase) {
 						finalPhase = true;
-						PacketDispatcher.wrapper.sendToAllAround(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=RUPTURE", "blurDulling*2", "speed*1.5", "duration/2", "range=300"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 400));
-						PacketDispatcher.wrapper.sendToAllAround(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=QUAKE", "blurDulling*4", "speed*3", "duration=40", "range=300"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 400));
+						PacketThreading.createSendToAllTrackingThreadedPacket(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=RUPTURE", "blurDulling*2", "speed*1.5", "duration/2", "range=300"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 400));
+						PacketThreading.createSendToAllTrackingThreadedPacket(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=QUAKE", "blurDulling*4", "speed*3", "duration=40", "range=300"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 400));
 						LeafiaPacket._start(this).__write(packetKeys.PLAY_SOUND.key, 3).__sendToAll();
 
 						LCEExplosionNT nt = new LCEExplosionNT(world, null, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, 150);
@@ -469,7 +470,7 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 						blast.emit(new Vec3d(pos).add(0.5, 0.5, 0.5), new Vec3d(0, 1, 0), world.provider.getDimension(), 200);
 					}
 					if (explosionIn <= 0 && exp != null) {
-						PacketDispatcher.wrapper.sendToAllAround(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=PWR_NEAR", "duration*2", "intensity*1.5", "range=200"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 300));
+						PacketThreading.createSendToAllTrackingThreadedPacket(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=PWR_NEAR", "duration*2", "intensity*1.5", "range=200"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 300));
 						world.playSound(null, pos, LeafiaSoundEvents.dfc_explode, SoundCategory.BLOCKS, 100, 1);
 						destroyed = true;
 						world.spawnEntity(exp);

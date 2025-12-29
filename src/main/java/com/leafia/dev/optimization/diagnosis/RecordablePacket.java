@@ -4,8 +4,8 @@ import com.hbm.packet.threading.ThreadedPacket;
 import com.leafia.dev.optimization.bitbyte.LeafiaBuf;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-/// waiting for movblock to make client-to-server ThreadedPacket support m(_ _)m
-public abstract class RecordablePacket /*extends ThreadedPacket*/ implements IMessage {
+
+public abstract class RecordablePacket extends ThreadedPacket {
 	public static double bytesUsage = 0;
 	public static double previousByteUsage = 0;
 	public static double bytesUsageSec = 0;

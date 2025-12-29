@@ -1,6 +1,7 @@
 package com.leafia.contents.effects.folkvangr;
 
 import com.hbm.entity.logic.IChunkLoader;
+import com.hbm.handler.threading.PacketThreading;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.PacketDispatcher;
@@ -164,7 +165,7 @@ public class EntityNukeFolkvangr extends Entity implements IChunkLoader {
 			Entity cloudBoundE = (Entity)cloudBound;
 			if (!played) {
 				world.playSound(null,getPosition(),LeafiaSoundEvents.nuke_folkvangr,SoundCategory.BLOCKS,cloudBound.getMaxSize(),1);
-				PacketDispatcher.wrapper.sendToAllAround(
+				PacketThreading.createSendToAllTrackingThreadedPacket(
 						new CommandLeaf.ShakecamPacket(new String[]{
 								"duration="+cloudBound.getMaxSize(),
 								"range="+cloudBound.getMaxSize()*2
@@ -172,7 +173,7 @@ public class EntityNukeFolkvangr extends Entity implements IChunkLoader {
 						new NetworkRegistry.TargetPoint(dimension,posX,posY,posZ,cloudBound.getMaxSize()*2.25)
 				);
 				if (cloudBound.getIsAntischrab()) {
-					PacketDispatcher.wrapper.sendToAllAround(
+					PacketThreading.createSendToAllTrackingThreadedPacket(
 							new CommandLeaf.ShakecamPacket(new String[]{
 									"type=smooth","duration=2",
 									"speed=8","ease=expoOut","intensity=12",
@@ -278,7 +279,7 @@ public class EntityNukeFolkvangr extends Entity implements IChunkLoader {
 				packet.pos = chunk.getPos();
 				packet.min = (byte)minCY;
 				packet.max = (byte)maxCY;
-				PacketDispatcher.wrapper.sendToDimension(packet,dimension);
+				PacketThreading.createSendToDimensionThreadedPacket(packet,dimension);
 			}
 			if (minCY >= maxCY) {
 				for (int cy = 0; cy < 16; cy++) {

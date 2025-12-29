@@ -82,6 +82,9 @@ public class AddonHazards {
 		registerHazard(OreDictManager.SR,new HazardEntry(ALKALINE,1.5));
 		registerHazard(OreDictManager.SR90,new HazardEntry(ALKALINE,1.5));
 
+		registerHazard(OreDictManager.PB,new HazardEntry(TOXIC,1.75));
+		registerHazard(OreDictManager.BE,new HazardEntry(TOXIC,1.75));
+
 		compute((object,data)->{
 			// do not fucking modify this array, modify data.entries
 			List<HazardEntry> ____________ = new ArrayList<>(data.entries);

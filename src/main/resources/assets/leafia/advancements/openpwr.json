@@ -1,5 +1,5 @@
 {
-  "parent": "hbm:achchemplant",
+  "parent": "leafia:genericfuel",
   "display": {
     "icon": {
       "item": "leafia:lwr_terminal"
@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancement.leafia.openpwr.desc"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false

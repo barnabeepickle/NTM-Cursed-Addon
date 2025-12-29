@@ -4,6 +4,7 @@ package com.leafia.overwrite_contents.asm;
 import com.leafia.contents.worldgen.biomes.effects.HasAcidicRain;
 import com.leafia.dev.machine.MachineTooltip;
 import com.leafia.passive.LeafiaPassiveServer;
+import com.leafia.shit.AssHooks;
 import com.leafia.transformer.LeafiaGeneralLocal;
 import com.leafia.transformer.WorldServerLeafia;
 import com.llib.exceptions.LeafiaDevFlaw;
@@ -11,6 +12,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
+import org.lwjgl.Sys;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -71,7 +73,8 @@ public class TransformerCoreLeafia implements IClassTransformer {
 			"net.minecraftforge.fluids.FluidTank",
 			"net.minecraft.world.ServerWorldEventHandler",
 			"<REMOVED>",//"com.hbm.inventory.fluid.tank.FluidTankNTM"
-			"net.minecraft.item.ItemStack"
+			"net.minecraft.item.ItemStack",
+			"net.minecraftforge.common.ForgeHooks"
 	};
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] classBeingTransformed) {
@@ -144,6 +147,9 @@ public class TransformerCoreLeafia implements IClassTransformer {
 					}
 					case 7:
 						doTransform(classNode,isObfuscated,MachineTooltip.class,index);
+						break;
+					case 8:
+						doTransform(classNode,isObfuscated,AssHooks.class,index);
 						break;
 					default:
 						throw new LeafiaDevErrorGls("#Leaf: Unexpected index "+index);
@@ -884,6 +890,71 @@ public class TransformerCoreLeafia implements IClassTransformer {
 						}
 					}
 					throw new LeafiaDevFlaw("LeafiaCore mod error: getTooltip patch failed in ItemStack"); // this is better
+				}
+				break;
+			case 8:
+				if (name.equals("loadAdvancements") && desc.equals("(Ljava/util/Map;)Z")) {
+					printBytecodes(helper.method.instructions);
+					LabelNode lastLabel = null;
+					for (AbstractInsnNode node : helper.method.instructions.toArray()) {
+						if (node instanceof LabelNode label) {
+							lastLabel = label;
+						} else if (node instanceof MethodInsnNode method) {
+							if (method.getOpcode() == INVOKESTATIC) {
+								String ass = pain.mapMethodName(method.owner,method.name,method.desc);
+								if (ass.equals("setActiveModContainer")) {
+									if (lastLabel != null) {
+										MethodInsnNode callback = new MethodInsnNode(
+												INVOKESTATIC,
+												Type.getInternalName(AssHooks.class),
+												"loadAdvancements",
+												"(Ljava/util/Map;)Z",
+												false
+										);
+										helper.method.instructions.insert(lastLabel,callback);
+										helper.method.instructions.insertBefore(
+												callback,
+												new VarInsnNode(ALOAD,0)
+										);
+										return true;
+									}
+								}
+							}
+						}
+					}
+					throw new LeafiaDevFlaw("LeafiaCore mod error: loadAdvancements patch failed in ForgeHooks"); // this is better
+				}
+				if (name.contains("lambda$loadAdvancements")) {
+					/*
+					printBytecodes(helper.method.instructions);
+					VarInsnNode node0 = null;
+					VarInsnNode node1 = null;
+					MethodInsnNode fuckoff = null;
+					for (AbstractInsnNode node : helper.method.instructions.toArray()) {
+						if (node instanceof VarInsnNode var) {
+							node0 = node1;
+							node1 = var;
+						} else if (node instanceof MethodInsnNode method) {
+							if (method.getOpcode() == INVOKEINTERFACE) {
+								if (method.name.equals("containsKey") && method.desc.equals("(Ljava/lang/Object;)Z")) {
+									if (node0 != null && node0.getOpcode() == ALOAD && node0.var == 1)
+										fuckoff = method;
+								}
+							}
+						} else if (node instanceof JumpInsnNode jump) {
+							if (jump.getOpcode() == IFNE) {
+								if (fuckoff != null) {
+									helper.method.instructions.remove(node0);
+									helper.method.instructions.remove(node1);
+									helper.method.instructions.remove(fuckoff);
+									helper.method.instructions.remove(jump);
+									return true;
+								}
+							}
+						}
+					}
+					throw new LeafiaDevFlaw("LeafiaCore mod error: loadAdvancements patch failed in ForgeHooks"); // this is better
+					*/
 				}
 				break;
 		}

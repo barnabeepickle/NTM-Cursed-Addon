@@ -6,6 +6,8 @@
   "compatibilityLevel": "JAVA_8",
   "target": "@env(MOD)",
   "client": [
+    "hbm.MixinCoriumBlock",
+    "hbm.MixinCoriumFinite",
     "hbm.MixinFluidTankNTM",
     "hbm.MixinFolderButton",
     "hbm.MixinFT_HEatable",
@@ -13,8 +15,7 @@
     "hbm.MixinItemRenderLaserDetonator",
     "hbm.MixinParticleRBMKMush",
     "hbm.MixinRenderTorex",
-    "hbm.MixinCoriumBlock",
-    "hbm.MixinCoriumFinite"
+    "hbm.MixinRenderInfoSystemLegacy"
   ],
   "mixins": [
     "hbm.MixinBlockCoalOil",
@@ -36,6 +37,7 @@
     "hbm.MixinFluids",
     "hbm.MixinFT_Polluting",
     "hbm.MixinHazardSystem",
+    "hbm.MixinHazardTypeHot",
     "hbm.MixinIFluidReceiverMK2",
     "hbm.MixinIFluidStandardSenderMK2",
     "hbm.MixinItemCatalyst",

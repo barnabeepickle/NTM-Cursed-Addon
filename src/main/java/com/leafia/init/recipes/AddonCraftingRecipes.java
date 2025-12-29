@@ -10,6 +10,7 @@ import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonBlocks.PWR;
 import com.leafia.contents.AddonItems;
 import com.leafia.contents.AddonItems.LeafiaRods;
+import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodCrafting;
 import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
 import com.leafia.contents.machines.reactors.pwr.debris.PWRDebrisCrafting;
 import net.minecraft.item.Item;
@@ -39,9 +40,10 @@ public class AddonCraftingRecipes {
 		for (LeafiaRodItem rod : LeafiaRodItem.fromResourceMap.values()) {
 			if (rod.baseItem != null) {
 				addShapelessAuto(new ItemStack(rod,1),LeafiaRods.leafRod,new ItemStack(rod.baseItem,1,rod.baseMeta));
-				addShapelessAuto(new ItemStack(rod.baseItem,1,rod.baseMeta),rod);
+				//addShapelessAuto(new ItemStack(rod.baseItem,1,rod.baseMeta),rod);
 			}
 		}
+		hack.getRegistry().register(new LeafiaRodCrafting().setRegistryName(new ResourceLocation("leafia", "generic_fuel_handler")));
 		// A NOTE TO SELF: Ingredient keys are supposed to be chars, not strings.
 		// If they're strings, they things its part of the shape and probably shits your bed off.
 

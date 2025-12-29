@@ -1,5 +1,6 @@
 package com.leafia.dev;
 
+import com.hbm.handler.threading.PacketThreading;
 import com.hbm.items.ModItems;
 import com.leafia.contents.AddonItems;
 import com.leafia.contents.gear.wands.ItemWandV;
@@ -456,7 +457,7 @@ public class LeafiaDebug {
 					buf.writeUTF8String(entry.getValue());
 				}
 			};
-			PacketDispatcher.wrapper.sendToAll(packet);
+			PacketThreading.createSendToAllThreadedPacket(packet);
 		}
 		public static void notifySelectionChange() {
 			LeafiaTrackerPacket packet = new LeafiaTrackerPacket();
@@ -468,7 +469,7 @@ public class LeafiaDebug {
 					buf.writeInt(selected.getZ());
 				}
 			};
-			PacketDispatcher.wrapper.sendToAll(packet);
+			PacketThreading.createSendToAllThreadedPacket(packet);
 		}
 		public static void changeSide(boolean remote) {
 			ItemWandV.remote = remote;
@@ -477,7 +478,7 @@ public class LeafiaDebug {
 			packet.writer = (buf)->{
 				buf.writeBoolean(remote);
 			};
-			PacketDispatcher.wrapper.sendToAll(packet);
+			PacketThreading.createSendToAllThreadedPacket(packet);
 		}
 		enum Action {
 			NONE,

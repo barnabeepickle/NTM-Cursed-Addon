@@ -31,7 +31,6 @@ public class LeafiaPassiveLocal {
 			for (IMixinTileEntityCore core : trackingCores)
 				core.setDFCExplosionClock(System.currentTimeMillis());
 		}
-		Warns.tick();
 	}
 	public static void priorTick(World world) {
 		RecordablePacket.previousByteUsage = RecordablePacket.bytesUsage;
@@ -51,6 +50,7 @@ public class LeafiaPassiveLocal {
 				RecordablePacket.bytesUsageMin = 0;
 			}
 		}
+		Warns.preTick();
 	}
 	public static void queueFunctionPost(Runnable callback) {
 		queue.add(callback);

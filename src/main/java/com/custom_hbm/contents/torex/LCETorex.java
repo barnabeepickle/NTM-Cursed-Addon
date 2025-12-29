@@ -1,5 +1,6 @@
 package com.custom_hbm.contents.torex;
 
+import com.hbm.handler.threading.PacketThreading;
 import com.hbm.interfaces.IConstantRenderer;
 import com.hbm.items.ModItems;
 import com.hbm.packet.PacketDispatcher;
@@ -167,7 +168,7 @@ public class LCETorex extends Entity implements IConstantRenderer {
 								calculationFinished = true;
 							TorexFinishPacket packet = new TorexFinishPacket();
 							packet.uuid = this.getUniqueID();
-							PacketDispatcher.wrapper.sendToAll(packet);
+							PacketThreading.createSendToAllThreadedPacket(packet);
 						}
 					}
 				}
@@ -746,7 +747,7 @@ public class LCETorex extends Entity implements IConstantRenderer {
 		torex.writeEntityToNBT(nbt);
 		packet.nbt = nbt;
 		double amp = torex.getScale()*100;
-		PacketDispatcher.wrapper.sendToAllAround(packet,new NetworkRegistry.TargetPoint(
+		PacketThreading.createSendToAllTrackingThreadedPacket(packet,new NetworkRegistry.TargetPoint(
 						torex.dimension,
 						packet.x,
 						packet.y,
@@ -754,7 +755,7 @@ public class LCETorex extends Entity implements IConstantRenderer {
 						200+amp+Math.pow(amp,0.8)*8
 				)
 		);
-		//PacketDispatcher.wrapper.sendToDimension(packet,torex.dimension);
+		//PacketThreading.createSendToDimensionThreadedPacket(packet,torex.dimension);
 	}
 	
 	public static void statFac(World world, double x, double y, double z, float scale) {

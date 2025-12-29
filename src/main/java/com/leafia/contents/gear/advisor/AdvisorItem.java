@@ -7,7 +7,9 @@ import com.hbm.main.MainRegistry;
 import com.hbm.util.ArmorRegistry;
 import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.I18nUtil;
+import com.leafia.dev.custompacket.LeafiaCustomPacketEncoder;
 import com.leafia.dev.items.itembase.AddonItemBase;
+import com.leafia.dev.optimization.bitbyte.LeafiaBuf;
 import com.leafia.init.LeafiaSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -22,13 +24,38 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class AdvisorItem extends AddonItemBase {
+	public static class AdvisorWarningPacket implements LeafiaCustomPacketEncoder {
+		public int warningId;
+		public AdvisorWarningPacket() { }
+		public AdvisorWarningPacket(int warningId) {
+			this.warningId = warningId;
+		}
+		@Override
+		public void encode(LeafiaBuf buf) {
+			buf.writeInt(warningId);
+		}
+		@Override
+		public @Nullable Consumer<MessageContext> decode(LeafiaBuf buf) {
+			int warningId = buf.readInt();
+			return (ctx)->{
+				if (warningId == 0) // PYROPHORIC
+					Warns.pyro = true;
+				else if (warningId == 1) // SKIN DAMAGE II
+					Warns.skinDmg2 = true;
+				else if (warningId == 2) // SKIN DAMAGE III
+					Warns.skinDmg3 = true;
+			};
+		}
+	}
 	final static int len = 10000;
 	public static void showMessage(ITextComponent msg,int millisec,int id) {
 		id*=10;
@@ -50,8 +77,15 @@ public class AdvisorItem extends AddonItemBase {
 	}
 	public static class Warns {
 		static int gas = 0;
-		public static void tick() {
+		static boolean pyro = false;
+		static int pyroCooldown = 0;
+		static boolean skinDmg2 = false;
+		static boolean skinDmg3 = false;
+		public static void preTick() {
 			gas = decrement(gas);
+			pyro = false;
+			skinDmg2 = false;
+			skinDmg3 = false;
 		}
 		static int decrement(int v) { return Math.max(v-1,0); }
 	}
@@ -89,6 +123,20 @@ public class AdvisorItem extends AddonItemBase {
 				// BLOCK ALERT
 				gasAlert(world,pos,player);
 				gasAlert(world,pos.up(),player);
+			}
+			if (Warns.pyro) {
+				if (Warns.pyroCooldown <= 0)
+					playWarning();
+				Warns.pyroCooldown = gasCooldown;
+				showMessage(msg("pyro"),len,2);
+			}
+			if (Warns.skinDmg2) {
+				playWarning();
+				showMessage(msg("skindmg2"),len,3);
+			}
+			if (Warns.skinDmg3) {
+				playWarning();
+				showMessage(msg("skindmg3"),len,3);
 			}
 		}
 	}

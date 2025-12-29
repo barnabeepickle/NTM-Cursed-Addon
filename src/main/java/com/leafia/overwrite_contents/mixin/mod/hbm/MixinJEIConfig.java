@@ -6,7 +6,6 @@ import com.hbm.inventory.fluid.Fluids;
 import com.leafia.contents.AddonItems;
 import com.leafia.contents.gear.ntmfbottle.ItemNTMFBottle;
 import com.leafia.jei.*;
-import com.leafia.jei.JEICentrifuge.Recipe;
 import com.llamalad7.mixinextras.sugar.Local;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
@@ -15,6 +14,7 @@ import mezz.jei.api.ISubtypeRegistry.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,11 +40,15 @@ public class MixinJEIConfig {
 		addon_categories.add(new JEIReformer(help));
 		addon_categories.add(new JEIHydrotreater(help));
 
-		for (IRecipeCategory<Recipe> category : addon_categories)
+		for (IRecipeCategory<? extends IRecipeWrapper> category : addon_categories)
 			instance.addRecipeCategories(category);
+
+		//for (IRecipeCategory<? extends IRecipeWrapper> recipe : _AddonJEI.getRecipes(help))
+		//	instance.addRecipeCategories(recipe);
+
 		for (IRecipeCategory cat : iRecipeCategories) {
 			boolean doNotAdd = false;
-			for (IRecipeCategory<Recipe> addonCategory : addon_categories) {
+			for (IRecipeCategory<? extends IRecipeWrapper> addonCategory : addon_categories) {
 				if (addonCategory.getUid().equals(cat.getUid())) {
 					doNotAdd = true;
 					break;
