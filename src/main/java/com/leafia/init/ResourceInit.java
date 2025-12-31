@@ -43,7 +43,15 @@ public class ResourceInit {
 		LWRWreckModels.put(s,getWreckModel(s));
 	}*/
 
+	public static class FirestormAssets {
+		static ResourceLocation get(String s) {
+			return new ResourceLocation("leafia","models/leafia/firestorm/"+s+".obj");
+		}
+		public static final WaveFrontObjectVAO chem_destroyed = getVAO(get("chem_destroyed"));
+	}
+
 	static {
+		_initClass(FirestormAssets.class);
 		_initClass(LCERenderCloudFleija.class);
 		_initClass(DFCCoreRender.class);
 		_initClass(DFCComponentRender.class);

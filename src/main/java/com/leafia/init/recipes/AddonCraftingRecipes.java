@@ -73,6 +73,9 @@ public class AddonCraftingRecipes {
 
 		addRecipeAuto(new ItemStack(AddonBlocks.ff_duct_solid_shielded, 8), "SAS", "ADA", "SAS", 'S', ModBlocks.brick_compound, 'A', AddonBlocks.ff_duct, 'D', ModItems.ducttape);
 
+		addShapelessAuto(new ItemStack(AddonBlocks.fluid_duct_valve_mdl),new ItemStack(ModBlocks.fluid_duct_neo,1,2),AL.plate());
+		addShapelessAuto(new ItemStack(AddonBlocks.fluid_duct_valve_mdl_rs),new ItemStack(ModBlocks.fluid_duct_neo,1,2),new ItemStack(ModItems.motor));
+
 		hack.getRegistry().register(new PWRDebrisCrafting().setRegistryName(new ResourceLocation("leafia", "lwr_debris_crafting_handler")));
 	}
 	static void removeRecipesForItem(ForgeRegistry<IRecipe> reg,Item item) {

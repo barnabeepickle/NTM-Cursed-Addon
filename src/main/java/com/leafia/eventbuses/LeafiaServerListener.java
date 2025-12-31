@@ -14,9 +14,11 @@ import com.leafia.init.LeafiaSoundEvents;
 import com.leafia.passive.LeafiaPassiveServer;
 import com.leafia.unsorted.IEntityCustomCollision;
 import com.leafia.init.LeafiaDamageSource;
+import com.llib.exceptions.LeafiaDevFlaw;
 import com.llib.group.LeafiaMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -37,6 +39,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +47,22 @@ import java.util.Random;
 
 public class LeafiaServerListener {
 	public static class HandlerServer {
+		static Field wasPickedUp;
+		static {
+			try {
+				wasPickedUp = EntityItem.class.getDeclaredField("addon_wasPickedUp");
+			} catch (NoSuchFieldException e) {
+				throw new LeafiaDevFlaw(e);
+			}
+		}
+		@SubscribeEvent
+		public void onEntityItemPickup(EntityItemPickupEvent evt) {
+			try {
+				wasPickedUp.set(evt.getItem(),true);
+			} catch (IllegalAccessException e) {
+				throw new LeafiaDevFlaw(e);
+			}
+		}
 		@SubscribeEvent
 		public void worldTick(WorldTickEvent evt) {
 			if (evt.world != null && !evt.world.isRemote) {

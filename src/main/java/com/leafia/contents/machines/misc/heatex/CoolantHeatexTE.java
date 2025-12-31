@@ -68,7 +68,7 @@ public class CoolantHeatexTE extends TileEntityMachineBase implements ITickable,
 	};
 	public FluidType inputFilter = AddonFluids.FLUORIDE;
 	public FluidType outputFilter = AddonFluids.FLUORIDE;
-	public static final int capacity = 24000;
+	public static final int capacity = 2400000;
 	public FluidTank ff_inputA = new FluidTank(capacity);
 	public FluidTank ff_outputA = new FluidTank(capacity);
 	public FluidTankNTM ntmf_inputA = new FluidTankNTM(inputFilter,capacity);
@@ -376,8 +376,7 @@ public class CoolantHeatexTE extends TileEntityMachineBase implements ITickable,
 				NBTTagCompound compound = MSRTEBase.nbtProtocol(stack.tag);
 				double h = compound.getDouble("heat");
 				compound.setDouble("heat",0);
-				heat = (int)(h
-				);
+				heat = (int)(h*2);
 				stack.tag = compound;
 				stack1 = stack;
 			} else return;

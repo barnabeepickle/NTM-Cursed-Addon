@@ -2,12 +2,14 @@ package com.leafia.overwrite_contents.asm;
 
 //import com.hbm.core.MinecraftClassWriter;
 import com.leafia.contents.worldgen.biomes.effects.HasAcidicRain;
+import com.leafia.dev.firestorm.IFirestormBlock;
 import com.leafia.dev.machine.MachineTooltip;
 import com.leafia.passive.LeafiaPassiveServer;
 import com.leafia.shit.AssHooks;
 import com.leafia.transformer.LeafiaGeneralLocal;
 import com.leafia.transformer.WorldServerLeafia;
 import com.llib.exceptions.LeafiaDevFlaw;
+import com.llib.group.LeafiaSet;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.world.biome.Biome;
@@ -74,7 +76,11 @@ public class TransformerCoreLeafia implements IClassTransformer {
 			"net.minecraft.world.ServerWorldEventHandler",
 			"<REMOVED>",//"com.hbm.inventory.fluid.tank.FluidTankNTM"
 			"net.minecraft.item.ItemStack",
-			"net.minecraftforge.common.ForgeHooks"
+			"net.minecraftforge.common.ForgeHooks",
+			"net.minecraft.entity.item.EntityItem",
+			"net.minecraft.entity.player.EntityPlayer",
+			"net.minecraft.world.World",
+			"net.minecraft.block.BlockFire"
 	};
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] classBeingTransformed) {
@@ -150,6 +156,34 @@ public class TransformerCoreLeafia implements IClassTransformer {
 						break;
 					case 8:
 						doTransform(classNode,isObfuscated,AssHooks.class,index);
+						break;
+					case 9:
+						classNode.fields.add(
+								new FieldNode(
+										ACC_PUBLIC,
+										"addon_droppedBy",
+										"Lnet/minecraft/entity/player/EntityPlayer;",
+										null,null
+								)
+						);
+						classNode.fields.add(
+								new FieldNode(
+										ACC_PUBLIC,
+										"addon_wasPickedUp",
+										"Z",
+										null,null
+								)
+						);
+						//doTransform(classNode,isObfuscated,WorldServerLeafia.class,index);
+						break;
+					case 10:
+						doTransform(classNode,isObfuscated,WorldServerLeafia.class,index);
+						break;
+					case 11:
+						doTransform(classNode,isObfuscated,WorldServerLeafia.class,index);
+						break;
+					case 12:
+						doTransform(classNode,isObfuscated,IFirestormBlock.class,index);
 						break;
 					default:
 						throw new LeafiaDevErrorGls("#Leaf: Unexpected index "+index);
@@ -317,6 +351,15 @@ public class TransformerCoreLeafia implements IClassTransformer {
 			srgNames.put("func_82840_a","getTooltip");
 			srgNames.put("func_77973_b","getItem");
 			srgNames.put("func_77624_a","addInformation");
+		}
+		{
+			srgNames.put("func_146097_a","dropItem");
+			srgNames.put("func_70106_y","setDead");
+			srgNames.put("func_70071_h_","onUpdate");
+			srgNames.put("func_70097_a","attackEntityFrom");
+			srgNames.put("func_72847_b","onEntityRemoved");
+			srgNames.put("func_174867_a","setPickupDelay");
+			srgNames.put("func_176538_m","getNeighborEncouragement");
 		}
 		{ // thank you for making me go through all this suffering Mojang
 			/*
@@ -957,6 +1000,105 @@ public class TransformerCoreLeafia implements IClassTransformer {
 					*/
 				}
 				break;
+			case 9:
+				if (name.equals("onUpdate")) {
+					// FUCK OFF
+					MethodInsnNode callback = new MethodInsnNode(
+							INVOKESTATIC,
+							Type.getInternalName(WorldServerLeafia.class),
+							"onItemDestroyed",
+							"(Lnet/minecraft/entity/item/EntityItem;)V",
+							false
+					);
+					helper.method.instructions.insert(callback);
+					helper.method.instructions.insertBefore(
+							callback,
+							new VarInsnNode(ALOAD,0)
+					);
+					Sys.alert("PATCHED","Yes I checked");
+					return true;
+				}
+				break;
+			case 10:
+				if (name.equals("dropItem") && desc.equals("(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/item/EntityItem;")) {
+					printBytecodes(helper.method.instructions);
+					int storeId = -1;
+					boolean didInit = false;
+					for (AbstractInsnNode node : helper.method.instructions.toArray()) {
+						if (node instanceof MethodInsnNode method) {
+							String ass = pain.mapMethodName(method.owner,method.name,method.desc);
+							if (ass.equals("<init>")) {
+								didInit = true;
+							}
+							if ((srgNames.getOrDefault(ass,ass)).equals("setPickupDelay") && storeId != -1) {
+								MethodInsnNode callback = new MethodInsnNode(
+										INVOKESTATIC,
+										Type.getInternalName(WorldServerLeafia.class),
+										"onItemDroppedByPlayer",
+										"(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/entity/item/EntityItem;)V",
+										false
+								);
+								helper.method.instructions.insert(method,callback);
+								helper.method.instructions.insertBefore(
+										callback,
+										new VarInsnNode(ALOAD,0)
+								);
+								helper.method.instructions.insertBefore(
+										callback,
+										new VarInsnNode(ALOAD,storeId)
+								);
+								return true;
+							}
+						} else if (node instanceof VarInsnNode var) {
+							if (var.getOpcode() == ASTORE && didInit && storeId == -1)
+								storeId = var.var;
+						}
+					}
+					throw new LeafiaDevFlaw("LeafiaCore mod error: dropItem patch failed in EntityPlayer"); // this is better
+				}
+				break;
+			case 11:
+				if (name.equals("onEntityRemoved")) {
+					MethodInsnNode callback = new MethodInsnNode(
+							INVOKESTATIC,
+							Type.getInternalName(WorldServerLeafia.class),
+							"onEntityRemoved",
+							"(Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;)V",
+							false
+					);
+					helper.method.instructions.insert(callback);
+					helper.method.instructions.insertBefore(
+							callback,
+							new VarInsnNode(ALOAD,0)
+					);
+					helper.method.instructions.insertBefore(
+							callback,
+							new VarInsnNode(ALOAD,1)
+					);
+					return true;
+				}
+				break;
+			case 12:
+				if (name.equals("getNeighborEncouragement") || name.equals("tryCatchFire")) {
+					MethodInsnNode callback = new MethodInsnNode(
+							INVOKESTATIC,
+							Type.getInternalName(IFirestormBlock.class),
+							"ignite",
+							"(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V",
+							true
+					);
+					helper.method.instructions.insert(callback);
+					helper.method.instructions.insertBefore(
+							callback,
+							new VarInsnNode(ALOAD,1)
+					);
+					helper.method.instructions.insertBefore(
+							callback,
+							new VarInsnNode(ALOAD,2)
+					);
+					//return true;
+				}
+				break;
 		}
 		return false;
 	}
@@ -972,7 +1114,7 @@ public class TransformerCoreLeafia implements IClassTransformer {
 			System.out.println("       signature: "+profilerClass.signature);
 			System.out.println("       access: "+profilerClass.access);
 		}
-		List<String> attempt = new ArrayList<>();
+		LeafiaSet<String> attempt = new LeafiaSet<>();
 		for (MethodNode method : profilerClass.methods) {
 			attempt.clear();
 			Helper helper = new Helper(method,listener,profilerClass);

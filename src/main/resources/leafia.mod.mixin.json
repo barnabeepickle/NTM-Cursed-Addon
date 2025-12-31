@@ -8,16 +8,18 @@
   "client": [
     "hbm.MixinCoriumBlock",
     "hbm.MixinCoriumFinite",
-    "hbm.MixinFluidTankNTM",
     "hbm.MixinFolderButton",
     "hbm.MixinFT_HEatable",
     "hbm.MixinItemFluidIcon",
     "hbm.MixinItemRenderLaserDetonator",
+    "hbm.MixinParticleGasFlame",
     "hbm.MixinParticleRBMKMush",
-    "hbm.MixinRenderTorex",
-    "hbm.MixinRenderInfoSystemLegacy"
+    "hbm.MixinRenderChemicalPlant",
+    "hbm.MixinRenderInfoSystemLegacy",
+    "hbm.MixinRenderTorex"
   ],
   "mixins": [
+    "hbm.MixinFluidTankNTM",
     "hbm.MixinBlockCoalOil",
     "hbm.MixinBlockStorageCrate",
     "hbm.MixinBossSpawnHandler",
@@ -47,6 +49,7 @@
     "hbm.MixinItemLaserDetonator",
     "hbm.MixinJEIConfig",
     "hbm.MixinLandmine",
+    "hbm.MixinMachineChemicalPlant",
     "hbm.MixinModBlocks",
     "hbm.MixinModEventHandler",
     "hbm.MixinModItems",
@@ -65,6 +68,7 @@
     "hbm.MixinTileEntityHeatBoiler",
     "hbm.MixinTileEntityHeatBoilerIndustrial",
     "hbm.MixinTileEntityMachineBase",
+    "hbm.MixinTileEntityMachineChemicalPlant",
     "hbm.MixinTileEntityMachineFluidTank",
     "hbm.MixinTileEntityMachineLargeTurbine",
     "hbm.MixinTileEntityMachineTurbine",

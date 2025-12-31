@@ -4,13 +4,20 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockCoalOil;
 import com.hbm.items.tool.ItemToolAbility;
 import com.hbm.lib.Library;
+import com.hbm.main.AdvancementManager;
+import com.leafia.contents.gear.advisor.AdvisorItem;
+import com.leafia.dev.LeafiaDebug;
 import com.leafia.dev.optimization.LeafiaParticlePacket.FiaSpark;
 import com.leafia.dev.optimization.LeafiaParticlePacket.VanillaExt;
+import com.leafia.init.AddonAdvancements;
 import com.leafia.init.LeafiaSoundEvents;
+import com.llib.exceptions.LeafiaDevFlaw;
 import com.llib.group.LeafiaSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
@@ -28,9 +35,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class WorldServerLeafia {
 	public static void onBreakBlockProgress(World world,BlockPos pos,EntityPlayer player) {
@@ -86,6 +90,54 @@ public class WorldServerLeafia {
 				onBreakBlockProgress(world,pos,doxxed);
 				//((BlockCoalOil) block).onBreakBlockProgress(world,pos,doxxed);
 		}
+	}
+	static Field droppedBy;
+	//static Field health;
+	static Field wasPickedUp;
+	static {
+		try {
+			droppedBy = EntityItem.class.getDeclaredField("addon_droppedBy");
+			//health = EntityItem.class.getDeclaredField("health");
+			//health.setAccessible(true);
+			wasPickedUp = EntityItem.class.getDeclaredField("addon_wasPickedUp");
+		} catch (NoSuchFieldException e) {
+			throw new LeafiaDevFlaw(e);
+		}
+	}
+	public static void onItemDroppedByPlayer(EntityPlayer player,EntityItem item) {
+		try {
+			droppedBy.set(item,player);
+		} catch (IllegalAccessException e) {
+			throw new LeafiaDevFlaw(e);
+		}
+	}
+	public static void onEntityRemoved(World world,Entity entity) {
+		if (!world.isRemote && entity instanceof EntityItem item) {
+			try {
+				if (!wasPickedUp.getBoolean(item)) {
+					Object obj = droppedBy.get(item);
+					if (obj != null) {
+						EntityPlayer player = (EntityPlayer)obj;
+						if (item.getItem().getItem() instanceof AdvisorItem)
+							AdvancementManager.grantAchievement(player,AddonAdvancements.loseadvisor);
+					}
+				}
+			} catch (IllegalAccessException e) {
+				throw new LeafiaDevFlaw(e);
+			}
+		}
+	}
+	/// fuck off
+	public static void onItemDestroyed(EntityItem item) {
+		/*
+		try {
+			if (health.getInt(item) <= 0) {
+				Sys.alert("Destroyed","Item destroyed");
+				LeafiaDebug.debugLog(item.world,"DESTROYED!!");
+			}
+		} catch (IllegalAccessException e) {
+			throw new LeafiaDevFlaw(e);
+		}*/
 	}
 	public static void fluid_onFilling(FluidStack stack,IFluidHandler inst) {
 		World world = null;
