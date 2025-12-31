@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Final;
@@ -36,6 +38,7 @@ public class MixinFluidTankNTM implements IMixin {
 	private static void onClInit(CallbackInfo ci) {
 		loadingHandlers.add(0,new FluidLoaderBottle());
 	}
+	@SideOnly(Side.CLIENT)
 	@Inject(method = "renderTankInfo",at = @At(value = "INVOKE", target = "Lcom/hbm/inventory/fluid/FluidType;addInfo(Ljava/util/List;)V",remap = false),remap = false,require = 1)
 	void onRenderTankInfo(GuiInfoContainer gui,int mouseX,int mouseY,int x,int y,int width,int height,CallbackInfo ci) {
 		if (Mouse.isButtonDown(0) && !lastClicked) {
