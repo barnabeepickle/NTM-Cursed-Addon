@@ -53,7 +53,7 @@ public class AddonCraftingRecipes {
 
 		for (int meta = 0; meta < 3; meta++) {
 			addRecipeAuto(new ItemStack(AddonBlocks.ff_duct,3,meta),"DDD",'D',new ItemStack(ModBlocks.fluid_duct_neo,1,meta));
-			addShapelessAuto(new ItemStack(ModBlocks.fluid_duct_neo,1,meta),'D',new ItemStack(AddonBlocks.ff_duct,1,meta));
+			addShapelessAuto(new ItemStack(ModBlocks.fluid_duct_neo,1,meta),new ItemStack(AddonBlocks.ff_duct,1,meta));
 		}
 		addShapelessAuto(new ItemStack(AddonBlocks.ff_pump),new ItemStack(AddonBlocks.ff_duct,1,2),new ItemStack(ModItems.motor));
 		addShapelessAuto(new ItemStack(AddonBlocks.ff_converter),new ItemStack(AddonBlocks.ff_duct,1,2),AL.plate());

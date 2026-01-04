@@ -7,7 +7,7 @@ import com.hbm.main.MainRegistry;
 import com.leafia.AddonBase;
 import com.leafia.contents.AddonFluids.AddonFF;
 import com.leafia.contents.bomb.balefire.AshBalefire;
-import com.leafia.contents.bomb.balefire.BaleonititeBlock;
+import com.leafia.contents.bomb.balefire.BaleoniteBlock;
 import com.leafia.contents.building.light.LightBlock;
 import com.leafia.contents.building.light.LightEmitter;
 import com.leafia.contents.building.mixed.BlockMixedConcrete;
@@ -254,7 +254,7 @@ public class AddonBlocks {
 	public static final Block fluid_duct_valve_mdl = new FluidDuctValve(Material.IRON, "fluid_duct_valve_mdl").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.templateTab);
 	public static final Block fluid_duct_valve_mdl_rs = new FluidDuctValveRS(Material.IRON, "fluid_duct_valve_mdl_rs").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.templateTab);
 
-	public static final Block baleonitite = new BaleonititeBlock(Material.ROCK, SoundType.STONE, "baleonitite").setHardness(5.0F).setResistance(6F).setCreativeTab(MainRegistry.resourceTab);
+	public static final Block baleonitite = new BaleoniteBlock(Material.ROCK, SoundType.STONE, "baleonite").setHardness(5.0F).setResistance(6F).setCreativeTab(MainRegistry.resourceTab);
 	public static final Block ash_balefire = new AshBalefire(Material.SAND, "ash_balefire", SoundType.SAND).setLightLevel(9F/12F).setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
 
 	private static void modifyBlockParams() {

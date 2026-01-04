@@ -46,7 +46,7 @@ import static com.hbm.blocks.generic.BlockSellafieldSlaked.getVariantForPos;
 import static com.hbm.blocks.generic.BlockSellafieldSlaked.sellafieldTextures;
 import static com.hbm.render.block.BlockBakeFrame.ROOT_PATH;
 
-public class BaleonititeBlock extends BlockMeta implements IDynamicModels {
+public class BaleoniteBlock extends BlockMeta implements IDynamicModels {
 	public static final IUnlistedProperty<Integer> VARIANT = BlockSellafield.VARIANT;
 	public final static int LEVELS = 6;
 	public static final float rad = 5f;
@@ -76,7 +76,7 @@ public class BaleonititeBlock extends BlockMeta implements IDynamicModels {
 	}
 
 
-	public BaleonititeBlock(Material mat,SoundType type,String s) {
+	public BaleoniteBlock(Material mat,SoundType type,String s) {
 		super(mat, type, s, (short) LEVELS);
 		this.showMetaInCreative = true;
 		this.needsRandomTick = true;
