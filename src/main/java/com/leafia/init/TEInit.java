@@ -17,6 +17,7 @@ import com.leafia.contents.machines.reactors.lftr.components.ejector.MSREjectorT
 import com.leafia.contents.machines.reactors.lftr.components.element.MSRElementTE;
 import com.leafia.contents.machines.reactors.lftr.components.plug.MSRPlugTE;
 import com.leafia.contents.machines.reactors.lftr.processing.separator.SaltSeparatorTE;
+import com.leafia.contents.machines.reactors.pwr.blocks.components.computer.PWRComputerTE;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.control.PWRControlTE;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.element.PWRElementTE;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.port.PWRPortTE;
@@ -61,6 +62,7 @@ public class TEInit {
 		register(PWRElementTE.class,"lwr_element_te");
 		register(PWRPortTE.class,"lwr_port_te");
 		register(PWRTerminalTE.class,"lwr_terminal_te");
+		register(PWRComputerTE.class,"lwr_computer_te");
 		register(PWRMeshedWreckEntity.class,"lwr_wreck_te");
 		register(AmatDuctTE.class,"pipe_amat_te");
 		register(AmatDuctChargerTE.class,"charger_amat_te");

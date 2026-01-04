@@ -13,6 +13,8 @@
   "external.pwrcontrol": {"category": "block", "sounds": [{"name": "leafia:external/stormworks_hingepivot4_loop", "stream": false}]},
   "external.pwrcontrolstop": {"category": "block", "sounds": [{"name": "leafia:external/stormworks_hingepivot4_end", "stream": false}]},
 
+  "external.pwrelement": {"category": "block", "sounds": [{"name": "leafia:external/stormworks_nuclear_hum", "stream": false}]},
+
   "external.machineDestroyed": {"category": "block", "sounds": [{"name": "leafia:external/apeboss_death", "stream": false}]},
   "external.machineExplode": {"category": "block", "sounds": [{"name": "leafia:external/mech_explosion", "stream": false}]},
 

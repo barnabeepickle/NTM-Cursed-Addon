@@ -42,6 +42,8 @@ public class PWRDiagnosis {
 	// This set is cleared every world tick
 	public static final Set<BlockPos> preventScan = new HashSet<>();
 
+	public BlockPos forcedCorePos = null;
+
 	public final boolean isMeltdown;
 	public static final Set<PWRDiagnosis> ongoing = new HashSet<>();
 	private static boolean cleanupInProgress = false; // idk if this is necessary but I hate crashes so much so have this anyway
@@ -211,8 +213,17 @@ public class PWRDiagnosis {
 					// then allow it to be assigned as core
 					TileEntity entity = world.getTileEntity(pos);
 					if (entity != null) {
-						if (entity instanceof ITickable) // only assign tickable entities as a core
-							potentialPos.add(pos);
+						// only assign tickable entities as a core
+						// actually only assign entities explicitly stated as assignable
+						if (entity instanceof PWRComponentEntity component && component.canAssignCore()) {
+							boolean doNotAdd = false;
+							if (forcedCorePos != null) {
+								if (!pos.equals(forcedCorePos))
+									doNotAdd = true;
+							}
+							if (!doNotAdd)
+								potentialPos.add(pos);
+						}
 					}
 					if (pwr instanceof PWRElementBlock) {
 						fuelPositions.add(pos);

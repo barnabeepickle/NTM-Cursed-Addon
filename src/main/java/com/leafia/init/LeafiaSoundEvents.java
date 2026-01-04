@@ -25,6 +25,7 @@ public class LeafiaSoundEvents {
 	public static SoundEvent pwrRodStart;
 	public static SoundEvent pwrRodLoop;
 	public static SoundEvent pwrRodStop;
+	public static SoundEvent pwrElement;
 
 	public static SoundEvent machineDestroyed;
 	public static SoundEvent machineExplode;
@@ -81,6 +82,7 @@ public class LeafiaSoundEvents {
 		pwrRodStart = register("external.pwrcontrolstart");
 		pwrRodLoop = register("external.pwrcontrol");
 		pwrRodStop = register("external.pwrcontrolstop");
+		pwrElement = register("external.pwrelement");
 
 		machineDestroyed = register("external.machineDestroyed");
 		machineExplode = register("external.machineExplode");

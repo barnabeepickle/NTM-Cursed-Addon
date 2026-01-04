@@ -17,6 +17,7 @@ import com.leafia.contents.AddonItems;
 import com.llib.exceptions.LeafiaDevFlaw;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 
 import static com.hbm.inventory.OreDictManager.*;
 
@@ -85,6 +86,16 @@ public class AddonAssemblerRecipes {
 						new OreDictStack(MINGRADE.wireFine(),2)
 				)
 		);
+		if (Loader.isModLoaded("opencomputers")) {
+			INSTANCE.register(new GenericRecipe("ass.leafia.pwrcomputer").setup(200, 500).outputItems(new ItemStack(PWR.computer, 1))
+					.inputItems(
+							new OreDictStack(PB.plateCast(), 4),
+							new OreDictStack(REDSTONE.dust(), 12),
+							new ComparableStack(ModItems.circuit, 8, EnumCircuitType.BASIC),
+							new ComparableStack(ModItems.circuit, 2, EnumCircuitType.CAPACITOR)
+					)
+			);
+		}
 	}
 	public static void remove(String entry) {
 		GenericRecipe recipe = INSTANCE.recipeNameMap.get(entry);

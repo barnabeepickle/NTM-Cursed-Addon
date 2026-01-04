@@ -17,6 +17,8 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,6 +33,7 @@ public class MixinWasteGrassTall extends BlockBush implements IDynamicModels {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void bakeModel(ModelBakeEvent evt) {
 		try {
 			for (int z = 0; z <= 6; z++) {
@@ -61,11 +64,13 @@ public class MixinWasteGrassTall extends BlockBush implements IDynamicModels {
 		}
 	}
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		for (int z = 0; z <= 6; z++)
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this),z, new ModelResourceLocation(this.getRegistryName(), "inventory"));
 	}
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerSprite(TextureMap textureMap) {
 		for (int z = 0; z <= 6; z++) {
 			textureMap.registerSprite(new ResourceLocation(

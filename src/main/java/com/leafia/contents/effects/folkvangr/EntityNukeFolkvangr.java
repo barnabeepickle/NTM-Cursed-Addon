@@ -245,15 +245,20 @@ public class EntityNukeFolkvangr extends Entity implements IChunkLoader {
 		boolean carved = false; // optimization
 		for (int x = chunkPos.getXStart(); x <= chunkPos.getXEnd(); x++) {
 			for (int z = chunkPos.getZStart(); z <= chunkPos.getZEnd(); z++) {
+				// make sure it don't carve empty chunks in the air
 				if (world.getHeight(x,z) < cy*16) continue;
 				carved = true;
 				long rx = x-getPosition().getX();
 				long rz = z-getPosition().getZ();
+				// horizontal radius
 				double distFromRing = radius*radius-(rx*rx + rz*rz);
 				if (distFromRing > 1) {
-					int yheight = (int)Math.sqrt(Math.max(0,distFromRing-1));
-					int ystart = MathHelper.clamp(getPosition().getY()-yheight,cy*16,cy*16+15);
-					int yend = MathHelper.clamp(getPosition().getY()+yheight,cy*16,cy*16+15);
+					// y length
+					int ylength = (int)Math.sqrt(Math.max(0,distFromRing-1));
+					// what the hell even is this
+					int ystart = Math.max(getPosition().getY()-ylength,cy*16);//MathHelper.clamp(getPosition().getY()-ylength,cy*16,cy*16+15);
+					int yend = Math.min(getPosition().getY()+ylength,cy*16+15);//MathHelper.clamp(getPosition().getY()+ylength,cy*16,cy*16+15);
+					// avoid deleting the bedrock
 					if (ystart <= 0) ystart++;
 					if (yend <= 0) yend++;
 					for (int y = ystart; y <= yend; y++) {

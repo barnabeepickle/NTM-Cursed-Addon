@@ -79,6 +79,8 @@ public class AddonCraftingRecipes {
 		// make laser detonator cheap af
 		removeRecipesForItem(reg,ModItems.detonator_laser);
 		addShapelessAuto(new ItemStack(ModItems.detonator_laser, 1), ModItems.rangefinder, new ItemStack(ModItems.circuit, 2, EnumCircuitType.BASIC.ordinal()), ANY_RUBBER.ingot(), GOLD.wireFine() );
+		removeRecipesForItem(reg,ModItems.detonator_multi);
+		addShapelessAuto(new ItemStack(ModItems.detonator_multi, 1), ModItems.detonator, new ItemStack(ModItems.circuit, 2, EnumCircuitType.BASIC.ordinal()) );
 
 		hack.getRegistry().register(new PWRDebrisCrafting().setRegistryName(new ResourceLocation("leafia", "lwr_debris_crafting_handler")));
 	}

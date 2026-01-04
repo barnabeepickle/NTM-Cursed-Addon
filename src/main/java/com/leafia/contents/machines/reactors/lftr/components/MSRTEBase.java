@@ -2,6 +2,10 @@ package com.leafia.contents.machines.reactors.lftr.components;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.forgefluid.FFUtils;
+import com.hbm.inventory.control_panel.ControlEventSystem;
+import com.hbm.inventory.control_panel.DataValue;
+import com.hbm.inventory.control_panel.DataValueFloat;
+import com.hbm.inventory.control_panel.IControllable;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.util.I18nUtil;
 import com.leafia.contents.AddonFluids;
@@ -28,11 +32,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public abstract class MSRTEBase extends TileEntity implements ITickable, LeafiaPacketReceiver {
+public abstract class MSRTEBase extends TileEntity implements ITickable, LeafiaPacketReceiver, IControllable {
 	public FluidTank tank = new FluidTank(1000);
 	public static double getBaseTemperature(FluidType fluidType) {
 		return fluidType.temperature;
@@ -231,4 +236,40 @@ public abstract class MSRTEBase extends TileEntity implements ITickable, LeafiaP
 	public void onReceivePacketServer(byte key,Object value,EntityPlayer plr) { }
 	@Override
 	public void onPlayerValidate(EntityPlayer plr) { }
+
+	public BlockPos getControlPos() {
+		return pos;
+	}
+
+	public World getControlWorld() {
+		return world;
+	}
+
+	@Override
+	public void invalidate() {
+		ControlEventSystem.get(world).removeControllable(this);
+		super.invalidate();
+	}
+
+	@Override
+	public void validate() {
+		super.validate();
+		ControlEventSystem.get(world).addControllable(this);
+	}
+
+	@Override
+	public Map<String,DataValue> getQueryData() {
+		Map<String,DataValue> mop = new HashMap<>();
+		mop.put("amount",new DataValueFloat(tank.getFluidAmount()));
+		mop.put("capacity",new DataValueFloat(tank.getCapacity()));
+		float heat = 20;
+		if (tank.getFluid() != null) {
+			FluidStack stack = tank.getFluid();
+			heat = (float)getBaseTemperature(AddonFluids.fromFF(stack.getFluid()));
+			if (stack.tag != null)
+				heat += (float)stack.tag.getDouble("heat");
+		}
+		mop.put("temperature",new DataValueFloat(heat));
+		return mop;
+	}
 }

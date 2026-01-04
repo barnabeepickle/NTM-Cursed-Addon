@@ -1103,7 +1103,7 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 			return null;
 	}
 
-	void sendControlPositions() {
+	public void sendControlPositions() {
 		LeafiaPacket._start(companion)
 				.__write(29, writeControlPositions())
 				.__write(28, masterControl)
@@ -1194,7 +1194,7 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 		addDataToPacket(LeafiaPacket._start(companion), this).__sendToClient(plr);
 	}
 
-	void manipulateRod(String name) {
+	public void manipulateRod(String name) {
 		for (BlockPos pos : controls) {
 			TileEntity entity = getWorld().getTileEntity(pos);
 			if (entity instanceof PWRControlTE) {

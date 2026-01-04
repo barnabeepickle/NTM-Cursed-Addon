@@ -32,6 +32,7 @@ import com.leafia.contents.machines.reactors.pwr.blocks.PWRReflectorBlock;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.channel.PWRChannelBlock;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.channel.PWRConductorBlock;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.channel.PWRExchangerBlock;
+import com.leafia.contents.machines.reactors.pwr.blocks.components.computer.PWRComputerBlock;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.control.PWRControlBlock;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.element.PWRElementBlock;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.port.PWRPortBlock;
@@ -233,6 +234,7 @@ public class AddonBlocks {
 
 		public static final Block terminal = new PWRTerminalBlock().setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness).setResistance(PWR_CASING.v);
 		public static final Block port = new PWRPortBlock().setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness).setResistance(PWR_CASING.v);
+		public static final Block computer = new PWRComputerBlock().setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness).setResistance(PWR_CASING.v);
 
 		/*public static final Block ventElement = new PWRVentElementBlock().setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness).setResistance(PWR_CASING.v);
 		public static final Block ventOutlet = new PWRVentOutletBlock().setCreativeTab(MainRegistry.machineTab).setHardness(generalHardness).setResistance(PWR_CASING.v);
