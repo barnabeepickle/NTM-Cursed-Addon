@@ -71,16 +71,16 @@ public class MSRElementTE extends MSRTEBase {
 		u233(
 				new Item[]{},
 				new String[]{OreDictManager.U233.nugget()},
-				"(x×3)^0.65/B",
-				(x)->Math.pow(x*3,0.65),
+				"(x×5)^0.85/B",
+				(x)->Math.pow(x*5,0.85),
 				600000000d,
 				MSRByproduct.u233
 		),
 		u235(
 				new Item[]{},
 				new String[]{OreDictManager.U235.nugget()},
-				"(x×3)^0.6/B",
-				(x)->Math.pow(x*3,0.6)
+				"(x×5)^0.75/B",
+				(x)->Math.pow(x*5,0.75)
 		);
 		final public Item[] items;
 		final public String[] dicts;

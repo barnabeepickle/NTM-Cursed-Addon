@@ -24,6 +24,8 @@ import com.leafia.contents.machines.misc.heatex.container.CoolantHeatexGUI;
 import com.leafia.contents.machines.reactors.lftr.components.MSRTEBase;
 import com.leafia.contents.network.ff_duct.uninos.IFFProvider;
 import com.leafia.contents.network.ff_duct.uninos.IFFReceiver;
+import com.leafia.dev.LeafiaDebug;
+import com.leafia.dev.LeafiaUtil;
 import com.leafia.dev.container_utility.LeafiaPacket;
 import com.leafia.dev.container_utility.LeafiaPacketReceiver;
 import com.leafia.passive.LeafiaPassiveServer;
@@ -377,8 +379,8 @@ public class CoolantHeatexTE extends TileEntityMachineBase implements ITickable,
 				double h = compound.getDouble("heat");
 				compound.setDouble("heat",0);
 				heat = (int)(h*2);
-				stack.tag = compound;
-				stack1 = stack;
+				//stack.tag = compound;
+				stack1 = new FluidStack(stack.getFluid(),stack.amount,compound);
 			} else return;
 		}
 
@@ -388,7 +390,10 @@ public class CoolantHeatexTE extends TileEntityMachineBase implements ITickable,
 
 		int ops = Math.min(inputOps, Math.min(outputOps, opCap));
 		ff_inputA.drain(amountReq * ops,true);
-		ff_outputA.fill(new FluidStack(stack1,amountProduced * ops),true);
+		stack1 = new FluidStack(stack1,amountProduced * ops);
+		FluidTank tank = new FluidTank(stack1,stack1.amount);
+		LeafiaUtil.fillFF(tank,ff_outputA,amountProduced * ops);
+		//ff_outputA.fill(new FluidStack(stack1,amountProduced * ops),true);
 		this.heatEnergy += (int) (heat * ops * efficiency);
 		this.markDirty();
 	}

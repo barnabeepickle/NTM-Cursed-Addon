@@ -40,6 +40,8 @@ import com.leafia.contents.machines.reactors.pwr.blocks.components.terminal.PWRT
 import com.leafia.contents.machines.reactors.pwr.blocks.wreckage.PWRMeshedWreck;
 import com.leafia.contents.machines.reactors.pwr.blocks.wreckage.PWRWreckMetal;
 import com.leafia.contents.machines.reactors.pwr.blocks.wreckage.PWRWreckStone;
+import com.leafia.contents.network.computers.audiocable.AudioCableBlock;
+import com.leafia.contents.network.computers.cable.ComputerCableBlock;
 import com.leafia.contents.network.ff_duct.FFDuctRadShielded;
 import com.leafia.contents.network.ff_duct.FFDuctStandard;
 import com.leafia.contents.network.ff_duct.utility.converter.FFConverterBlock;
@@ -54,6 +56,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.*;
@@ -258,6 +261,22 @@ public class AddonBlocks {
 
 	public static final Block baleonitite = new BaleoniteBlock(Material.ROCK, SoundType.STONE, "baleonite").setHardness(5.0F).setResistance(6F).setCreativeTab(MainRegistry.resourceTab);
 	public static final Block ash_balefire = new AshBalefire(Material.SAND, "ash_balefire", SoundType.SAND).setLightLevel(9F/12F).setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
+
+	public static Block oc_cable;
+	public static Block audio_cable;
+	public static Block oc_cable_rad;
+	public static Block audio_cable_rad;
+
+	static {
+		if (Loader.isModLoaded("opencomputers")) {
+			oc_cable = new ComputerCableBlock(Material.IRON, "integ_cable_oc",false,"leafia/sealed_network/audio/cable_audio").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+			oc_cable_rad = new ComputerCableBlock(Material.IRON, "integ_cable_oc_rad",true,"leafia/sealed_network/audio/cable_audio_rad").setHardness(15.0F).setResistance(COMPOUND_MESH.v).setCreativeTab(MainRegistry.machineTab);
+		}
+		if (Loader.isModLoaded("computronics")) {
+			audio_cable = new AudioCableBlock(Material.IRON, "integ_cable_audio",false,"leafia/sealed_network/oc/cable_oc").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+			audio_cable_rad = new AudioCableBlock(Material.IRON, "integ_cable_audio_rad",true,"leafia/sealed_network/oc/cable_oc_rad").setHardness(15.0F).setResistance(COMPOUND_MESH.v).setCreativeTab(MainRegistry.machineTab);
+		}
+	}
 
 	private static void modifyBlockParams() {
 		ModBlocks.dfc_core.setResistance(65000000);

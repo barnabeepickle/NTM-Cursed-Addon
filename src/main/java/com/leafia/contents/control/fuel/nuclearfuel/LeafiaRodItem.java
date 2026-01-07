@@ -487,7 +487,7 @@ public class LeafiaRodItem extends AddonItemHazardBase implements IHasCustomMode
 					"heat",
 					newCooledTemp
 			);
-			if (newCooledTemp >= 100000)
+			if (newCooledTemp >= 10_000_000) // make it hotter
 				data.setBoolean("nuke",true); // new update
 			if (!meltdown && (meltingPoint != 0)) {
 				int timer = data.getInteger("generosityTimer");

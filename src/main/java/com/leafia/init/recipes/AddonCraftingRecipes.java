@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 
 import java.util.Objects;
@@ -81,6 +82,15 @@ public class AddonCraftingRecipes {
 		addShapelessAuto(new ItemStack(ModItems.detonator_laser, 1), ModItems.rangefinder, new ItemStack(ModItems.circuit, 2, EnumCircuitType.BASIC.ordinal()), ANY_RUBBER.ingot(), GOLD.wireFine() );
 		removeRecipesForItem(reg,ModItems.detonator_multi);
 		addShapelessAuto(new ItemStack(ModItems.detonator_multi, 1), ModItems.detonator, new ItemStack(ModItems.circuit, 2, EnumCircuitType.BASIC.ordinal()) );
+
+		if (AddonBlocks.oc_cable != null) {
+			addRecipeAuto(new ItemStack(AddonBlocks.oc_cable, 4), "ICI", "CRC", "ICI", 'I', ModItems.plate_polymer, 'R', REDSTONE.dust(), 'C', ForgeRegistries.ITEMS.getValue(new ResourceLocation("opencomputers", "cable")));
+			addShapelessAuto(new ItemStack(AddonBlocks.oc_cable_rad),AddonBlocks.oc_cable,ModBlocks.brick_compound);
+		}
+		if (AddonBlocks.audio_cable != null) {
+			addRecipeAuto(new ItemStack(AddonBlocks.audio_cable, 4), "SCS", "CIC", "SCS", 'S', ModBlocks.concrete_smooth, 'I', IRON.ingot(), 'C', ForgeRegistries.ITEMS.getValue(new ResourceLocation("computronics", "audio_cable")));
+			addShapelessAuto(new ItemStack(AddonBlocks.audio_cable_rad),AddonBlocks.audio_cable,ModBlocks.brick_compound);
+		}
 
 		hack.getRegistry().register(new PWRDebrisCrafting().setRegistryName(new ResourceLocation("leafia", "lwr_debris_crafting_handler")));
 	}
