@@ -18,10 +18,11 @@ import java.util.function.Function;
 public class LeafiaBlockReplacer {
 	public static final Map<String,Block> replacementMap = new HashMap<>();
 	public static IBlockState withProperties(Block newBlock,IBlockState missingBlock) {
-		IBlockState state = newBlock.getDefaultState();
+		/*IBlockState state = newBlock.getDefaultState();
 		for (IProperty<?> property : missingBlock.getPropertyKeys())
 			copyProperty(missingBlock,state,property);
-		return state;
+		return state;*/
+		return newBlock.getStateFromMeta(missingBlock.getBlock().getMetaFromState(missingBlock));
 	}
 	public interface SpecialReplacer extends BiFunction<String,IBlockState,IBlockState> { }
 	public static final Map<String,SpecialReplacer> specialReplacer = new HashMap<>();

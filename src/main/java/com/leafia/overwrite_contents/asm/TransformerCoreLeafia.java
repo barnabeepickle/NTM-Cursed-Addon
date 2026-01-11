@@ -82,7 +82,8 @@ public class TransformerCoreLeafia implements IClassTransformer {
 			"net.minecraft.entity.player.EntityPlayer",
 			"net.minecraft.world.World",
 			"net.minecraft.block.BlockFire",
-			"<REMOVED>"//"net.minecraftforge.registries.ForgeRegistry"
+			"<REMOVED>",//"net.minecraftforge.registries.ForgeRegistry"
+			"net.minecraftforge.registries.GameData$BlockCallbacks$BlockDummyAir"
 	};
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] classBeingTransformed) {
@@ -188,6 +189,10 @@ public class TransformerCoreLeafia implements IClassTransformer {
 						doTransform(classNode,isObfuscated,IFirestormBlock.class,index);
 						break;
 					case 13:
+						doTransform(classNode,isObfuscated,null,index);
+						break;
+					case 14:
+						classNode.superName = "com/leafia/shit/BlockMetaAir";
 						doTransform(classNode,isObfuscated,null,index);
 						break;
 					default:
@@ -1170,6 +1175,15 @@ public class TransformerCoreLeafia implements IClassTransformer {
 						lastNode = node;
 					}
 					throw new LeafiaDevFlaw("IRETURN COULDN'T BE CAPTURED");
+				}
+				break;
+			case 14:
+				for (AbstractInsnNode node : helper.method.instructions.toArray()) {
+					if (node instanceof MethodInsnNode mthd) {
+						System.out.println("METHOD OWNER: "+mthd.owner);
+						if (mthd.owner.equals("net/minecraft/block/BlockAir"))
+							mthd.owner = "com/leafia/shit/BlockMetaAir";
+					}
 				}
 				break;
 		}

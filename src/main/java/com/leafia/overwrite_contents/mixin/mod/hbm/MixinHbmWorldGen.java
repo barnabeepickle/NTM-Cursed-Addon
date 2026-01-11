@@ -16,7 +16,7 @@ public class MixinHbmWorldGen {
 	@Inject(method = "generateOres",at = @At("HEAD"),require = 1,remap = false)
 	public void onGenerateOres(World world,Random rand,int i,int j,CallbackInfo ci) {
 		int dimID = world.provider.getDimension();
-		if (dimID == 0 && rand.nextInt(64) == 0)
-			DungeonToolbox.generateOre(world,rand,i,j,1,64,32,32,LegacyBlocks.ore_coal_oil);
+		if (dimID == 0 && rand.nextInt(16) == 0)
+			DungeonToolbox.generateOre(world,rand,i,j,1,48,32,32,LegacyBlocks.ore_coal_oil);
 	}
 }
