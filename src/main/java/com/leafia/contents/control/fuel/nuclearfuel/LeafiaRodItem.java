@@ -1,5 +1,7 @@
 package com.leafia.contents.control.fuel.nuclearfuel;
 
+import com.custom_hbm.contents.torex.LCETorex;
+import com.hbm.capability.HbmLivingProps;
 import com.hbm.config.BombConfig;
 import com.hbm.config.GeneralConfig;
 import com.hbm.entity.effect.EntityCloudFleija;
@@ -20,6 +22,7 @@ import com.leafia.init.hazards.ItemRads.MultiRadContainer;
 import com.leafia.dev.items.itembase.AddonItemBase;
 import com.leafia.dev.items.itembase.AddonItemHazardBase;
 import com.leafia.init.hazards.types.radiation.Neutrons;
+import com.leafia.overwrite_contents.interfaces.IMixinEntityNukeExploisonMK5;
 import com.llib.LeafiaLib;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -33,6 +36,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -169,6 +173,23 @@ public class LeafiaRodItem extends AddonItemHazardBase implements IHasCustomMode
 				bf.posZ = z;
 				bf.destructionRange = 280;
 				world.spawnEntity(bf);
+				break;
+			}
+			case "dgomega": {
+				for (Entity entity : world.loadedEntityList) {
+					if (entity instanceof EntityLivingBase living) {
+						Vec3d entityPos = new Vec3d(living.posX,living.posY,living.posZ);
+						Vec3d myPos = new Vec3d(x,y,z);
+						double distance = entityPos.distanceTo(myPos);
+						double dg = HbmLivingProps.getDigamma(living);
+						double level = Math.max(dg,Math.min(50-distance/20,9.99));
+						HbmLivingProps.setDigamma(living,level);
+					}
+				}
+				LCETorex.statFacDigamma(world,x,y,z,50);
+				EntityNukeExplosionMK5 mk5 = EntityNukeExplosionMK5.statFac(world,50,x,y,z);
+				((IMixinEntityNukeExploisonMK5)mk5).setDigammaFallout();
+				world.spawnEntity(mk5);
 				break;
 			}
 			case "sa326": {

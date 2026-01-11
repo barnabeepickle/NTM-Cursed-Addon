@@ -1,8 +1,10 @@
 package com.leafia.init;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.BlockMeta;
 import com.hbm.config.FalloutConfigJSON;
 import com.hbm.config.FalloutConfigJSON.FalloutEntry;
+import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonBlocks.LegacyBlocks;
 import com.leafia.dev.blocks.blockbase.AddonBlockPowder;
 import com.llib.exceptions.LeafiaDevFlaw;
@@ -15,11 +17,31 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.Tuple;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FalloutConfigInit {
 	public static final List<FalloutEntry> entries = FalloutConfigJSON.entries;
+	public static final List<FalloutEntry> digammaEntries = new ArrayList<>();
 	public static void onInit() {
+		for (int i = 1; i <= 6; i++) {
+			int meta = 6-i;
+			digammaEntries.add(FalloutEntry.builder()
+					.addPrimary(AddonBlocks.digammitite.getDefaultState().withProperty(BlockMeta.META,meta), 1)
+					.max(i * 7.5)
+					.opaque(true)
+					.solid(true)
+					.matchingMaterial(Material.IRON)
+					.build());
+			digammaEntries.add(FalloutEntry.builder()
+					.addPrimary(AddonBlocks.digammitite.getDefaultState().withProperty(BlockMeta.META,meta), 1)
+					.max(i * 7.5)
+					.opaque(true)
+					.solid(true)
+					.matchingMaterial(Material.ROCK)
+					.build());
+		}
+
 		removeByMatchingMaterial(Material.GRASS);
 		removeByMatchingMaterial(Material.GROUND);
 		removeByMatchingMaterial(Material.SAND);
