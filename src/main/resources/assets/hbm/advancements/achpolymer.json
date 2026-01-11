@@ -1,5 +1,5 @@
 {
-  "parent": "hbm:achchemplant",
+  "parent": "leafia:progress_refinery",
   "display": {
     "icon": {
       "item": "hbm:ingot_polymer"

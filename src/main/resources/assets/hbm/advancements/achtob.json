@@ -1,5 +1,5 @@
 {
-  "parent": "hbm:root",
+  "parent": "leafia:root_misc",
   "display": {
     "icon": {
       "item": "hbm:fluid_icon",

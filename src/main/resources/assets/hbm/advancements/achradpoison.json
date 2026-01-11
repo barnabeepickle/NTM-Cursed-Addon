@@ -1,7 +1,7 @@
 {
 	"display": {
 		"icon": {
-			"item": "hbm:geiger_counter"
+			"item": "hbm:pellet_charged"
 		},
 		"title": {
 			"translate": "achievement.radPoison"

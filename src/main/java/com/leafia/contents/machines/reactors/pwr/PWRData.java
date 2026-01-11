@@ -25,6 +25,7 @@ import com.hbm.util.Tuple.Pair;
 import com.hbm.util.Tuple.Triplet;
 import com.leafia.CommandLeaf;
 import com.leafia.contents.AddonBlocks;
+import com.leafia.contents.AddonBlocks.LegacyBlocks;
 import com.leafia.contents.AddonFluids;
 import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
 import com.leafia.contents.machines.reactors.pwr.blocks.components.PWRComponentBlock;
@@ -954,24 +955,24 @@ public class PWRData implements ITickable, LeafiaPacketReceiver {
 						if (block instanceof BlockGrass)
 							world.setBlockState(member, ModBlocks.waste_earth.getStateFromMeta(Math.min(heat, 6)));
 						else if (block instanceof BlockGravel)
-							world.setBlockState(member, ModBlocks.waste_gravel.getStateFromMeta(Math.min(heat, 6)));
+							world.setBlockState(member, LegacyBlocks.waste_gravel.getStateFromMeta(Math.min(heat, 6)));
 						else if (block instanceof BlockDirt || block == Blocks.FARMLAND)
-							world.setBlockState(member, ModBlocks.waste_dirt.getStateFromMeta(Math.min(heat, 6)));
+							world.setBlockState(member, LegacyBlocks.waste_dirt.getStateFromMeta(Math.min(heat, 6)));
 						else if (block instanceof BlockSnow)
-							world.setBlockState(member, ModBlocks.waste_snow.getStateFromMeta(Math.min(heat, 6)));
+							world.setBlockState(member, LegacyBlocks.waste_snow.getStateFromMeta(Math.min(heat, 6)));
 						else if (block instanceof BlockSnowBlock)
-							world.setBlockState(member, ModBlocks.waste_snow_block.getStateFromMeta(Math.min(heat, 6)));
+							world.setBlockState(member, LegacyBlocks.waste_snow_block.getStateFromMeta(Math.min(heat, 6)));
 						else if (block instanceof BlockMycelium)
 							world.setBlockState(member, ModBlocks.waste_mycelium.getStateFromMeta(Math.min(heat, 6)));
 						//else if (block instanceof BlockRedSandstone)
 						//	world.setBlockState(member, ModBlocks.waste_sandstone_red.getStateFromMeta(Math.min(heat, 6)));
 						else if (block instanceof BlockSandStone)
-							world.setBlockState(member, ModBlocks.waste_sandstone.getStateFromMeta(Math.min(heat, 6)));
+							world.setBlockState(member, LegacyBlocks.waste_sandstone.getStateFromMeta(Math.min(heat, 6)));
 						else if (block instanceof BlockHardenedClay || block instanceof BlockStainedHardenedClay)
-							world.setBlockState(member, ModBlocks.waste_terracotta.getStateFromMeta(Math.min(heat, 6)));
+							world.setBlockState(member, LegacyBlocks.waste_terracotta.getStateFromMeta(Math.min(heat, 6)));
 						else if (block instanceof BlockSand) {
 							BlockSand.EnumType meta = state.getValue(BlockSand.VARIANT);
-							world.setBlockState(member, ((meta == BlockSand.EnumType.SAND) ? ModBlocks.waste_sand : ModBlocks.waste_sand_red).getStateFromMeta(Math.min(heat, 6)));
+							world.setBlockState(member, ((meta == BlockSand.EnumType.SAND) ? LegacyBlocks.waste_sand : LegacyBlocks.waste_sand_red).getStateFromMeta(Math.min(heat, 6)));
 						} else {
 							int level = -1;
 							if (block == Blocks.COBBLESTONE || block == Blocks.STONE || block instanceof BlockStone)

@@ -97,6 +97,9 @@ public class ItemWandV extends AddonItemBaked {
 							Block block = state.getBlock();
 							Material mat = state.getMaterial();
 							LeafiaDebug.debugPos(world,pos,15,0x40FF00,
+									"CLASS: "+block.getClass().getSimpleName(),
+									"REGISTRY: "+block.getRegistryName(),
+									TextFormatting.YELLOW+"-----------",
 									TextFormatting.GREEN+"BLK: !isPassable: "+pfx(!block.isPassable(world,pos)),
 									"BLK: isCollidable: "+pfx(block.isCollidable()),
 									"BLK: isNormalCube: "+pfx(block.isNormalCube(state,world,pos)),

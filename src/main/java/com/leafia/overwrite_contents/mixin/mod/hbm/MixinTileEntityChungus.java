@@ -39,7 +39,7 @@ public abstract class MixinTileEntityChungus extends TileEntityLoadedBase implem
 		generatedIndex = Math.floorMod(generatedIndex+1,20);
 		generateds[generatedIndex] = 0;
 	}
-	@Inject(method = "update",at = @At(value = "FIELD", target = "Lcom/hbm/tileentity/machine/TileEntityChungus;power:J",opcode = Opcodes.PUTFIELD,shift = Shift.AFTER,ordinal = 0,remap = false),require = 1)
+	@Inject(method = "update",at = @At(value = "FIELD", target = "Lcom/hbm/tileentity/machine/TileEntityChungus;power:J",opcode = Opcodes.PUTFIELD,shift = Shift.AFTER,ordinal = 1,remap = false),require = 1)
 	public void onAddEnergy(CallbackInfo ci,@Local(name = "ops") int ops,@Local(type = FT_Coolable.class) FT_Coolable trait,@Local(name = "eff") double eff) {
 		generateds[generatedIndex] = (long)((double)(ops * trait.heatEnergy) * eff);
 	}

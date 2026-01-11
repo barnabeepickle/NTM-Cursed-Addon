@@ -1,5 +1,5 @@
 {
-  "parent": "hbm:achblastfurnace",
+  "parent": "leafia:progress_steel",
   "display": {
     "icon": {
       "item": "hbm:machine_assembly_machine"

@@ -1,5 +1,5 @@
 {
-  "parent": "hbm:achassembly",
+  "parent": "hbm:achmanhattan",
   "display": {
     "icon": {
       "item": "hbm:missile_nuclear"

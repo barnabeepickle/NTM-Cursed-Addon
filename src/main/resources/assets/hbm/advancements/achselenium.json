@@ -1,5 +1,5 @@
 {
-  "parent": "hbm:achburnerpress",
+  "parent": "leafia:progress_adv",
   "display": {
     "icon": {
       "item": "hbm:ingot_starmetal"
@@ -10,37 +10,24 @@
     "description": {
       "translate": "achievement.selenium.desc"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
   "criteria": {
-    "crafting_hbm_piston_selenium": {
+    "crafting_table": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "hbm:piston_selenium"
-          }
-        ]
-      }
-    },
-    "crafting_hbm_gun_b92": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "hbm:gun_b92"
+            "item": "hbm:ingot_starmetal"
           }
         ]
       }
     }
   },
-  "requirements": [
-    [
-      "crafting_hbm_piston_selenium",
-      "crafting_hbm_gun_b92"
-    ]
-  ]
+  "rewards": {
+    "experience": 70
+  }
 }

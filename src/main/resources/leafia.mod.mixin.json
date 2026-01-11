@@ -21,7 +21,6 @@
   ],
   "mixins": [
     "hbm.MixinBalefire",
-    "hbm.MixinBlockCoalOil",
     "hbm.MixinBlockGasExplosive",
     "hbm.MixinBlockGasRadon",
     "hbm.MixinBlockRadonDense",
@@ -49,6 +48,7 @@
     "hbm.MixinFT_Polluting",
     "hbm.MixinHazardSystem",
     "hbm.MixinHazardTypeHot",
+    "hbm.MixinHbmWorldGen",
     "hbm.MixinIFluidReceiverMK2",
     "hbm.MixinIFluidStandardSenderMK2",
     "hbm.MixinItemCatalyst",

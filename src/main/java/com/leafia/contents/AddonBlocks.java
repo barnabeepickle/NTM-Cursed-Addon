@@ -1,9 +1,13 @@
 package com.leafia.contents;
 
+import com.custom_hbm.contents.oilycoal.BlockCoalBurning;
+import com.custom_hbm.contents.oilycoal.BlockCoalOil;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.ModSoundType;
+import com.hbm.blocks.generic.*;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.main.MainRegistry;
+import com.hbm.render.block.BlockBakeFrame;
 import com.leafia.AddonBase;
 import com.leafia.contents.AddonFluids.AddonFF;
 import com.leafia.contents.bomb.balefire.AshBalefire;
@@ -52,6 +56,11 @@ import com.leafia.contents.network.fluid.valves.FluidDuctValveRS;
 import com.leafia.contents.network.pipe_amat.AmatDuctStandard;
 import com.leafia.contents.network.pipe_amat.charger.AmatDuctChargerBlock;
 import com.leafia.contents.network.spk_cable.SPKCableBlock;
+import com.leafia.dev.blocks.blockbase.AddonBlockPowder;
+import com.leafia.dev.blocks.legacy.LegacyBlockHazardMeta;
+import com.leafia.dev.blocks.legacy.LegacyWasteEarth;
+import com.leafia.dev.blocks.legacy.LegacyWasteIce;
+import com.leafia.dev.blocks.legacy.LegacyWasteSand;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -268,6 +277,24 @@ public class AddonBlocks {
 	public static Block audio_cable;
 	public static Block oc_cable_rad;
 	public static Block audio_cable_rad;
+
+	static boolean legacy_dummy = LegacyBlocks.dummy;
+	public static class LegacyBlocks {
+		static boolean dummy = false;
+		public static final Block ore_coal_oil = new BlockCoalOil("ore_coal_oil").setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(15.0F);
+		public static final Block ore_coal_oil_burning = new BlockCoalBurning("ore_coal_oil_burning").setCreativeTab(MainRegistry.resourceTab).setLightLevel(10F/15F).setHardness(5.0F).setResistance(15.0F);
+
+		public static final Block waste_terracotta = new LegacyBlockHazardMeta(Material.ROCK, SoundType.STONE, "waste_terracotta", "contamination/terracotta/", BlockBakeFrame.BlockForm.ALL, (short) 7).setCreativeTab(MainRegistry.resourceTab).setHardness(4.0F).setResistance(8.0F);
+		public static final Block waste_sand_red = new LegacyWasteSand(Material.SAND, SoundType.SAND, "waste_sand_red").setHardness(0.5F).setResistance(1.0F).setCreativeTab(MainRegistry.resourceTab);
+		public static final Block waste_red_sandstone = new LegacyBlockHazardMeta(Material.ROCK, SoundType.STONE, "waste_red_sandstone", "contamination/red_sandstone/", BlockBakeFrame.BlockForm.PILLAR_BOTTOM, (short) 7).setCreativeTab(MainRegistry.resourceTab).setHardness(3.0F).setResistance(6.0F);
+		public static final Block waste_sand = new LegacyWasteSand(Material.SAND, SoundType.SAND, "waste_sand").setHardness(0.5F).setResistance(1.0F).setCreativeTab(MainRegistry.resourceTab);
+		public static final Block waste_sandstone = new LegacyBlockHazardMeta(Material.ROCK, SoundType.STONE, "waste_sandstone", "contamination/sandstone/", BlockBakeFrame.BlockForm.PILLAR_BOTTOM, (short) 7).setCreativeTab(MainRegistry.resourceTab).setHardness(3.0F).setResistance(6.0F);
+		public static final Block waste_gravel = new LegacyWasteSand(Material.GROUND, SoundType.GROUND, "waste_gravel").setHardness(0.5F).setResistance(1.0F).setCreativeTab(MainRegistry.resourceTab);
+		public static final Block waste_dirt = new LegacyWasteEarth(Material.GROUND, SoundType.GROUND, true, "waste_dirt").setHardness(0.5F).setResistance(1.0F).setCreativeTab(MainRegistry.resourceTab);
+		public static final Block waste_snow = new AddonBlockPowder(Material.SNOW, SoundType.SNOW, "waste_snow").setCreativeTab(MainRegistry.resourceTab).setHardness(0.1F).setLightOpacity(0);
+		public static final Block waste_snow_block = new LegacyBlockHazardMeta(Material.SNOW, SoundType.SNOW, "waste_snow_block", "contamination/snow/", BlockBakeFrame.BlockForm.ALL, (short) 7).setCreativeTab(MainRegistry.resourceTab).setHardness(0.2F);
+		public static final Block waste_ice = new LegacyWasteIce("waste_ice").setCreativeTab(MainRegistry.resourceTab).setHardness(0.2F);
+	}
 
 	static {
 		if (Loader.isModLoaded("opencomputers")) {

@@ -8,6 +8,7 @@ import com.leafia.passive.LeafiaPassiveServer;
 import com.leafia.shit.AssHooks;
 import com.leafia.transformer.LeafiaGeneralLocal;
 import com.leafia.transformer.WorldServerLeafia;
+import com.leafia.unsorted.LeafiaBlockReplacer;
 import com.llib.exceptions.LeafiaDevFlaw;
 import com.llib.group.LeafiaSet;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -80,7 +81,8 @@ public class TransformerCoreLeafia implements IClassTransformer {
 			"net.minecraft.entity.item.EntityItem",
 			"net.minecraft.entity.player.EntityPlayer",
 			"net.minecraft.world.World",
-			"net.minecraft.block.BlockFire"
+			"net.minecraft.block.BlockFire",
+			"<REMOVED>"//"net.minecraftforge.registries.ForgeRegistry"
 	};
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] classBeingTransformed) {
@@ -184,6 +186,9 @@ public class TransformerCoreLeafia implements IClassTransformer {
 						break;
 					case 12:
 						doTransform(classNode,isObfuscated,IFirestormBlock.class,index);
+						break;
+					case 13:
+						doTransform(classNode,isObfuscated,null,index);
 						break;
 					default:
 						throw new LeafiaDevErrorGls("#Leaf: Unexpected index "+index);
@@ -1097,6 +1102,74 @@ public class TransformerCoreLeafia implements IClassTransformer {
 							new VarInsnNode(ALOAD,2)
 					);
 					//return true;
+				}
+				break;
+			case 13:
+				if (name.equals("markDummy")) {
+					printBytecodes(helper.method.instructions);
+					List<VarInsnNode> varNodes = new ArrayList<>();
+					AbstractInsnNode lastNode = null;
+					for (AbstractInsnNode node : helper.method.instructions.toArray()) {
+						if (node.getOpcode() == INVOKEVIRTUAL) {
+							if (node instanceof MethodInsnNode mthd) {
+								if (mthd.name.equals("add")) {
+									//helper.method.instructions.insertBefore(node,new VarInsnNode(ILOAD,2));
+									//helper.method.instructions.remove(node);
+									VarInsnNode aload3 = varNodes.get(varNodes.size()-1);
+									helper.method.instructions.insertBefore(
+											aload3,new VarInsnNode(ALOAD,1)
+									);
+									MethodInsnNode callback = new MethodInsnNode(
+											INVOKESTATIC,
+											Type.getInternalName(LeafiaBlockReplacer.class),
+											"getDummy",
+											"(Lnet/minecraft/util/ResourceLocation;Lnet/minecraftforge/registries/IForgeRegistryEntry;Lnet/minecraftforge/registries/ForgeRegistry;)Lnet/minecraftforge/registries/IForgeRegistryEntry;",
+											false
+									);
+									helper.method.instructions.insertBefore(node,callback);
+									helper.method.instructions.insertBefore(
+											callback,new VarInsnNode(ALOAD,0)
+									);
+									//helper.method.instructions.remove(nodes.get(nodes.size()-2));
+									//helper.method.instructions.remove(nodes.get(nodes.size()-3));
+									return true;
+								}
+							}
+						}
+						if (node instanceof VarInsnNode var) {
+							varNodes.add(var);
+						}
+						if (node.getOpcode() == IRETURN) {
+							if (lastNode != null) {
+								if (lastNode.getOpcode() == ICONST_1) {
+									System.out.println("IRETURN 1 FOUND");
+									MethodInsnNode callback = new MethodInsnNode(
+											INVOKESTATIC,
+											Type.getInternalName(LeafiaBlockReplacer.class),
+											"replace",
+											"(Lnet/minecraft/util/ResourceLocation;ILnet/minecraftforge/registries/ForgeRegistry;)V",
+											false
+									);
+									helper.method.instructions.insertBefore(lastNode,callback);
+									helper.method.instructions.insertBefore(
+											callback,
+											new VarInsnNode(ALOAD,1)
+									);
+									helper.method.instructions.insertBefore(
+											callback,
+											new VarInsnNode(ILOAD,2)
+									);
+									helper.method.instructions.insertBefore(
+											callback,
+											new VarInsnNode(ALOAD,0)
+									);
+									return true;
+								}
+							}
+						}
+						lastNode = node;
+					}
+					throw new LeafiaDevFlaw("IRETURN COULDN'T BE CAPTURED");
 				}
 				break;
 		}

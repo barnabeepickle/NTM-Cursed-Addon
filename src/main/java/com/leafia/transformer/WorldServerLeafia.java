@@ -1,12 +1,11 @@
 package com.leafia.transformer;
 
-import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockCoalOil;
+import com.custom_hbm.contents.oilycoal.BlockCoalOil;
 import com.hbm.items.tool.ItemToolAbility;
 import com.hbm.lib.Library;
 import com.hbm.main.AdvancementManager;
+import com.leafia.contents.AddonBlocks.LegacyBlocks;
 import com.leafia.contents.gear.advisor.AdvisorItem;
-import com.leafia.dev.LeafiaDebug;
 import com.leafia.dev.optimization.LeafiaParticlePacket.FiaSpark;
 import com.leafia.dev.optimization.LeafiaParticlePacket.VanillaExt;
 import com.leafia.init.AddonAdvancements;
@@ -65,7 +64,7 @@ public class WorldServerLeafia {
 						VanillaExt.Lava().emit(res.hitVec,new Vec3d(0,0,0),world.provider.getDimension());
 						if (world.rand.nextInt(3) == 0) {
 							world.playSound(null,pos,SoundEvents.ITEM_FIRECHARGE_USE,SoundCategory.BLOCKS,0.65F,0.9F+world.rand.nextFloat()*0.2F);
-							world.setBlockState(pos,ModBlocks.ore_coal_oil_burning.getDefaultState());
+							world.setBlockState(pos,LegacyBlocks.ore_coal_oil_burning.getDefaultState());
 						}
 					}
 				}

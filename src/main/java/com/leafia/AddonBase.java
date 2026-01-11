@@ -29,6 +29,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.registries.ForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -158,6 +159,7 @@ public class AddonBase {
 		if (TransformerCoreLeafia.loadFailed != null)
 			TransformerCoreLeafia.loadFailed.run();
 		FalloutConfigInit.onInit();
+
         /*
         FluidTankNTM tankNTM = new FluidTankNTM(Fluids.CRYOGEL,1000);
         NBTTagCompound nbt = new NBTTagCompound();

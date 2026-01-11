@@ -1,5 +1,5 @@
 {
-  "parent": "hbm:root",
+  "parent": "leafia:progress_anvil",
   "display": {
     "icon": {
       "item": "hbm:machine_press"
