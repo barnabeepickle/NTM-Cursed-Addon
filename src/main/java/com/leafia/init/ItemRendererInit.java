@@ -3,6 +3,7 @@ package com.leafia.init;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.render.item.ItemRenderBatteryPack;
 import com.hbm.render.item.TEISRBase;
 import com.hbm.render.tileentity.IItemRendererProvider;
 import com.leafia.contents.AddonBlocks;
@@ -13,8 +14,11 @@ import com.leafia.contents.building.light.LightRender;
 import com.leafia.contents.building.light.LightRender.LightItemRender;
 import com.leafia.contents.building.sign.SignRender;
 import com.leafia.contents.building.sign.SignRender.SignItemRender;
+import com.leafia.contents.control.battery.AddonBatteryPackItemRender;
 import com.leafia.contents.gear.advisor.AdvisorRender;
 import com.leafia.contents.machines.misc.heatex.CoolantHeatexRender;
+import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerRender;
+import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerRender.AMSStabilizerItemRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCComponentRender;
 import com.leafia.contents.machines.processing.mixingvat.MixingVatRender;
 import com.leafia.contents.machines.processing.mixingvat.MixingVatRender.MixingVatItemRender;
@@ -68,6 +72,10 @@ public class ItemRendererInit {
 		register(AddonBlocks.fluid_duct_valve_mdl_rs,equipment);
 
 		register(AddonItems.advisor,new AdvisorRender());
+
+		register(AddonItems.addon_battery_pack,new AddonBatteryPackItemRender());
+
+		register(AddonBlocks.ams_limiter,new AMSStabilizerItemRender());
 
 		/*fix(AddonItems.ams_focus_blank);
 		fix(AddonItems.ams_focus_booster);

@@ -16,6 +16,7 @@
     "hbm.MixinItemRenderMissileGeneric",
     "hbm.MixinParticleGasFlame",
     "hbm.MixinParticleRBMKMush",
+    "hbm.MixinRenderBatterySocket",
     "hbm.MixinRenderChemicalPlant",
     "hbm.MixinRenderInfoSystemLegacy",
     "hbm.MixinRenderTorex"
@@ -69,6 +70,7 @@
     "hbm.MixinOreDictManager",
     "hbm.MixinSerializableRecipe",
     "hbm.MixinTileEntityBarrel",
+    "hbm.MixinTileEntityBatterySocket",
     "hbm.MixinTileEntityChungus",
     "hbm.MixinTileEntityCondenser",
     "hbm.MixinTileEntityCore",

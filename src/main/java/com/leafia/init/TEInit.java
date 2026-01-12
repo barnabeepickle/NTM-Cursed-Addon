@@ -7,6 +7,8 @@ import com.leafia.contents.debug.ff_test.source.FFSourceTE;
 import com.leafia.contents.debug.ff_test.tank.FFTankTE;
 import com.leafia.contents.machines.misc.heatex.CoolantHeatexTE;
 import com.leafia.contents.machines.panel.controltorch.ControlTorchTE;
+import com.leafia.contents.machines.powercores.ams.base.AMSBaseTE;
+import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerTE;
 import com.leafia.contents.machines.powercores.dfc.components.cemitter.CoreCEmitterTE;
 import com.leafia.contents.machines.powercores.dfc.components.exchanger.CoreExchangerTE;
 import com.leafia.contents.machines.processing.mixingvat.MixingVatTE;
@@ -74,6 +76,9 @@ public class TEInit {
 		register(FluidDuctValveTE.class,"duct_valve_te");
 		register(AudioCableTE.class,"cable_audio_te");
 		register(ComputerCableTE.class,"cable_computer_te");
+		register(AMSBaseTE.class,"ams_base_te");
+		register(AMSStabilizerTE.class,"ams_stabilizer_te");
+		//register(AMSEmitterTE.class,"ams_emitter_te");
 	}
 	private static void register(Class<? extends TileEntity> clazz,String res) {
 		GameRegistry.registerTileEntity(clazz,new ResourceLocation(AddonBase.MODID,res));

@@ -8,6 +8,7 @@ import com.leafia.contents.bomb.missile.AddonMissileItemRender;
 import com.leafia.contents.building.light.LightRender;
 import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudFleija;
 import com.leafia.contents.gear.advisor.AdvisorRender;
+import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCComponentRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCCoreRender;
 import com.leafia.contents.machines.processing.mixingvat.MixingVatRender;
@@ -66,6 +67,7 @@ public class ResourceInit {
 		_initClass(FluidDuctEquipmentRender.class);
 		_initClass(AdvisorRender.class);
 		_initClass(AddonMissileItemRender.class);
+		_initClass(AMSStabilizerRender.class);
 		/*{
 			setWreckModel("intact");
 			setWreckModel("metal_rubble_0");
@@ -105,5 +107,9 @@ public class ResourceInit {
 		WaveFrontObjectVAO.allVBOs.remove(vao);
 		allVAOs.add(vao);
 		return vao;
+	}
+
+	public static ResourceLocation getIntegrated(String s) {
+		return new ResourceLocation("leafia","textures/_integrated/"+s);
 	}
 }

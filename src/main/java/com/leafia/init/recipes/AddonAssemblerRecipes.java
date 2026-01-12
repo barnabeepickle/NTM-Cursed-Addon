@@ -14,6 +14,7 @@ import com.hbm.items.ModItems;
 import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonBlocks.LetterSigns;
 import com.leafia.contents.AddonBlocks.PWR;
+import com.leafia.contents.AddonFluids;
 import com.leafia.contents.AddonItems;
 import com.llib.exceptions.LeafiaDevFlaw;
 import net.minecraft.block.Block;
@@ -116,6 +117,27 @@ public class AddonAssemblerRecipes {
 					)
 			);
 		}
+		INSTANCE.register(new GenericRecipe("ass.leafia.radspice").setup(100,500).setIcon(ModItems.fluid_icon,AddonFluids.RADSPICE_SLOP.getID())
+				.inputItems(
+						new OreDictStack(CO60.dust()),
+						new OreDictStack(SR90.dust()),
+						new OreDictStack(I131.dust()),
+						new OreDictStack(CS137.dust()),
+						new OreDictStack(XE135.dust()),
+						new OreDictStack(AU198.dust()),
+						new OreDictStack(PB209.dust()),
+						new OreDictStack(AC227.dust())
+				)
+				.inputFluids(
+						new FluidStack(Fluids.SLOP,1_000)
+				)
+				.outputItems(
+						new ItemStack(Blocks.DIRT) // fuck off it breaks without an item output
+				)
+				.outputFluids(
+						new FluidStack(AddonFluids.RADSPICE_SLOP,1_000)
+				)
+		);
 	}
 	public static void remove(String entry) {
 		GenericRecipe recipe = INSTANCE.recipeNameMap.get(entry);

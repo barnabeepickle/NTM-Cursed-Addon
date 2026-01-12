@@ -24,11 +24,11 @@ public abstract class MixinEntityNukeExplosionMK5 extends EntityExplosionChunklo
 	public void setDigammaFallout() {
 		digammaFallout = true;
 	}
-	@Inject(method = "readEntityFromNBT",at = @At(value = "HEAD"),require = 1,remap = false)
+	@Inject(method = "readEntityFromNBT",at = @At(value = "HEAD"),require = 1)
 	public void onReadEntityFromNBT(NBTTagCompound nbt,CallbackInfo ci) {
 		digammaFallout = nbt.getBoolean("digammaFallout");
 	}
-	@Inject(method = "writeEntityToNBT",at = @At(value = "HEAD"),require = 1,remap = false)
+	@Inject(method = "writeEntityToNBT",at = @At(value = "HEAD"),require = 1)
 	public void onWriteEntityFromNBT(NBTTagCompound nbt,CallbackInfo ci) {
 		nbt.setBoolean("digammaFallout",digammaFallout);
 	}

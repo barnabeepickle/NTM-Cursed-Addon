@@ -23,6 +23,7 @@ import com.leafia.contents.debug.ff_test.tank.FFTankBlock;
 import com.leafia.contents.fluids.FluorideFluid.FluorideFluidBlock;
 import com.leafia.contents.machines.misc.heatex.CoolantHeatexBlock;
 import com.leafia.contents.machines.panel.controltorch.ControlTorchBlock;
+import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerBlock;
 import com.leafia.contents.machines.powercores.dfc.AddonCoreComponent;
 import com.leafia.contents.machines.processing.mixingvat.MixingVatBlock;
 import com.leafia.contents.machines.reactors.lftr.components.arbitrary.MSRArbitraryBlock;
@@ -298,6 +299,10 @@ public class AddonBlocks {
 		public static final Block waste_snow_block = new LegacyBlockHazardMeta(Material.SNOW, SoundType.SNOW, "waste_snow_block", "contamination/snow/", BlockBakeFrame.BlockForm.ALL, (short) 7).setCreativeTab(MainRegistry.resourceTab).setHardness(0.2F);
 		public static final Block waste_ice = new LegacyWasteIce("waste_ice").setCreativeTab(MainRegistry.resourceTab).setHardness(0.2F);
 	}
+
+	//public static final Block ams_base = new BlockAMSBase(Material.IRON, "ams_base").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
+	//public static final Block ams_emitter = new BlockAMSEmitter(Material.IRON, "ams_emitter").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block ams_limiter = new AMSStabilizerBlock(Material.IRON, "ams_limiter").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
 
 	static {
 		if (Loader.isModLoaded("opencomputers")) {
