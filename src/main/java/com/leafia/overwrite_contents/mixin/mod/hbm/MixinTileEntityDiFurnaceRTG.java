@@ -55,6 +55,14 @@ public abstract class MixinTileEntityDiFurnaceRTG extends TileEntityMachineBase 
 			if (nbt != null) {
 				fuelHeat = nbt.getDouble("heat");
 				//if (fuelHeat >= 2000) {
+				if (nbt.getBoolean("nuke")) {
+					for (int i = 0; i < inventory.getSlots(); i++)
+						inventory.setStackInSlot(i, ItemStack.EMPTY);
+					world.setBlockToAir(pos);
+					rod.nuke(world,pos);
+					ci.cancel();
+					return;
+				}
 				if (nbt.getInteger("spillage") > 20*5) {
 					ItemStack prevStack = null;
 					for (int i = 0; i < inventory.getSlots(); i++) {

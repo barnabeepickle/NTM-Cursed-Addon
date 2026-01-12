@@ -8,9 +8,11 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class LeafiaPassiveServer {
-	static final List<Runnable> queue = new ArrayList<>();
+	/// NOTE TO MY DUMBASS: basically ArrayList but thread safe
+	static final ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
 	public static void onTick(World world) {
 		PWRDiagnosis.preventScan.clear();
 		Tracker.postTick(world);

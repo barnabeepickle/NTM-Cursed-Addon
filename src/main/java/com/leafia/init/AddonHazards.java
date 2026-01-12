@@ -90,6 +90,11 @@ public class AddonHazards {
 		registerHazardRegular(OreDictManager.PB,new HazardEntry(TOXIC,1.75));
 		registerHazardRegular(OreDictManager.BE,new HazardEntry(TOXIC,1.75));
 
+		HazardSystem.register(ModItems.blades_desh,makeData(SHARP,40));
+		HazardSystem.register(ModItems.blades_steel,makeData(SHARP,40));
+		HazardSystem.register(ModItems.blades_titanium,makeData(SHARP,40));
+		HazardSystem.register(ModItems.blades_advanced_alloy,makeData(SHARP,40));
+
 		for (AddonItemHazardBase hazardItem : AddonItemHazardBase.ALL_HAZARD_ITEMS) {
 			HazardEntry entry_contamination = null;
 			HazardEntry entry_alpha = null;

@@ -35,6 +35,7 @@ import com.leafia.dev.container_utility.LeafiaPacket;
 import com.leafia.dev.container_utility.LeafiaPacketReceiver;
 import com.leafia.init.LeafiaSoundEvents;
 import com.leafia.overwrite_contents.interfaces.IMixinTileEntityReactorZIRNOX;
+import com.leafia.passive.LeafiaPassiveServer;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -171,6 +172,13 @@ public abstract class MixinTileEntityReactorZIRNOX extends TileEntityMachineBase
 		NBTTagCompound data = stack.getTagCompound();
 		if (data != null) {
 			avgHeat += (data.getDouble("heat")-20)/24;
+			if (data.getBoolean("nuke")) {
+				this.kill = true;
+				explode();
+				LeafiaPassiveServer.queueFunction(()->{
+					rod.nuke(world,pos.add(0,3,0));
+				});
+			}
 			if (data.getInteger("spillage") > 200) {
 				this.kill = true;
 				explode();
