@@ -78,10 +78,8 @@ public class AddonBase {
 		// register to the event bus so that we can listen to events
 		MinecraftForge.EVENT_BUS.register(this);
 
-		_initClass(AddonEnumBatteryPack.class);
-
 		for (EnumBatteryPack value : EnumBatteryPack.values()) {
-			System.out.println("ENUM: "+value.name());
+			System.out.println("ENUM: "+value.name()+", ORDINAL: "+value.ordinal());
 		}
 
 		Configuration config = new Configuration(new File(proxy.getDataDir().getPath() + "/config/hbm/leafia.cfg"));
