@@ -24,6 +24,10 @@ import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudRainbow;
 import com.leafia.contents.gear.utility.FuzzyIdentifierRender;
 import com.leafia.contents.machines.misc.heatex.CoolantHeatexRender;
 import com.leafia.contents.machines.misc.heatex.CoolantHeatexTE;
+import com.leafia.contents.machines.powercores.ams.base.AMSBaseRender;
+import com.leafia.contents.machines.powercores.ams.base.AMSBaseTE;
+import com.leafia.contents.machines.powercores.ams.emitter.AMSEmitterRender;
+import com.leafia.contents.machines.powercores.ams.emitter.AMSEmitterTE;
 import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerRender;
 import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerTE;
 import com.leafia.contents.machines.powercores.dfc.components.cemitter.CoreCEmitterTE;
@@ -133,7 +137,9 @@ public class LeafiaClientProxy extends LeafiaServerProxy {
 			ClientRegistry.bindTileEntitySpecialRenderer(FluidDuctGaugeTE.class,equipment);
 			ClientRegistry.bindTileEntitySpecialRenderer(FluidDuctValveTE.class,equipment);
 
+			ClientRegistry.bindTileEntitySpecialRenderer(AMSBaseTE.class,new AMSBaseRender());
 			ClientRegistry.bindTileEntitySpecialRenderer(AMSStabilizerTE.class,new AMSStabilizerRender());
+			ClientRegistry.bindTileEntitySpecialRenderer(AMSEmitterTE.class,new AMSEmitterRender());
 		}
 		AddonJars.initJars();
 	}

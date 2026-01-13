@@ -2,10 +2,12 @@ package com.leafia.init.recipes;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.OreDictManager;
+import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.fluid.FluidStack;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.recipes.AssemblyMachineRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.items.ItemEnums.EnumCircuitType;
@@ -16,6 +18,7 @@ import com.leafia.contents.AddonBlocks.LetterSigns;
 import com.leafia.contents.AddonBlocks.PWR;
 import com.leafia.contents.AddonFluids;
 import com.leafia.contents.AddonItems;
+import com.leafia.contents.control.battery.AddonEnumBatteryPack;
 import com.llib.exceptions.LeafiaDevFlaw;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -137,6 +140,32 @@ public class AddonAssemblerRecipes {
 				.outputFluids(
 						new FluidStack(AddonFluids.RADSPICE_SLOP,1_000)
 				)
+		);
+		makeRecipe("ass.leafia.ams_stabilizer_part",new ComparableStack(AddonItems.component_limiter, 1), new AStack[] { new ComparableStack(ModItems.part_barrel_heavy, 2,Mats.MAT_STEEL.id), new OreDictStack(STEEL.plate(), 32), new OreDictStack(TI.plate(), 18), new ComparableStack(ModItems.plate_desh, 12), new ComparableStack(ModItems.pipes_steel, 4), new ComparableStack(ModItems.circuit, 8, EnumCircuitType.CAPACITOR_BOARD), new ComparableStack(ModItems.circuit, 4, EnumCircuitType.BISMOID), new OreDictStack(STAR.ingot(), 14), new ComparableStack(ModItems.plate_dalekanium, 5), new ComparableStack(ModItems.powder_magic, 16), new ComparableStack(ModBlocks.icf_controller, 3), }, 2500);
+		makeRecipe("ass.leafia.ams_limiter_part",new ComparableStack(AddonItems.component_emitter, 1), new AStack[] { new ComparableStack(ModItems.part_barrel_heavy, 3,Mats.MAT_STEEL.id), new ComparableStack(ModItems.part_barrel_heavy, 2,Mats.MAT_TCALLOY.id), new OreDictStack(STEEL.plate(), 32), new OreDictStack(PB.plate(), 24), new ComparableStack(ModItems.plate_desh, 24), new ComparableStack(ModItems.pipes_steel, 8), new ComparableStack(ModItems.circuit, 12, EnumCircuitType.CAPACITOR_BOARD), new ComparableStack(ModItems.circuit, 8, EnumCircuitType.BISMOID), new OreDictStack(STAR.ingot(), 26), new ComparableStack(ModItems.powder_magic, 48), new ComparableStack(ModBlocks.icf_controller, 2), new ComparableStack(ModItems.crystal_xen, 1), }, 2500);
+		makeRecipe("ass.leafia.ams_stabilizer",new ComparableStack(AddonBlocks.ams_limiter, 1), new AStack[] { new ComparableStack(AddonItems.component_limiter, 5), new OreDictStack(STEEL.plate(), 64), new OreDictStack(TI.plate(), 64), new OreDictStack(TI.plate(), 64), new ComparableStack(ModItems.plate_dineutronium, 16), new ComparableStack(ModItems.circuit, 6, EnumCircuitType.BISMOID), new ComparableStack(ModItems.pipes_steel, 16), new ComparableStack(ModItems.motor, 12), new ComparableStack(ModItems.coil_advanced_torus, 12), new ComparableStack(ModItems.entanglement_kit, 1), }, 6000);
+		makeRecipe("ass.leafia.ams_emitter",new ComparableStack(AddonBlocks.ams_emitter, 1), new AStack[] { new ComparableStack(AddonItems.component_emitter, 16), new OreDictStack(STEEL.plate(), 64), new OreDictStack(STEEL.plate(), 64), new OreDictStack(TI.plate(), 64), new OreDictStack(TI.plate(), 64), new OreDictStack(TI.plate(), 64), new ComparableStack(ModItems.plate_dineutronium, 32), new ComparableStack(ModItems.circuit, 12, EnumCircuitType.BISMOID), new ComparableStack(ModItems.coil_advanced_torus, 24), new ComparableStack(ModItems.entanglement_kit, 3), new ComparableStack(ModItems.crystal_horn, 1), new ComparableStack(ModBlocks.struct_icf_core,1) }, 6000);
+		INSTANCE.register(new GenericRecipe("ass.leafia.ams_base").setup(6000,100)
+				.outputItems(new ItemStack(AddonBlocks.ams_base))
+				.inputItems(
+						new ComparableStack(ModBlocks.icf_component),
+						new OreDictStack(STEEL.plate(),32),
+						new OreDictStack(TI.plate(),64),
+						new OreDictStack(DNT.plate(),8),
+						new ComparableStack(ModItems.circuit, 32, EnumCircuitType.BISMOID),
+						new ComparableStack(ModItems.coil_advanced_torus, 6),
+						new ComparableStack(ModItems.coil_magnetized_tungsten, 24),
+						new ComparableStack(ModBlocks.barrel_tcalloy,2),
+						new ComparableStack(ModBlocks.barrel_antimatter,2),
+						new ComparableStack(ModItems.battery_pack,1,AddonEnumBatteryPack.BATTERY_SPK)
+				)
+		);
+		makeRecipe("ass.leafia.supercooler",new ComparableStack(AddonItems.supercooler, 1), new AStack[] { new ComparableStack(ModItems.coil_copper_torus, 3), new OreDictStack(STEEL.ingot(), 3), new OreDictStack(TI.plate(), 6), new ComparableStack(ModItems.plate_polymer, 12), new OreDictStack(BR.ingot(), 2), new ComparableStack(PWR.exchanger,32), new ComparableStack(ModBlocks.watz_cooler,16) }, 100);
+	}
+	public static void makeRecipe(String s,ComparableStack out, AStack[] in, int duration) {
+		INSTANCE.register(new GenericRecipe(s).setup(duration,100)
+				.outputItems(new ItemStack(out.item))
+				.inputItems(in)
 		);
 	}
 	public static void remove(String entry) {

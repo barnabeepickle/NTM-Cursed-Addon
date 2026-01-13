@@ -17,6 +17,10 @@ import com.leafia.contents.building.sign.SignRender.SignItemRender;
 import com.leafia.contents.control.battery.AddonBatteryPackItemRender;
 import com.leafia.contents.gear.advisor.AdvisorRender;
 import com.leafia.contents.machines.misc.heatex.CoolantHeatexRender;
+import com.leafia.contents.machines.powercores.ams.base.AMSBaseRender;
+import com.leafia.contents.machines.powercores.ams.base.AMSBaseRender.AMSBaseItemRender;
+import com.leafia.contents.machines.powercores.ams.emitter.AMSEmitterRender;
+import com.leafia.contents.machines.powercores.ams.emitter.AMSEmitterRender.AMSEmitterItemRender;
 import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerRender;
 import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerRender.AMSStabilizerItemRender;
 import com.leafia.contents.machines.powercores.dfc.render.DFCComponentRender;
@@ -75,7 +79,9 @@ public class ItemRendererInit {
 
 		//register(AddonItems.addon_battery_pack,new AddonBatteryPackItemRender());
 
+		register(AddonBlocks.ams_base,new AMSBaseItemRender());
 		register(AddonBlocks.ams_limiter,new AMSStabilizerItemRender());
+		register(AddonBlocks.ams_emitter,new AMSEmitterItemRender());
 
 		/*fix(AddonItems.ams_focus_blank);
 		fix(AddonItems.ams_focus_booster);

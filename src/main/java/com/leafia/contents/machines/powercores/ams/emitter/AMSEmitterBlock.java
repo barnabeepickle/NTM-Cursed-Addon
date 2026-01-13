@@ -1,4 +1,4 @@
-package com.leafia.contents.machines.powercores.ams.stabilizer;
+package com.leafia.contents.machines.powercores.ams.emitter;
 
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityProxyCombo;
@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AMSStabilizerBlock extends AddonBlockDummyable {
-	public AMSStabilizerBlock(Material materialIn,String s) {
+public class AMSEmitterBlock extends AddonBlockDummyable {
+	public AMSEmitterBlock(Material materialIn,String s) {
 		super(materialIn,s);
 	}
 	@Override
@@ -29,7 +29,7 @@ public class AMSStabilizerBlock extends AddonBlockDummyable {
 	}
 	@Override
 	public int[] getDimensions() {
-		return new int[]{5,0,0,0,2,2};
+		return new int[]{5,0,2,2,2,2};
 	}
 	@Override
 	public int getOffset() {
@@ -38,7 +38,7 @@ public class AMSStabilizerBlock extends AddonBlockDummyable {
 	@Override
 	public @Nullable TileEntity createNewTileEntity(World worldIn,int meta) {
 		if (meta >= 12)
-			return new AMSStabilizerTE();
+			return new AMSEmitterTE();
 		else if (meta >= 6)
 			return new TileEntityProxyCombo(true,true,true);
 		return null;
@@ -46,11 +46,11 @@ public class AMSStabilizerBlock extends AddonBlockDummyable {
 	@Override
 	protected void fillSpace(World world,int x,int y,int z,ForgeDirection dir,int o) {
 		super.fillSpace(world,x,y,z,dir,o);
-		EnumFacing facing = dir.toEnumFacing();
-		BlockPos pos = new BlockPos(x,y,z);
-		makeExtra(world,pos);
-		makeExtra(world,pos.offset(facing.rotateY(),2));
-		makeExtra(world,pos.offset(facing.rotateY(),-2));
+		makeExtra(world,x,y+5,z);
+		makeExtra(world,x+1,y+5,z);
+		makeExtra(world,x-1,y+5,z);
+		makeExtra(world,x,y+5,z+1);
+		makeExtra(world,x,y+5,z-1);
 	}
 	@Override
 	public boolean onBlockActivated(World worldIn,BlockPos pos,IBlockState state,EntityPlayer playerIn,EnumHand hand,EnumFacing facing,float hitX,float hitY,float hitZ) {

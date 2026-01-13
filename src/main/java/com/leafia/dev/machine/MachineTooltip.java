@@ -65,7 +65,6 @@ public class MachineTooltip {
 				case "fusion_klystron":
 					addMultiblock(tooltip);
 					addModular(tooltip);
-					addBoiler(tooltip);
 					break;
 				case "fusion_breeder":
 				case "fusion_collector":
@@ -157,8 +156,6 @@ public class MachineTooltip {
 				case "watz_cooler":
 				case "watz_casing":
 					addMultiblock(tooltip);
-					addBoiler(tooltip);
-					addNuclear(tooltip);
 					break;
 
 				// ICF

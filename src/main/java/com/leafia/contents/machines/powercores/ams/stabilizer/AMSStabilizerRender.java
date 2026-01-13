@@ -1,12 +1,12 @@
 package com.leafia.contents.machines.powercores.ams.stabilizer;
 
 import com.hbm.inventory.fluid.Fluids;
-import com.hbm.main.ResourceManager;
 import com.hbm.render.NTMRenderHelper;
 import com.hbm.render.loader.WaveFrontObjectVAO;
 import com.leafia.contents.machines.powercores.ams.base.AMSBaseTE;
 import com.leafia.dev.LeafiaItemRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -47,7 +47,7 @@ public class AMSStabilizerRender extends TileEntitySpecialRenderer<AMSStabilizer
 		GlStateManager.disableCull();
 		GL11.glRotatef(180, 0F, 1F, 0F);
 		GL11.glRotatef(-90, 0F, 1F, 0F);
-		switch(AMSStabilizerTE.rotateShitFuck(te.getBlockMetadata())-10)
+		switch(AMSStabilizerTE.rotateShitfuck(te.getBlockMetadata())-10)
 		{
 			case 2:
 				GL11.glRotatef(90, 0F, 1F, 0F); break;
@@ -61,7 +61,7 @@ public class AMSStabilizerRender extends TileEntitySpecialRenderer<AMSStabilizer
 		if(te.locked)
 			bindTexture(texd);
 		else {
-			int meta = AMSStabilizerTE.rotateShitFuck(te.getBlockMetadata())-10;
+			int meta = AMSStabilizerTE.rotateShitfuck(te.getBlockMetadata())-10;
 			AMSBaseTE base = null;
 			if(meta == 2 && te.getWorld().getTileEntity(te.getPos().add(0, 0, -6)) instanceof AMSBaseTE)
 				base = (AMSBaseTE)te.getWorld().getTileEntity(te.getPos().add(0, 0, -6));
@@ -97,7 +97,7 @@ public class AMSStabilizerRender extends TileEntitySpecialRenderer<AMSStabilizer
 		GL11.glRotatef(180, 0F, 1F, 0F);
 		GL11.glRotatef(-90, 0F, 1F, 0F);
 
-		switch(AMSStabilizerTE.rotateShitFuck(tileEntity.getBlockMetadata())-10)
+		switch(AMSStabilizerTE.rotateShitfuck(tileEntity.getBlockMetadata())-10)
 		{
 			case 2:
 				GL11.glRotatef(90, 0F, 1F, 0F); break;
@@ -113,7 +113,7 @@ public class AMSStabilizerRender extends TileEntitySpecialRenderer<AMSStabilizer
 
 		AMSStabilizerTE limiter = (AMSStabilizerTE)tileEntity;
 
-		int meta = AMSStabilizerTE.rotateShitFuck(tileEntity.getBlockMetadata())-10;
+		int meta = AMSStabilizerTE.rotateShitfuck(tileEntity.getBlockMetadata())-10;
 		boolean flag = false;
 		double maxSize = 5;
 		double minSize = 0.5;
@@ -139,6 +139,7 @@ public class AMSStabilizerRender extends TileEntitySpecialRenderer<AMSStabilizer
 		}
 
 		if(flag) {
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
 			GL11.glRotatef(-90, 0F, 1F, 0F);
 

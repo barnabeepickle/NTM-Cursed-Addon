@@ -2,7 +2,6 @@ package com.leafia.contents.machines.powercores.ams.base;
 
 import com.hbm.api.energymk2.IEnergyProviderMK2;
 import com.hbm.api.fluidmk2.IFluidStandardReceiverMK2;
-import com.hbm.api.fluidmk2.IFluidStandardSenderMK2;
 import com.hbm.entity.effect.EntityCloudFleijaRainbow;
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.handler.ArmorUtil;
@@ -13,16 +12,31 @@ import com.hbm.items.ISatChip;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemCatalyst;
 import com.hbm.items.special.ItemAMSCore;
+import com.hbm.lib.DirPos;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.saveddata.satellites.SatelliteResonator;
 import com.hbm.saveddata.satellites.SatelliteSavedData;
+import com.hbm.tileentity.IGUIProvider;
+import com.leafia.contents.fluids.traits.FT_DFCFuel;
+import com.leafia.contents.machines.powercores.ams.base.container.AMSBaseContainer;
+import com.leafia.contents.machines.powercores.ams.base.container.AMSBaseUI;
+import com.leafia.contents.machines.powercores.ams.emitter.AMSEmitterTE;
+import com.leafia.contents.machines.powercores.ams.stabilizer.AMSStabilizerTE;
+import com.leafia.dev.LeafiaUtil;
+import com.leafia.dev.container_utility.LeafiaPacket;
+import com.leafia.dev.container_utility.LeafiaPacketReceiver;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
@@ -31,7 +45,7 @@ import scala.util.Random;
 
 import java.util.List;
 
-public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardReceiverMK2, IEnergyProviderMK2 {
+public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardReceiverMK2, IEnergyProviderMK2, IGUIProvider, LeafiaPacketReceiver {
 
 	public ItemStackHandler inventory;
 
@@ -81,7 +95,7 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 	}
 	
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.amsBase";
+		return this.hasCustomInventoryName() ? this.customName : "tile.ams_base.name";
 	}
 
 	public boolean hasCustomInventoryName() {
@@ -135,6 +149,16 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 		tanks[3].writeToNBT(compound,"fuelB");
 		return super.writeToNBT(compound);
 	}
+
+	public DirPos[] getConPos() {
+		return new DirPos[]{
+				new DirPos(pos.down(),ForgeDirection.DOWN),
+				new DirPos(pos.offset(EnumFacing.NORTH,2),ForgeDirection.NORTH),
+				new DirPos(pos.offset(EnumFacing.SOUTH,2),ForgeDirection.SOUTH),
+				new DirPos(pos.offset(EnumFacing.EAST,2),ForgeDirection.EAST),
+				new DirPos(pos.offset(EnumFacing.WEST,2),ForgeDirection.WEST)
+		};
+	}
 	
 	@Override
 	public void update() {
@@ -153,8 +177,17 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 			}*/
 			
 			if(!locked) {
-				for (int t = 0; t < 8; t+=2)
-					tanks[t/4*2].setType(t,t+1,inventory);
+				for (DirPos con : getConPos()) {
+					tryProvide(world,con.getPos(),con.getDir());
+					for (int i = 0; i < 4; i++)
+						trySubscribe(tanks[i].getTankType(),world,con);
+				}
+				//for (int t = 0; t < 8; t+=2)
+				//	tanks[t/4*2].setType(t,t+1,inventory);
+				LeafiaUtil.setTypeBy(tanks[0],0,1,inventory,AMSBaseTE::isValidCoolant,tanks[1].getTankType());
+				LeafiaUtil.setTypeBy(tanks[1],2,3,inventory,AMSBaseTE::isValidCoolant,tanks[0].getTankType());
+				LeafiaUtil.setTypeBy(tanks[2],4,5,inventory,AMSBaseTE::isValidFuel,tanks[3].getTankType());
+				LeafiaUtil.setTypeBy(tanks[3],6,7,inventory,AMSBaseTE::isValidFuel,tanks[2].getTankType());
 
 				age++;
 				if(age >= 20)
@@ -165,40 +198,38 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 				int f1 = 0, f2 = 0, f3 = 0, f4 = 0;
 				int booster = 0;
 
-				// i want to die
-				/*
-				if(world.getTileEntity(pos.add(6, 0, 0)) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(6, 0, 0));
-					if(!te.locked && te.getBlockMetadata() == 4) {
+				if(world.getTileEntity(pos.add(6, 0, 0)) instanceof AMSStabilizerTE) {
+					AMSStabilizerTE te = (AMSStabilizerTE)world.getTileEntity(pos.add(6, 0, 0));
+					if(!te.locked && AMSStabilizerTE.rotateShitfuck(te.getBlockMetadata())-10 == 4) {
 						f1 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(-6, 0, 0)) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(-6, 0, 0));
-					if(!te.locked && te.getBlockMetadata() == 5) {
+				if(world.getTileEntity(pos.add(-6, 0, 0)) instanceof AMSStabilizerTE) {
+					AMSStabilizerTE te = (AMSStabilizerTE)world.getTileEntity(pos.add(-6, 0, 0));
+					if(!te.locked && AMSStabilizerTE.rotateShitfuck(te.getBlockMetadata())-10 == 5) {
 						f2 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(0, 0, 6)) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(0, 0, 6));
-					if(!te.locked && te.getBlockMetadata() == 2) {
+				if(world.getTileEntity(pos.add(0, 0, 6)) instanceof AMSStabilizerTE) {
+					AMSStabilizerTE te = (AMSStabilizerTE)world.getTileEntity(pos.add(0, 0, 6));
+					if(!te.locked && AMSStabilizerTE.rotateShitfuck(te.getBlockMetadata())-10 == 2) {
 						f3 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(0, 0, -6)) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(0, 0, -6));
-					if(!te.locked && te.getBlockMetadata() == 3) {
+				if(world.getTileEntity(pos.add(0, 0, -6)) instanceof AMSStabilizerTE) {
+					AMSStabilizerTE te = (AMSStabilizerTE)world.getTileEntity(pos.add(0, 0, -6));
+					if(!te.locked && AMSStabilizerTE.rotateShitfuck(te.getBlockMetadata())-10 == 3) {
 						f4 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
-				}*/
+				}
 				
 				this.field = Math.round(calcField(f1, f2, f3, f4));
 				
@@ -208,10 +239,10 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 				if(booster > 0)
 					mode = 2;
 				
-				/*if(world.getTileEntity(pos.add(0, 9, 0)) instanceof TileEntityAMSEmitter) {
-					TileEntityAMSEmitter te = (TileEntityAMSEmitter)world.getTileEntity(pos.add(0, 9, 0));
+				if(world.getTileEntity(pos.add(0, 9, 0)) instanceof AMSEmitterTE) {
+					AMSEmitterTE te = (AMSEmitterTE)world.getTileEntity(pos.add(0, 9, 0));
 						this.efficiency = te.efficiency;
-				}*/
+				}
 				
 				this.color = -1;
 				
@@ -302,6 +333,19 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, field, 3), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			PacketDispatcher.wrapper.sendToAllTracking(new FluidTankPacket(pos, new FluidTank[] {tanks[0], tanks[1], tanks[2], tanks[3]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			 */
+			NBTTagCompound sendTanks = new NBTTagCompound();
+			for (int i = 0; i < 4; i++)
+				tanks[i].writeToNBT(sendTanks,"tank"+i);
+			LeafiaPacket._start(this)
+					.__write(0,power)
+					.__write(1,locked)
+					.__write(2,efficiency)
+					.__write(3,heat)
+					.__write(4,sendTanks)
+					.__write(5,hasResonators())
+					.__write(6,color)
+					.__write(7,field)
+					.__sendToClients(250);
 		} else {
 			if (!hasResonators())
 				warning = 3;
@@ -360,7 +404,11 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 			world.setBlockToAir(pos);
 		}
 	}
-	
+
+	public static boolean isValidCoolant(FluidType type) {
+		return type.equals(Fluids.WATER) || type.equals(Fluids.OIL) || type.equals(Fluids.COOLANT) || type.equals(Fluids.CRYOGEL);
+	}
+
 	private int getCoolingStrength(FluidType type) {
 		if(type == null)
 			return 0;
@@ -376,8 +424,12 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 			return 0;
 		}
 	}
+
+	public static boolean isValidFuel(FluidType type) {
+		return getFuelPower(type) > 0;
+	}
 	
-	private int getFuelPower(FluidType type) {
+	public static int getFuelPower(FluidType type) {
 		if(type == null)
 			return 0;
 		else if(type == Fluids.DEUTERIUM){
@@ -385,6 +437,8 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 		} else if(type == Fluids.TRITIUM){
 			return 75;
 		} else {
+			if (type.hasTrait(FT_DFCFuel.class))
+				return (int)(type.getTrait(FT_DFCFuel.class).getModifier()*49.6794871795);
 			return 0;
 		}
 	}
@@ -507,4 +561,40 @@ public class AMSBaseTE extends TileEntity implements ITickable, IFluidStandardRe
 	public @NotNull FluidTankNTM[] getReceivingTanks() {
 		return tanks;
 	}
+
+	@Override
+	public Container provideContainer(int i,EntityPlayer entityPlayer,World world,int i1,int i2,int i3) {
+		return new AMSBaseContainer(entityPlayer.inventory,this);
+	}
+
+	@Override
+	public GuiScreen provideGUI(int i,EntityPlayer entityPlayer,World world,int i1,int i2,int i3) {
+		return new AMSBaseUI(entityPlayer.inventory,this);
+	}
+
+	@Override
+	public String getPacketIdentifier() {
+		return "AMS_BASE";
+	}
+	@Override
+	public void onReceivePacketLocal(byte key,Object value) {
+		switch(key) {
+			case 0 -> power = (long)value;
+			case 1 -> locked = (boolean)value;
+			case 2 -> efficiency = (int)value;
+			case 3 -> heat = (int)value;
+			case 4 -> {
+				NBTTagCompound tag = (NBTTagCompound)value;
+				for (int i = 0; i < 4; i++)
+					tanks[i].readFromNBT(tag,"tank"+i);
+			}
+			case 5 -> syncResonators = (boolean)value;
+			case 6 -> color = (int)value;
+			case 7 -> field = (int)value;
+		}
+	}
+	@Override
+	public void onReceivePacketServer(byte key,Object value,EntityPlayer plr) { }
+	@Override
+	public void onPlayerValidate(EntityPlayer plr) { }
 }

@@ -1,6 +1,8 @@
 package com.leafia.dev;
 
 import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.tank.FluidTankNTM;
+import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityProxyBase;
 import com.leafia.contents.network.FFNBT;
@@ -24,8 +26,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
 
 public class LeafiaUtil {
 	public static int colorFromTextFormat(TextFormatting formatting) {
@@ -252,5 +257,122 @@ public class LeafiaUtil {
 			sending.drain(amount,true);
 			return toFill;
 		}
+	}
+
+	public static boolean setTypeExcluding(FluidTankNTM tank,int in,int out,@NotNull IItemHandler slots,FluidType... excludeTypes) {
+
+		if (!slots.getStackInSlot(in).isEmpty() && slots.getStackInSlot(in).getItem() instanceof IItemFluidIdentifier id) {
+
+			if (in == out) {
+				FluidType newType = id.getType(null, 0, 0, 0, slots.getStackInSlot(in));
+				for (FluidType excludeType : excludeTypes) {
+					if (excludeType.equals(newType))
+						return false;
+				}
+
+				if (tank.getTankType() != newType) {
+					tank.setTankType(newType);
+					tank.setFill(0);
+					return true;
+				}
+
+			} else if (slots.getStackInSlot(out).isEmpty()) {
+				FluidType newType = id.getType(null, 0, 0, 0, slots.getStackInSlot(in));
+				for (FluidType excludeType : excludeTypes) {
+					if (excludeType.equals(newType))
+						return false;
+				}
+
+				if (tank.getTankType() != newType) {
+					tank.setTankType(newType);
+					slots.insertItem(out, slots.getStackInSlot(in).copy(), false);
+					slots.getStackInSlot(in).shrink(1);
+					tank.setFill(0);
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	public static boolean setTypeOnly(FluidTankNTM tank,int in,int out,@NotNull IItemHandler slots,FluidType... allowedTypes) {
+
+		if (!slots.getStackInSlot(in).isEmpty() && slots.getStackInSlot(in).getItem() instanceof IItemFluidIdentifier id) {
+
+			if (in == out) {
+				FluidType newType = id.getType(null, 0, 0, 0, slots.getStackInSlot(in));
+				boolean allow = false;
+				for (FluidType usableType : allowedTypes) {
+					if (usableType.equals(newType)) {
+						allow = true;
+						break;
+					}
+				}
+
+				if (tank.getTankType() != newType && allow) {
+					tank.setTankType(newType);
+					tank.setFill(0);
+					return true;
+				}
+
+			} else if (slots.getStackInSlot(out).isEmpty()) {
+				FluidType newType = id.getType(null, 0, 0, 0, slots.getStackInSlot(in));
+				boolean allow = false;
+				for (FluidType usableType : allowedTypes) {
+					if (usableType.equals(newType)) {
+						allow = true;
+						break;
+					}
+				}
+
+				if (tank.getTankType() != newType && allow) {
+					tank.setTankType(newType);
+					slots.insertItem(out, slots.getStackInSlot(in).copy(), false);
+					slots.getStackInSlot(in).shrink(1);
+					tank.setFill(0);
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	public static boolean setTypeBy(FluidTankNTM tank,int in,int out,@NotNull IItemHandler slots,Function<FluidType,Boolean> processor,FluidType... excludeTypes) {
+
+		if (!slots.getStackInSlot(in).isEmpty() && slots.getStackInSlot(in).getItem() instanceof IItemFluidIdentifier id) {
+
+			if (in == out) {
+				FluidType newType = id.getType(null, 0, 0, 0, slots.getStackInSlot(in));
+				if (!processor.apply(newType)) return false;
+				for (FluidType excludeType : excludeTypes) {
+					if (excludeType.equals(newType))
+						return false;
+				}
+
+				if (tank.getTankType() != newType) {
+					tank.setTankType(newType);
+					tank.setFill(0);
+					return true;
+				}
+
+			} else if (slots.getStackInSlot(out).isEmpty()) {
+				FluidType newType = id.getType(null, 0, 0, 0, slots.getStackInSlot(in));
+				if (!processor.apply(newType)) return false;
+				for (FluidType excludeType : excludeTypes) {
+					if (excludeType.equals(newType))
+						return false;
+				}
+
+				if (tank.getTankType() != newType) {
+					tank.setTankType(newType);
+					slots.insertItem(out, slots.getStackInSlot(in).copy(), false);
+					slots.getStackInSlot(in).shrink(1);
+					tank.setFill(0);
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }

@@ -8,7 +8,6 @@ import com.leafia.AddonBase;
 import com.leafia.contents.bomb.missile.customnuke.CustomNukeMissileItem;
 import com.leafia.contents.building.pinkdoor.ItemPinkDoor;
 import com.leafia.contents.building.sign.SignBlock;
-import com.leafia.contents.control.battery.AddonBatteryPackItem;
 import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
 import com.leafia.contents.gear.advisor.AdvisorItem;
 import com.leafia.contents.gear.ntmfbottle.ItemNTMFBottle;
@@ -454,6 +453,10 @@ public class AddonItems {
 	public static final Item missile_customnuke = new CustomNukeMissileItem("missile_customnuke");
 
 	//public static final Item addon_battery_pack = new AddonBatteryPackItem("addon_battery_pack");
+
+	public static final Item component_limiter = new AddonItemBaked("component_limiter").setCreativeTab(MainRegistry.partsTab);
+	public static final Item component_emitter = new AddonItemBaked("component_emitter").setCreativeTab(MainRegistry.partsTab);
+	public static final Item supercooler = new AddonItemBaked("supercooler").setCreativeTab(MainRegistry.partsTab);
 
 	private static void modifyItemParams() {
 		ModItems.pwr_fuel.setCreativeTab(null);
