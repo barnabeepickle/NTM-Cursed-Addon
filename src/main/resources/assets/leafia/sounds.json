@@ -64,5 +64,7 @@
   "item.geiger6": {"subtitle": "subtitles.item.geiger", "category": "player", "sounds": [{"name": "leafia:tool/geiger6_a", "stream": false},{"name": "leafia:tool/geiger6_b", "stream": false},{"name": "leafia:tool/geiger6_c", "stream": false},{"name": "leafia:tool/geiger6_d", "stream": false},{"name": "leafia:tool/geiger6_e", "stream": false},{"name": "leafia:tool/geiger6_f", "stream": false}]},
 
   "item.advisor_activate": { "category": "player", "sounds": ["leafia:tool/advisor_activate"]},
-  "item.advisor_warning": { "category": "player", "sounds": ["leafia:tool/advisor_warning"]}
+  "item.advisor_warning": { "category": "player", "sounds": ["leafia:tool/advisor_warning"]},
+
+  "external.fuckingfortnite": { "category": "block", "sounds": ["leafia:external/ecr_startup"]}
 }

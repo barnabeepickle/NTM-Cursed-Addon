@@ -69,6 +69,8 @@ public class LeafiaSoundEvents {
 	public static SoundEvent advisor_activate;
 	public static SoundEvent advisor_warning;
 
+	public static SoundEvent fuckingfortnite;
+
 	public static void init() {
 		mukeExplosion = register("weapon.mukeExplosion");
 
@@ -133,6 +135,8 @@ public class LeafiaSoundEvents {
 
 		advisor_activate = register("item.advisor_activate");
 		advisor_warning = register("item.advisor_warning");
+
+		fuckingfortnite = register("external.fuckingfortnite");
 
 		// replace 1.7.10 geiger sounds with alcater one
 		HBMSoundHandler.geiger1 = register("item.geiger1");

@@ -12,6 +12,8 @@ import com.hbm.tileentity.deco.TileEntitySpinnyLight;
 import com.hbm.tileentity.machine.*;
 import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonItems;
+import com.leafia.contents.bomb.missile.customnuke.entity.CustomNukeMissileEntity;
+import com.leafia.contents.bomb.missile.customnuke.entity.CustomNukeMissileEntityRender;
 import com.leafia.contents.building.light.LightRender;
 import com.leafia.contents.building.light.LightTE;
 import com.leafia.contents.building.sign.SignRender;
@@ -104,6 +106,7 @@ public class LeafiaClientProxy extends LeafiaServerProxy {
 
 			RenderingRegistry.registerEntityRenderingHandler(AbsorberShrapnelEntity.class,AbsorberShrapnelRender.FACTORY);
 			RenderingRegistry.registerEntityRenderingHandler(PWRDebrisEntity.class,RenderPWRDebris.FACTORY);
+			RenderingRegistry.registerEntityRenderingHandler(CustomNukeMissileEntity.class,CustomNukeMissileEntityRender.FACTORY);
 		}
 		{
 			ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySpinnyLight.class,new LCERenderSpinnyLight());

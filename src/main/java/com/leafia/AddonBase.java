@@ -11,6 +11,7 @@ import com.leafia.contents.AddonItems;
 import com.leafia.contents.control.battery.AddonEnumBatteryPack;
 import com.leafia.contents.machines.controlpanel.AddonNodesRegister;
 import com.leafia.contents.potion.LeafiaPotion;
+import com.leafia.database.AirDetonationMissiles;
 import com.leafia.init.*;
 import com.leafia.eventbuses.LeafiaServerListener;
 import com.leafia.init.proxy.LeafiaServerProxy;
@@ -139,6 +140,7 @@ public class AddonBase {
 	public void init(FMLInitializationEvent event) {
 		AddonHazards.register();
 		AddonNodesRegister.register();
+		AirDetonationMissiles.init();
 		if (TransformerCoreLeafia.loadFailed != null)
 			TransformerCoreLeafia.loadFailed.run();
 	}

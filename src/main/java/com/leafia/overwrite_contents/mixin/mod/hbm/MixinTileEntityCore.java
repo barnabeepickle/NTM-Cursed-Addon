@@ -167,6 +167,8 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 	private float ringAlpha = 0;
 	@Unique
 	private final List<DFCShock> dfcShocks = new ArrayList<>();
+	@Unique
+	private boolean wasActive = false;
 
 	public MixinTileEntityCore(int scount) {
 		super(scount);
@@ -197,6 +199,7 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 		this.tanks[1].readFromNBT(compound, "fuel2");
 		temperature = compound.getDouble("temperature");
 		containedEnergy = compound.getDouble("energy");
+		wasActive = compound.getBoolean("wasActive");
 		super.readFromNBT(compound);
 	}
 
@@ -211,6 +214,7 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 		this.tanks[1].writeToNBT(compound, "fuel2");
 		compound.setDouble("temperature",temperature);
 		compound.setDouble("energy",containedEnergy);
+		compound.setBoolean("wasActive",wasActive);
 		return super.writeToNBT(compound);
 	}
 
@@ -274,9 +278,15 @@ public abstract class MixinTileEntityCore extends TileEntityMachineBase implemen
 //                Tracker._startProfile(this, "NeoTick");
 				potentialGain = energyMod;
 				if (temperature >= 100) {
+					if (!wasActive) {
+						wasActive = true;
+						world.playSound(null,pos.getX()+0.5,pos.getY()+0.5,pos.getZ()+0.5,LeafiaSoundEvents.fuckingfortnite,SoundCategory.BLOCKS,100,1);
+						PacketThreading.createSendToAllTrackingThreadedPacket(new CommandLeaf.ShakecamPacket(new String[]{"type=smooth", "preset=QUAKE", "duration*4", "intensity/4", "range=100"}).setPos(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 150));
+					}
 					double randRange = Math.pow(tempRatio, 0.65) * 10;
 					potentialGain += world.rand.nextDouble() * randRange / getStabilizationDivAlt() / getStabilizationDiv() + Math.pow(collapsing, 0.666) * 66;
-				}
+				} else
+					wasActive = false;
 
 				int consumption = (int) Math.ceil(Math.pow(incomingSpk * catalystFuelMod * getCoreFuel(), 0.5));
 //                Tracker._tracePosition(this, pos.up(3), "incomingSpk: ", incomingSpk);
