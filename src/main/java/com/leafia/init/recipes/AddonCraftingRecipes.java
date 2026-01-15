@@ -3,6 +3,8 @@ package com.leafia.init.recipes;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.OreDictManager.DictFrame;
+import com.hbm.inventory.RecipesCommon;
+import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.material.Mats;
 import com.hbm.items.ItemEnums.EnumCircuitType;
 import com.hbm.items.ModItems;
