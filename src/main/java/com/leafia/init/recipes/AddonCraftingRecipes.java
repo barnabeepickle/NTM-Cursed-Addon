@@ -16,6 +16,8 @@ import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodCrafting;
 import com.leafia.contents.control.fuel.nuclearfuel.LeafiaRodItem;
 import com.leafia.contents.machines.reactors.pwr.debris.PWRDebrisCrafting;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -101,6 +103,8 @@ public class AddonCraftingRecipes {
 		}
 		for (Block sign : LetterSigns.signs.values())
 			addShapelessAuto(new ItemStack(ModItems.plate_iron),new ItemStack(sign));
+
+		addRecipeAuto(new ItemStack(AddonBlocks.broof),"CCC","P P",'C',new ItemStack(Blocks.CARPET,1,EnumDyeColor.GREEN.getDyeDamage()),'P',ModBlocks.steel_beam);
 
 		hack.getRegistry().register(new PWRDebrisCrafting().setRegistryName(new ResourceLocation("leafia", "lwr_debris_crafting_handler")));
 	}

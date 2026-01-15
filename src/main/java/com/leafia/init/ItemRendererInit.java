@@ -11,6 +11,8 @@ import com.leafia.contents.AddonBlocks.LetterSigns;
 import com.leafia.contents.AddonItems;
 import com.leafia.contents.AddonItems.LeafiaRods;
 import com.leafia.contents.bomb.missile.customnuke.CustomNukeMissileItemRender;
+import com.leafia.contents.building.broof.BroofRender;
+import com.leafia.contents.building.broof.BroofRender.BroofItemRender;
 import com.leafia.contents.building.light.LightRender;
 import com.leafia.contents.building.light.LightRender.LightItemRender;
 import com.leafia.contents.building.sign.SignRender;
@@ -85,6 +87,8 @@ public class ItemRendererInit {
 		register(AddonBlocks.ams_emitter,new AMSEmitterItemRender());
 
 		register(AddonItems.missile_customnuke,new CustomNukeMissileItemRender());
+
+		register(AddonBlocks.broof,new BroofItemRender());
 
 		/*fix(AddonItems.ams_focus_blank);
 		fix(AddonItems.ams_focus_booster);

@@ -13,6 +13,7 @@ import com.leafia.contents.AddonFluids.AddonFF;
 import com.leafia.contents.bomb.balefire.AshBalefire;
 import com.leafia.contents.bomb.balefire.BaleoniteBlock;
 import com.leafia.contents.bomb.digamma.DigammititeBlock;
+import com.leafia.contents.building.broof.BroofBlock;
 import com.leafia.contents.building.light.LightBlock;
 import com.leafia.contents.building.light.LightEmitter;
 import com.leafia.contents.building.mixed.BlockMixedConcrete;
@@ -308,6 +309,8 @@ public class AddonBlocks {
 	public static final Block ams_limiter = new AMSStabilizerBlock(Material.IRON, "ams_limiter").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
 
 	public static final Block block_welded_osmiridium = new OsmiridiumBlock(Material.IRON,"block_welded_osmiridium").setHardness(15).setResistance(6500000);
+
+	public static final Block broof = new BroofBlock(Material.CARPET,"broof").setHardness(0.1F).setSoundType(SoundType.CLOTH).setCreativeTab(MainRegistry.blockTab);
 
 	static {
 		if (Loader.isModLoaded("opencomputers")) {

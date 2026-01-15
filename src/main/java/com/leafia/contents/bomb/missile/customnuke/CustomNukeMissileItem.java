@@ -30,6 +30,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,6 +66,7 @@ public class CustomNukeMissileItem extends ItemMissileStandard implements IGUIPr
 		ItemStack held = entityPlayer.getHeldItem(hand);
 		return new CustomNukeMissileContainer(entityPlayer.inventory,new CustomNukeMissileInventory(entityPlayer,held));
 	}
+	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiScreen provideGUI(int i,EntityPlayer entityPlayer,World world,int i1,int i2,int i3) {
 		EnumHand hand = EnumHand.values()[i1];

@@ -14,6 +14,8 @@ import com.leafia.contents.AddonBlocks;
 import com.leafia.contents.AddonItems;
 import com.leafia.contents.bomb.missile.customnuke.entity.CustomNukeMissileEntity;
 import com.leafia.contents.bomb.missile.customnuke.entity.CustomNukeMissileEntityRender;
+import com.leafia.contents.building.broof.BroofRender;
+import com.leafia.contents.building.broof.BroofTE;
 import com.leafia.contents.building.light.LightRender;
 import com.leafia.contents.building.light.LightTE;
 import com.leafia.contents.building.sign.SignRender;
@@ -143,6 +145,8 @@ public class LeafiaClientProxy extends LeafiaServerProxy {
 			ClientRegistry.bindTileEntitySpecialRenderer(AMSBaseTE.class,new AMSBaseRender());
 			ClientRegistry.bindTileEntitySpecialRenderer(AMSStabilizerTE.class,new AMSStabilizerRender());
 			ClientRegistry.bindTileEntitySpecialRenderer(AMSEmitterTE.class,new AMSEmitterRender());
+
+			ClientRegistry.bindTileEntitySpecialRenderer(BroofTE.class,new BroofRender());
 		}
 		AddonJars.initJars();
 	}

@@ -1,6 +1,7 @@
 package com.leafia.init;
 
 import com.leafia.AddonBase;
+import com.leafia.contents.building.broof.BroofTE;
 import com.leafia.contents.building.light.LightTE;
 import com.leafia.contents.building.sign.SignTE;
 import com.leafia.contents.debug.ff_test.source.FFSourceTE;
@@ -80,6 +81,7 @@ public class TEInit {
 		register(AMSBaseTE.class,"ams_base_te");
 		register(AMSStabilizerTE.class,"ams_stabilizer_te");
 		register(AMSEmitterTE.class,"ams_emitter_te");
+		register(BroofTE.class,"broof_te");
 	}
 	private static void register(Class<? extends TileEntity> clazz,String res) {
 		GameRegistry.registerTileEntity(clazz,new ResourceLocation(AddonBase.MODID,res));

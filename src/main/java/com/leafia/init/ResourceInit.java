@@ -5,6 +5,7 @@ import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.loader.WaveFrontObjectVAO;
 import com.leafia.contents.bomb.missile.AddonMissileItemRender;
+import com.leafia.contents.building.broof.BroofRender;
 import com.leafia.contents.building.light.LightRender;
 import com.leafia.contents.effects.folkvangr.visual.LCERenderCloudFleija;
 import com.leafia.contents.gear.advisor.AdvisorRender;
@@ -68,6 +69,7 @@ public class ResourceInit {
 		_initClass(AdvisorRender.class);
 		_initClass(AddonMissileItemRender.class);
 		_initClass(AMSStabilizerRender.class);
+		_initClass(BroofRender.class);
 		/*{
 			setWreckModel("intact");
 			setWreckModel("metal_rubble_0");
