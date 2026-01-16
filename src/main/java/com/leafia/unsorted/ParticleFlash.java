@@ -55,7 +55,7 @@ public class ParticleFlash extends Particle {
 		RenderHelper.disableStandardItemLighting();
 
 		Random random = new Random(432L);
-		GlStateManager.disableTexture2D();
+		//GlStateManager.disableTexture2D();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
@@ -93,7 +93,7 @@ public class ParticleFlash extends Particle {
 		GlStateManager.disableBlend();
 		GlStateManager.shadeModel(GL11.GL_FLAT);
 		GlStateManager.color(1, 1, 1, 1);
-		GlStateManager.enableTexture2D();
+		//GlStateManager.enableTexture2D();
 		GlStateManager.enableAlpha();
 		RenderHelper.enableStandardItemLighting();
 	}
