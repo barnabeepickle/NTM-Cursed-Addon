@@ -5,7 +5,9 @@ import com.hbm.entity.projectile.EntityThrowableNT;
 import com.hbm.lib.internal.MethodHandleHelper;
 import com.leafia.overwrite_contents.interfaces.IMixinEntityMissileBaseNT;
 import com.llib.exceptions.LeafiaDevFlaw;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,13 +17,15 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodType;
 
 @Mixin(value = EntityThrowableNT.class)
-public abstract class MixinEntityThrowableNT {
-	@Shadow(remap = false)
-	protected abstract void onImpact(RayTraceResult rayTraceResult);
+public abstract class MixinEntityThrowableNT extends EntityThrowable {
 
 	private static final MethodHandle killMissile = MethodHandleHelper.findVirtual(EntityMissileBaseNT.class,"killMissile",MethodType.methodType(void.class));
 
-	@Redirect(method = "onUpdate",at = @At(value = "INVOKE", target = "Lcom/hbm/entity/projectile/EntityThrowableNT;onImpact(Lnet/minecraft/util/math/RayTraceResult;)V",remap = false),require = 1)
+	public MixinEntityThrowableNT(World worldIn) {
+		super(worldIn);
+	}
+
+	@Redirect(method = "onUpdate",at = @At(value = "INVOKE", target = "Lcom/hbm/entity/projectile/EntityThrowableNT;onImpact(Lnet/minecraft/util/math/RayTraceResult;)V"),require = 1)
 	public void onUpdate(EntityThrowableNT instance,RayTraceResult rayTraceResult) {
 		if (this instanceof IMixinEntityMissileBaseNT mixin) {
 			if (mixin.shouldDetonateInAir()) {
